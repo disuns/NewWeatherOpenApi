@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">NewWeatherOpenApi</string>
+
+    <string name="loading">Loading</string>
+
+<!--    navtest용-->
+    <string name="weather">weather</string>
+    <string name="fcst">fcst</string>
+    <string name="navermap">navermap</string>
 </resources>

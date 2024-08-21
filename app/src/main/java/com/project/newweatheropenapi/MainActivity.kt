@@ -4,44 +4,51 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.project.newweatheropenapi.ui.compose.InitScreen
 import com.project.newweatheropenapi.ui.theme.NewWeatherOpenApiTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            NewWeatherOpenApiTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+            NewWeatherOpenApiTheme{
+                InitScreen()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+private fun gpsCheckPermissionLocation() {
+    permissionCheck()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    NewWeatherOpenApiTheme {
-        Greeting("Android")
-    }
+private fun permissionCheck() {
+//    TedPermission.create()
+//        .setPermissionListener(permissionListener)
+//        .setRationaleMessage(resources.getString(R.string.gpsNeed))
+//        .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+//        .check()
 }
+
+//private val permissionListener = object : PermissionListener {
+//    override fun onPermissionGranted() {
+//        activityMainStart()
+//    }
+//
+//    override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+//        weatherApplication.toastMessage(resources.getString(R.string.gpsNeed))
+//        finish()
+//    }
+//}
+//
+//private fun activityMainStart() {
+//    with(Intent(applicationContext, MainActivity::class.java)) {
+//        putExtra(resources.getString(R.string.provider), provider)
+//        startActivity(this)
+//    }
+//    finish()
+//}

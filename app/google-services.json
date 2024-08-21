@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1095451201104",
+    "project_id": "weatheropenapi-60cd6",
+    "storage_bucket": "weatheropenapi-60cd6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095451201104:android:e9c6ace141b141aced4b55",
+        "android_client_info": {
+          "package_name": "com.project.newweatheropenapi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6FhVislekAM9b9FuXTsLVmwBRsxX_8F0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,13 +1,21 @@
 [versions]
-agp = "8.5.1"
+#apps
+#libs
+agp = "8.5.2"
 kotlin = "1.9.0"
-coreKtx = "1.10.1"
+coreKtx = "1.13.1"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.6.1"
-activityCompose = "1.8.0"
-composeBom = "2024.04.01"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.4"
+activityCompose = "1.9.1"
+composeBom = "2024.06.00"
+glide = "1.0.0-alpha.3"
+hilt_navigation_compose = "1.2.0"
+naver_map = "3.19.1"
+google-service = "4.4.2"
+firebase-bom = "33.1.2"
+ted-permission = "3.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -24,8 +32,19 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+#Glide
+glide = { module = "com.github.bumptech.glide:compose", version.ref = "glide" }
+#hilt
+hilt_navigation_compose = {module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose" }
+#navermap
+naver_map = {module = "com.naver.maps:map-sdk", version.ref = "naver_map" }
+#firebase
+firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref ="firebase-bom"}
+#tedpermission
+ted-permission = {module = "io.github.ParkSangGwon:tedpermission-normal", version.ref = "ted-permission"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+google-service = {id = "com.google.gms.google-services", version.ref = "google-service"}
 
