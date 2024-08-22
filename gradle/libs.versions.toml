@@ -12,6 +12,7 @@ activityCompose = "1.9.1"
 composeBom = "2024.06.00"
 glide = "1.0.0-alpha.3"
 hilt_navigation_compose = "1.2.0"
+hilt = "2.44"
 naver_map = "3.19.1"
 google-service = "4.4.2"
 firebase-bom = "33.1.2"
@@ -35,6 +36,8 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 #Glide
 glide = { module = "com.github.bumptech.glide:compose", version.ref = "glide" }
 #hilt
+hilt = {module = "com.google.dagger:hilt-android", version.ref = "hilt"}
+hilt_compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt"}
 hilt_navigation_compose = {module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose" }
 #navermap
 naver_map = {module = "com.naver.maps:map-sdk", version.ref = "naver_map" }
@@ -47,4 +50,5 @@ ted-permission = {module = "io.github.ParkSangGwon:tedpermission-normal", versio
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-service = {id = "com.google.gms.google-services", version.ref = "google-service"}
+hilt = {id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 

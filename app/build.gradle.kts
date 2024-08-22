@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.hilt)
+    kotlin("kapt")
 //    alias(libs.plugins.google.service)
 }
 
@@ -48,6 +50,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    kapt {
+        correctErrorTypes = true
+    }
 }
 
 dependencies {
@@ -77,4 +82,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
 
     implementation(libs.ted.permission)
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
 }
