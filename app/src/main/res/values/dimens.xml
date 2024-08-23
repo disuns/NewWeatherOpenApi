@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--text-->
+    <dimen name="Loading">30sp</dimen>
+    <dimen name="WeatherTitle">28dp</dimen>
+    <!--ui-->
+
+
     <dimen name="FcstTitle">28dp</dimen>
     <dimen name="NowTempTV">64dp</dimen>
     <dimen name="NowFcstTV">30dp</dimen>
@@ -16,8 +21,8 @@
     <dimen name="IndexValueSize">16dp</dimen>
     <dimen name="IndexAirDateCode">14dp</dimen>
     <dimen name="IndexAirQuality">18dp</dimen>
-    <dimen name="Loading">30sp</dimen>
-    <!--ui-->
+
+
     <dimen name="NowFcstIV">110dp</dimen>
     <dimen name="PaddingStart">14dp</dimen>
     <dimen name="PaddingEnd">10dp</dimen>

@@ -1,4 +1,4 @@
-package com.project.newweatheropenapi.ui.compose.fcst
+package com.project.newweatheropenapi.ui.compose.airQuality
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,17 +13,17 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.newweatheropenapi.ComposeHelpManager
 import com.project.newweatheropenapi.R
-import com.project.newweatheropenapi.viewmodel.FcstViewModel
+import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
 
 @Composable
-fun FcstScreen(
+fun AirQualityScreen(
     onNavigate : ()->Unit = {},
-    viewModel: FcstViewModel = hiltViewModel()) {
+    viewModel: AirQualityViewModel = hiltViewModel()) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        val text = ComposeHelpManager.previewStringResource(R.string.fcst,"fcst")
+        val text = ComposeHelpManager.previewStringResource(R.string.airQuality,"airQuality")
         val fontSize = ComposeHelpManager.previewDimenResource(R.dimen.Loading, 30.0f ).sp
         
         Button(onClick = onNavigate) {
@@ -41,5 +41,5 @@ fun FcstScreen(
 @Preview
 @Composable
 private fun Preview(){
-    FcstScreen()
+    AirQualityScreen()
 }

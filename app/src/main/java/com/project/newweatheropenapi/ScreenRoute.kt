@@ -4,5 +4,5 @@ enum class ScreenRoute {
     Intro,
     NaverMap,
     Weather,
-    Fcst
+    AirQuality
 }

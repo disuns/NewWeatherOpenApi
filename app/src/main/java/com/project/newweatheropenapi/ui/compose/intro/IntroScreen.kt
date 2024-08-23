@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,7 +24,9 @@ import com.project.newweatheropenapi.app.WeatherApplication
 @Composable
 fun IntroScreen(onNavigate : ()->Unit = {}) {
     val context = LocalContext.current
-    permissionCheck(onNavigate, context)
+    LaunchedEffect(Unit) {
+        permissionCheck(onNavigate, context)
+    }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -49,7 +52,7 @@ private fun permissionCheck(onNavigate: () -> Unit = {}, context: Context) {
             }
 
             override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
-                WeatherApplication().toastMessage(stringResource(id = )context.resources.getString(R.string.gpsNeed))
+                WeatherApplication().toastMessage(context.resources.getString(R.string.gpsNeed))
                 WeatherApplication().debug(context.resources.getString(R.string.gpsNeed))
             }
         })

@@ -3,9 +3,9 @@
 
     <string name="loading">Loading</string>
     <string name="gpsNeed">위치제공이 필요합니다.</string>
+    <string name="nowWeather">현재날씨</string>
 
 <!--    navtest용-->
-    <string name="weather">weather</string>
-    <string name="fcst">fcst</string>
+    <string name="airQuality">airQuality</string>
     <string name="navermap">navermap</string>
 </resources>

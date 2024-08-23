@@ -1,9 +1,8 @@
 package com.project.newweatheropenapi.viewmodel
 
-import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class FcstViewModel @Inject constructor() : BaseViewModel() {
+class AirQualityViewModel @Inject constructor() : BaseViewModel() {
 }
