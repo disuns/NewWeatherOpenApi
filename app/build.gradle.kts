@@ -84,4 +84,9 @@ dependencies {
     implementation(libs.ted.permission)
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 }

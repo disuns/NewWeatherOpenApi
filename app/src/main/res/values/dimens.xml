@@ -3,14 +3,17 @@
     <!--text-->
     <dimen name="Loading">30sp</dimen>
     <dimen name="WeatherTitle">28dp</dimen>
-    <!--ui-->
+    <dimen name="NowTempText">64dp</dimen>
+    <dimen name="NowWeatherText">30dp</dimen>
+    <dimen name="NowWetRainWindColumn">18dp</dimen>
 
+    <!--ui-->
+    <dimen name="PaddingStart">14dp</dimen>
+    <dimen name="PaddingEnd">10dp</dimen>
+    <dimen name="NowFcstIV">110dp</dimen>
 
     <dimen name="FcstTitle">28dp</dimen>
-    <dimen name="NowTempTV">64dp</dimen>
-    <dimen name="NowFcstTV">30dp</dimen>
-    <dimen name="NowWetRainWindLayout">18dp</dimen>
-    <dimen name="FcstRvTitle">24dp</dimen>
+    <dimen name="WeatherRvTitle">24dp</dimen>
     <dimen name="WeekRVItemText">18dp</dimen>
     <dimen name="TimeItemTextDateTime">20dp</dimen>
     <dimen name="TimeItemText">18dp</dimen>
@@ -23,9 +26,6 @@
     <dimen name="IndexAirQuality">18dp</dimen>
 
 
-    <dimen name="NowFcstIV">110dp</dimen>
-    <dimen name="PaddingStart">14dp</dimen>
-    <dimen name="PaddingEnd">10dp</dimen>
     <dimen name="WeekRVItemIV">30dp</dimen>
     <dimen name="WeekRVItemIVSmall">15dp</dimen>
     <dimen name="TimeItemFcstMargin">25dp</dimen>

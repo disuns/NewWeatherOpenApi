@@ -4,6 +4,9 @@
     <string name="loading">Loading</string>
     <string name="gpsNeed">위치제공이 필요합니다.</string>
     <string name="nowWeather">현재날씨</string>
+    <string name="timeWeather">시간대별 예보</string>
+
+    <string name="loadingImage">이미지 로딩중</string>
 
 <!--    navtest용-->
     <string name="airQuality">airQuality</string>
