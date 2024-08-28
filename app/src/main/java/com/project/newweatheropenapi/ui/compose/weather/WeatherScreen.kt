@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.project.newweatheropenapi.ComposeHelpManager
+import com.project.newweatheropenapi.utils.ComposeHelpManager
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.ui.theme.Color_bbdefb
 import com.project.newweatheropenapi.viewmodel.WeatherViewModel

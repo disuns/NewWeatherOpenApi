@@ -1,6 +1,7 @@
 package com.project.newweatheropenapi.network.service
 
 import com.project.newweatheropenapi.MAP_REVERSE_GEOCODE
+import com.project.newweatheropenapi.network.ApiModule
 import com.sjchoi.weather.dataclass.reverseGeocoder.ReverseGeocoder
 import retrofit2.Response
 import retrofit2.http.GET

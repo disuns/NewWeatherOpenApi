@@ -11,6 +11,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface AirQualityService {
+    companion object{
+        val POTAL_URL = "http://apis.data.go.kr/"
+    }
+
     @GET(AIR_QUALITY_FRCST)
     suspend fun requestAirQuality(@Query("serviceKey") serviceKey: String,
                                   @Query("returnType") returnType:String,

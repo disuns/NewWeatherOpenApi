@@ -1,4 +1,4 @@
-package com.project.newweatheropenapi
+package com.project.newweatheropenapi.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -6,7 +6,6 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import javax.inject.Inject
 
 object ComposeHelpManager{
 
