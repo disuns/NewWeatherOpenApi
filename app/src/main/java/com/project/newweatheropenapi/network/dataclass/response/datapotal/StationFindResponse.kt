@@ -1,7 +1,5 @@
 package com.project.newweatheropenapi.network.dataclass.response.datapotal
 
-import com.sjchoi.weather.dataclass.datapotal.Header
-
 data class StationFindResponse(
     val response: Response
 ){
@@ -9,6 +7,11 @@ data class StationFindResponse(
         val body: Body,
         val header: Header
     ){
+        data class Header(
+            val resultCode: String,
+            val resultMsg: String
+        )
+
         data class Body(
             val items: MutableList<Item>,
             val numOfRows: Int,
