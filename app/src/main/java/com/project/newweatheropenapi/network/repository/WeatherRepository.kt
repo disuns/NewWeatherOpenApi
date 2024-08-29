@@ -5,31 +5,19 @@ import com.project.newweatheropenapi.DATA_TYPE_UPPER
 import com.project.newweatheropenapi.NUM_OF_ROWS_DEFAULT
 import com.project.newweatheropenapi.NUM_OF_ROWS_WEEK
 import com.project.newweatheropenapi.PAGE_NO_DEFAULT
-import com.project.newweatheropenapi.network.ApiResult
+import com.project.newweatheropenapi.network.dataclass.request.datapotal.WeatherRequest
+import com.project.newweatheropenapi.network.dataclass.request.datapotal.WeekRainSkyRequest
+import com.project.newweatheropenapi.network.dataclass.request.datapotal.toMap
 import com.project.newweatheropenapi.network.safeFlow
 import com.project.newweatheropenapi.network.service.WeatherService
-import com.sjchoi.weather.dataclass.datapotal.fcstdata.FcstData
-import kotlinx.coroutines.flow.flow
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 import javax.inject.Inject
 
-class WeatherRepository @Inject constructor(private val service: WeatherService){
-    fun getWeather(@Query("base_date") base_date:String,
-                   @Query("base_time") base_time:String,
-                   @Query("nx") nx:String,
-                   @Query("ny") ny:String)= flow{
-        emit(safeFlow { service.getWeather(DATA_POTAL_SERVICE_KEY,PAGE_NO_DEFAULT,NUM_OF_ROWS_DEFAULT,DATA_TYPE_UPPER, base_date, base_time, nx, ny) })
-    }
+class WeatherRepository @Inject constructor(private val service: WeatherService) {
+    fun getWeather(@QueryMap params: Map<String, String>) = safeFlow { service.getWeather(params) }
 
-    fun getNowWeather(@Query("base_date") base_date:String,
-                      @Query("base_time") base_time:String,
-                      @Query("nx") nx:String,
-                      @Query("ny") ny:String) = flow{
-        emit(safeFlow{service.getNowWeather(DATA_POTAL_SERVICE_KEY, PAGE_NO_DEFAULT, NUM_OF_ROWS_DEFAULT, DATA_TYPE_UPPER, base_date, base_time, nx, ny)})
-    }
+    fun getNowWeather(@QueryMap params: Map<String, String>) = safeFlow { service.getNowWeather(params) }
 
-    fun getWeekRainSky(@Query("regId") regId:String,
-                       @Query("tmFc") tmFc:String) = flow{
-        emit(safeFlow{service.getWeekRainSky(DATA_POTAL_SERVICE_KEY, PAGE_NO_DEFAULT, NUM_OF_ROWS_WEEK, DATA_TYPE_UPPER, regId, tmFc)})
-    }
+    fun getWeekRainSky(@QueryMap params: Map<String, String>) = safeFlow { service.getWeekRainSky(params) }
 }

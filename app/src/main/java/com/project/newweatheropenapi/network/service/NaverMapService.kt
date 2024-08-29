@@ -1,20 +1,12 @@
 package com.project.newweatheropenapi.network.service
 
 import com.project.newweatheropenapi.MAP_REVERSE_GEOCODE
-import com.project.newweatheropenapi.network.ApiModule
-import com.sjchoi.weather.dataclass.reverseGeocoder.ReverseGeocoder
+import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface NaverMapService {
     @GET(MAP_REVERSE_GEOCODE)
-    suspend fun requestReverseGeoCo(@Query("request") request: String,
-                                    @Query("coords", encoded = true) coords:String,
-                                    @Query("sourcecrs", encoded = true) sourcecrs:String,
-                                    @Query("targetcrs", encoded = true) targetcrs:String,
-                                    @Query("output") output:String,
-                                    @Query("orders", encoded = true) orders:String,
-                                    @Query("X-NCP-APIGW-API-KEY-ID") apikeyid:String,
-                                    @Query("X-NCP-APIGW-API-KEY") apikey:String): Response<ReverseGeocoder>
+    suspend fun getReverseGeoCo(@QueryMap params : Map<String,String>): Response<NaverMapResponse>
 }

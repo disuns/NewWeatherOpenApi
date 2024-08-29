@@ -89,4 +89,13 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.kotline)
+    // Kotlin Coroutines Test
+    testImplementation(libs.coroutines.test)
+
+    // AndroidX Test
+    testImplementation(libs.core.testing)
 }

@@ -3,40 +3,19 @@ package com.project.newweatheropenapi.network.service
 import com.project.newweatheropenapi.NOW_FCST
 import com.project.newweatheropenapi.VILAGE_FCST
 import com.project.newweatheropenapi.WEEK_RAIN_SKY
-import com.project.newweatheropenapi.network.ApiModule
-import com.sjchoi.weather.dataclass.datapotal.fcstdata.FcstData
-import com.sjchoi.weather.dataclass.datapotal.fcstdata.WeekRainSkyData
+import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
+import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRainSkyResponse
 import retrofit2.Response
-import retrofit2.create
 import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface WeatherService {
     @GET(VILAGE_FCST)
-    suspend fun getWeather(@Query("serviceKey") serviceKey: String,
-                               @Query("pageNo") pageNo:String,
-                               @Query("numOfRows") numOfRows:String,
-                               @Query("dataType") dataType:String,
-                               @Query("base_date") base_date:String,
-                               @Query("base_time") base_time:String,
-                               @Query("nx") nx:String,
-                               @Query("ny") ny:String): Response<FcstData>
+    suspend fun getWeather(@QueryMap params : Map<String,String>): Response<WeatherResponse>
 
     @GET(NOW_FCST)
-    suspend fun getNowWeather(@Query("serviceKey") serviceKey: String,
-                                  @Query("pageNo") pageNo:String,
-                                  @Query("numOfRows") numOfRows:String,
-                                  @Query("dataType") dataType:String,
-                                  @Query("base_date") base_date:String,
-                                  @Query("base_time") base_time:String,
-                                  @Query("nx") nx:String,
-                                  @Query("ny") ny:String): Response<FcstData>
+    suspend fun getNowWeather(@QueryMap params : Map<String,String>): Response<WeatherResponse>
 
     @GET(WEEK_RAIN_SKY)
-    suspend fun getWeekRainSky(@Query("serviceKey") serviceKey: String,
-                                   @Query("pageNo") pageNo:String,
-                                   @Query("numOfRows") numOfRows:String,
-                                   @Query("dataType") dataType:String,
-                                   @Query("regId") regId:String,
-                                   @Query("tmFc") tmFc:String): Response<WeekRainSkyData>
+    suspend fun getWeekRainSky(@QueryMap params : Map<String,String>): Response<WeekRainSkyResponse>
 }
