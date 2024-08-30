@@ -7,8 +7,10 @@ import com.google.gson.JsonParser
 import com.google.gson.JsonSyntaxException
 import com.project.newweatheropenapi.DATA_POTAL_URL
 import com.project.newweatheropenapi.MAPS_URL
+import com.project.newweatheropenapi.network.service.AirQualityService
 import com.project.newweatheropenapi.network.service.NaverMapService
 import com.project.newweatheropenapi.network.service.WeatherService
+import com.project.newweatheropenapi.utils.AirQualityServiceRetrofit
 import com.project.newweatheropenapi.utils.NaverMapServiceRetrofit
 import com.project.newweatheropenapi.utils.WeatherServiceRetrofit
 import dagger.Module
@@ -70,10 +72,17 @@ class ApiModule {
             .build()
     }
 
+    private fun provideDataPotalRetrofit(okHttpClient: OkHttpClient) = createRetrofit(okHttpClient, DATA_POTAL_URL)
+
     @Singleton
     @WeatherServiceRetrofit
     @Provides
-    fun provideWeatherServiceRetrofit(okHttpClient: OkHttpClient) = createRetrofit(okHttpClient, DATA_POTAL_URL)
+    fun provideWeatherServiceRetrofit(okHttpClient: OkHttpClient): Retrofit = provideDataPotalRetrofit(okHttpClient)
+
+    @Singleton
+    @AirQualityServiceRetrofit
+    @Provides
+    fun provideAirQualityServiceRetrofit(okHttpClient: OkHttpClient): Retrofit = provideDataPotalRetrofit(okHttpClient)
 
     @Singleton
     @NaverMapServiceRetrofit
@@ -87,4 +96,8 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideNaverMapService(@NaverMapServiceRetrofit retrofit: Retrofit): NaverMapService = retrofit.create(NaverMapService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideAirQualityService(@NaverMapServiceRetrofit retrofit: Retrofit): AirQualityService = retrofit.create(AirQualityService::class.java)
 }

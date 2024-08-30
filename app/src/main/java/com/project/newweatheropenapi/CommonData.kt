@@ -88,24 +88,4 @@ const val RLTM_STATION = "/B552584/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesure
  * 측정소
  */
 const val STATION_FIND = "/B552584/MsrstnInfoInqireSvc/getNearbyMsrstnList"
-/**
- * 나머지
- */
-
-const val NUM0 = "0"
-const val NUM1 = "1"
-const val NUM2 = "2"
-const val NUM3 = "3"
-const val NUM4 = "4"
-const val NUM5 = "5"
-const val NUM6 = "6"
-const val NUM7 = "7"
-const val NUM8 = "8"
-const val NUM9 = "9"
-const val NUM10 = "10"
-const val NUM11 = "11"
-const val NUM12 = "12"
-const val NUM13 = "13"
-const val NUM14 = "14"
-const val NUM15 = "15"
 

@@ -9,3 +9,7 @@ annotation class WeatherServiceRetrofit
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class NaverMapServiceRetrofit
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class AirQualityServiceRetrofit

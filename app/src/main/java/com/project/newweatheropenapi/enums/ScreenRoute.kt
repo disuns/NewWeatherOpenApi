@@ -1,4 +1,4 @@
-package com.project.newweatheropenapi
+package com.project.newweatheropenapi.enums
 
 enum class ScreenRoute {
     Intro,

@@ -5,7 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.project.newweatheropenapi.ScreenRoute
+import com.project.newweatheropenapi.enums.ScreenRoute
 import com.project.newweatheropenapi.ui.compose.airQuality.AirQualityScreen
 import com.project.newweatheropenapi.ui.compose.intro.IntroScreen
 import com.project.newweatheropenapi.ui.compose.navermap.NaverMapScreen
@@ -21,7 +21,8 @@ fun InitScreen() {
 fun ScreenNav(navController: NavHostController){
     NavHost(navController = navController, startDestination = ScreenRoute.Intro.name ) {
         composable(route = ScreenRoute.Intro.name){
-            IntroScreen(onNavigate = { navController.navigate(ScreenRoute.Weather.name) {
+//            IntroScreen(onNavigate = { navController.navigate(ScreenRoute.Weather.name) {
+            IntroScreen(onNavigate = { navController.navigate(ScreenRoute.NaverMap.name) {
                 popUpTo(ScreenRoute.Intro.name){inclusive = true}
                 launchSingleTop = true
             } })

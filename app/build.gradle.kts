@@ -33,11 +33,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -66,6 +66,15 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.kotline)
+    // Kotlin Coroutines Test
+    testImplementation(libs.coroutines.test)
+
+    // AndroidX Test
+    testImplementation(libs.core.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -77,7 +86,8 @@ dependencies {
 
     implementation(libs.hilt.navigation.compose)
 
-    implementation(libs.naver.map)
+    implementation(libs.naver.map.compose)
+    implementation(libs.naver.map.location)
 
     implementation(platform(libs.firebase.bom))
 
@@ -89,13 +99,4 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
-
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.inline)
-    testImplementation(libs.mockito.kotline)
-    // Kotlin Coroutines Test
-    testImplementation(libs.coroutines.test)
-
-    // AndroidX Test
-    testImplementation(libs.core.testing)
 }
