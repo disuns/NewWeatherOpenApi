@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hilt)
     kotlin("kapt")
 //    alias(libs.plugins.google.service)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -43,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packaging {
         resources {
@@ -67,11 +68,11 @@ dependencies {
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
 
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.inline)
-    testImplementation(libs.mockito.kotline)
+    testImplementation(libs.mockk)
     // Kotlin Coroutines Test
     testImplementation(libs.coroutines.test)
+    //turbine
+    testImplementation(libs.turbine)
 
     // AndroidX Test
     testImplementation(libs.core.testing)
@@ -99,4 +100,6 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+
+    implementation(libs.logger)
 }

@@ -27,12 +27,14 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.project.newweatheropenapi.utils.ComposeHelpManager
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.ui.theme.Color_bbdefb
+import com.project.newweatheropenapi.viewmodel.ActivityViewModel
 import com.project.newweatheropenapi.viewmodel.WeatherViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WeatherScreen(
     onNavigate : ()->Unit = {},
+    activityViewModel: ActivityViewModel,
     viewModel: WeatherViewModel = hiltViewModel()) {
 
     val backgroundColor = Color_bbdefb
@@ -240,6 +242,6 @@ fun WeekForecastSection() {
 @Composable
 private fun Preview(){
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        WeatherScreen()
+        WeatherScreen(activityViewModel = ActivityViewModel())
     }
 }

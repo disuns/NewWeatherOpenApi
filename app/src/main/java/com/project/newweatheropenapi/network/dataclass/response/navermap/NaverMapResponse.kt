@@ -41,7 +41,8 @@ data class NaverMapResponse(
         ) {
             data class Area(
                 val coords: Coords,
-                val name: String
+                val name: String,
+                val alias: String? = null
             )
         }
     }

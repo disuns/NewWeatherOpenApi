@@ -1,10 +1,10 @@
 package com.project.newweatheropenapi.viewmodel
 
-import com.project.newweatheropenapi.DATA_POTAL_SERVICE_KEY
-import com.project.newweatheropenapi.DATA_TYPE_UPPER
-import com.project.newweatheropenapi.NUM_OF_ROWS_DEFAULT
-import com.project.newweatheropenapi.NUM_OF_ROWS_WEEK
-import com.project.newweatheropenapi.PAGE_NO_DEFAULT
+import com.project.newweatheropenapi.common.DATA_POTAL_SERVICE_KEY
+import com.project.newweatheropenapi.common.DATA_TYPE_UPPER
+import com.project.newweatheropenapi.common.NUM_OF_ROWS_DEFAULT
+import com.project.newweatheropenapi.common.NUM_OF_ROWS_WEEK
+import com.project.newweatheropenapi.common.PAGE_NO_DEFAULT
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.request.datapotal.WeatherRequest
 import com.project.newweatheropenapi.network.dataclass.request.datapotal.WeekRainSkyRequest

@@ -1,6 +1,6 @@
 package com.project.newweatheropenapi.network
 
-import android.util.Log
+import com.project.newweatheropenapi.common.logMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -23,14 +23,14 @@ fun <T> safeFlow(apiFunc: suspend () -> Response<T>): Flow<ApiResult<T>> = flow{
                 emit(ApiResult.Success(it))
             } ?: emit(ApiResult.Empty)
         } else {
-            Log.e("ApiResult","API Error: ${response.code()} - ${response.message()}")
+            logMessage("API Error: ${response.code()} - ${response.message()}")
             emit(ApiResult.Error(code = response.code(), exception = HttpException(response)))
         }
     } catch (e: IOException) {
-        Log.e("ApiResult","Network Error : $e")
+        logMessage("Network Error : $e")
         emit(ApiResult.Error(exception = e))
     } catch (e: Exception) {
-        Log.e("ApiResult","Unexpected Error : $e")
+        logMessage("Unexpected Error : $e")
         emit(ApiResult.Error(exception = e))
     }
 }

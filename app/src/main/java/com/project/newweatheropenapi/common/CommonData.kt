@@ -1,4 +1,4 @@
-package com.project.newweatheropenapi
+package com.project.newweatheropenapi.common
 
 /**
  * 데이터 변환 체크용

@@ -13,11 +13,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.newweatheropenapi.utils.ComposeHelpManager
 import com.project.newweatheropenapi.R
+import com.project.newweatheropenapi.viewmodel.ActivityViewModel
 import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
 
 @Composable
 fun AirQualityScreen(
     onNavigate : ()->Unit = {},
+    activityViewModel: ActivityViewModel,
     viewModel: AirQualityViewModel = hiltViewModel()) {
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -41,5 +43,5 @@ fun AirQualityScreen(
 @Preview
 @Composable
 private fun Preview(){
-    AirQualityScreen()
+    AirQualityScreen(activityViewModel = ActivityViewModel())
 }

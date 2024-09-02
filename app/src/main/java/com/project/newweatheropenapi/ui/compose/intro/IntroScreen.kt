@@ -15,9 +15,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
-import com.project.newweatheropenapi.utils.ComposeHelpManager
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.app.WeatherApplication
+import com.project.newweatheropenapi.common.logMessage
+import com.project.newweatheropenapi.utils.ComposeHelpManager
 
 
 @Composable
@@ -52,7 +53,7 @@ private fun permissionCheck(onNavigate: () -> Unit = {}, context: Context) {
 
             override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
                 WeatherApplication().toastMessage(context.resources.getString(R.string.gpsNeed))
-                WeatherApplication().debug(context.resources.getString(R.string.gpsNeed))
+                logMessage(context.resources.getString(R.string.gpsNeed))
             }
         })
         .setRationaleMessage(context.resources.getString(R.string.gpsNeed))

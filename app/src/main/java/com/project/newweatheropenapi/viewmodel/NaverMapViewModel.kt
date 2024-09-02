@@ -1,12 +1,12 @@
 package com.project.newweatheropenapi.viewmodel
 
-import com.project.newweatheropenapi.DATA_TYPE_LOWER
-import com.project.newweatheropenapi.MAP_CLIENT_KEY
-import com.project.newweatheropenapi.MAP_CLIENT_KEY_ID
-import com.project.newweatheropenapi.MAP_COORDINATE_DEFAULT
-import com.project.newweatheropenapi.MAP_COORDINATE_TM
-import com.project.newweatheropenapi.MAP_ORDERS
-import com.project.newweatheropenapi.MAP_REQUEST_DEFAULT
+import com.project.newweatheropenapi.common.DATA_TYPE_LOWER
+import com.project.newweatheropenapi.common.MAP_CLIENT_KEY
+import com.project.newweatheropenapi.common.MAP_CLIENT_KEY_ID
+import com.project.newweatheropenapi.common.MAP_COORDINATE_DEFAULT
+import com.project.newweatheropenapi.common.MAP_COORDINATE_TM
+import com.project.newweatheropenapi.common.MAP_ORDERS
+import com.project.newweatheropenapi.common.MAP_REQUEST_DEFAULT
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.request.navermap.NaverMapRequest
 import com.project.newweatheropenapi.network.dataclass.request.navermap.toMap
