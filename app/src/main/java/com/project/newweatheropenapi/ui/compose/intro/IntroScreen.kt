@@ -22,7 +22,7 @@ import com.project.newweatheropenapi.utils.ComposeHelpManager
 
 
 @Composable
-fun IntroScreen(onNavigate : ()->Unit = {}) {
+fun IntroScreen(onNavigate: () -> Unit = {}) {
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         permissionCheck(onNavigate, context)
@@ -33,8 +33,8 @@ fun IntroScreen(onNavigate : ()->Unit = {}) {
         contentAlignment = Alignment.Center
     ) {
 //        (context.applicationContext as WeatherApplication).isNetworkCheck()
-        val text = ComposeHelpManager.previewStringResource(R.string.loading,"Loading")
-        val fontSize = ComposeHelpManager.previewDimenResource(R.dimen.Loading, 30.0f ).sp
+        val text = ComposeHelpManager.previewStringResource(R.string.loading, "Loading")
+        val fontSize = ComposeHelpManager.previewDimenResource(R.dimen.Loading, 30.0f).sp
 
         Text(
             text = text,
@@ -57,12 +57,15 @@ private fun permissionCheck(onNavigate: () -> Unit = {}, context: Context) {
             }
         })
         .setRationaleMessage(context.resources.getString(R.string.gpsNeed))
-        .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        .setPermissions(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+        )
         .check()
 }
 
 @Preview
 @Composable
-private fun Preview(){
+private fun Preview() {
     IntroScreen()
 }

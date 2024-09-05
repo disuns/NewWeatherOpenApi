@@ -25,6 +25,8 @@ coroutines = "1.8.0"
 core-testing = "2.2.0"
 turbine = "0.7.0"
 logger= "2.2.0"
+gson = "2.11.0"
+google-location = "21.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -69,6 +71,10 @@ core-testing = { module = "androidx.arch.core:core-testing", version.ref = "core
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 #logger
 logger = { module = "com.orhanobut:logger", version.ref = "logger"}
+#gson
+gson = { module = "com.google.code.gson:gson", version.ref = "gson"}
+#google-location
+google-location = {module = "com.google.android.gms:play-services-location",version.ref = "google-location"}
 
 
 [plugins]

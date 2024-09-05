@@ -242,6 +242,6 @@ fun WeekForecastSection() {
 @Composable
 private fun Preview(){
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        WeatherScreen(activityViewModel = ActivityViewModel())
+//        WeatherScreen(activityViewModel = ActivityViewModel())
     }
 }

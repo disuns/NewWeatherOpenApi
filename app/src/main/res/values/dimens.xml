@@ -11,6 +11,7 @@
     <dimen name="PaddingStart">14dp</dimen>
     <dimen name="PaddingEnd">10dp</dimen>
     <dimen name="NowFcstIV">110dp</dimen>
+    <dimen name="SearchViewPadding">10dp</dimen>
 
     <dimen name="FcstTitle">28dp</dimen>
     <dimen name="WeatherRvTitle">24dp</dimen>

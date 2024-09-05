@@ -43,5 +43,5 @@ fun AirQualityScreen(
 @Preview
 @Composable
 private fun Preview(){
-    AirQualityScreen(activityViewModel = ActivityViewModel())
+//    AirQualityScreen()
 }

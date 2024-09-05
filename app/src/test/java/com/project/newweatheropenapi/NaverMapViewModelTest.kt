@@ -61,13 +61,11 @@ class NaverMapViewModelTest {
                         mappingId = "09560124"
                     ),
                     land = NaverMapResponse.Result.Land(
-                        additions = listOf(
-                            NaverMapResponse.Result.Land.Addition(type = "", value = ""),
-                            NaverMapResponse.Result.Land.Addition(type = "", value = ""),
-                            NaverMapResponse.Result.Land.Addition(type = "", value = ""),
-                            NaverMapResponse.Result.Land.Addition(type = "", value = ""),
-                            NaverMapResponse.Result.Land.Addition(type = "", value = "")
-                        ),
+                        addition0 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
+                        addition1 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
+                        addition2 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
+                        addition3 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
+                        addition4 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
                         coords = NaverMapResponse.Coords(
                             center = NaverMapResponse.Coords.Center(
                                 crs = "",
@@ -81,56 +79,54 @@ class NaverMapViewModelTest {
                         type = "1"
                     ),
                     region = NaverMapResponse.Result.Region(
-                        areas = listOf(
-                            NaverMapResponse.Result.Region.Area(
-                                name = "kr",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "",
-                                        x = 0.0,
-                                        y = 0.0
-                                    )
+                        area0 = NaverMapResponse.Result.Region.Area(
+                            name = "kr",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "",
+                                    x = 0.0,
+                                    y = 0.0
+                                )
+                            )
+                        ),
+                        area1 = NaverMapResponse.Result.Region.Area(
+                            name = "서울특별시",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "NHN:2048",
+                                    x = 953935.4983318285,
+                                    y = 1952044.0947760872
                                 )
                             ),
-                            NaverMapResponse.Result.Region.Area(
-                                name = "서울특별시",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "NHN:2048",
-                                        x = 953935.4983318285,
-                                        y = 1952044.0947760872
-                                    )
-                                ),
-                                alias = "서울"
-                            ),
-                            NaverMapResponse.Result.Region.Area(
-                                name = "영등포구",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "NHN:2048",
-                                        x = 946631.3184505092,
-                                        y = 1947630.558633506
-                                    )
+                            alias = "서울"
+                        ),
+                        area2 = NaverMapResponse.Result.Region.Area(
+                            name = "영등포구",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "NHN:2048",
+                                    x = 946631.3184505092,
+                                    y = 1947630.558633506
                                 )
-                            ),
-                            NaverMapResponse.Result.Region.Area(
-                                name = "문래동6가",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "NHN:2048",
-                                        x = 945610.2230206165,
-                                        y = 1946934.2022894057
-                                    )
+                            )
+                        ),
+                        area3 = NaverMapResponse.Result.Region.Area(
+                            name = "문래동6가",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "NHN:2048",
+                                    x = 945610.2230206165,
+                                    y = 1946934.2022894057
                                 )
-                            ),
-                            NaverMapResponse.Result.Region.Area(
-                                name = "",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "",
-                                        x = 0.0,
-                                        y = 0.0
-                                    )
+                            )
+                        ),
+                        area4 = NaverMapResponse.Result.Region.Area(
+                            name = "",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "",
+                                    x = 0.0,
+                                    y = 0.0
                                 )
                             )
                         )
@@ -144,11 +140,11 @@ class NaverMapViewModelTest {
                         mappingId = "09560124"
                     ),
                     land = NaverMapResponse.Result.Land(
-                        additions = listOf(
-                            NaverMapResponse.Result.Land.Addition(type = "building", value = "현대아파트"),
-                            NaverMapResponse.Result.Land.Addition(type = "zipcode", value = "07283"),
-                            NaverMapResponse.Result.Land.Addition(type = "roadGroupCode", value = "115604154406")
-                        ),
+                        addition0 = NaverMapResponse.Result.Land.Addition(type = "building", value = "현대아파트"),
+                        addition1 = NaverMapResponse.Result.Land.Addition(type = "zipcode", value = "07283"),
+                        addition2 = NaverMapResponse.Result.Land.Addition(type = "roadGroupCode", value = "115604154406"),
+                        addition3 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
+                        addition4 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
                         coords = NaverMapResponse.Coords(
                             center = NaverMapResponse.Coords.Center(
                                 crs = "",
@@ -162,56 +158,54 @@ class NaverMapViewModelTest {
                         type = ""
                     ),
                     region = NaverMapResponse.Result.Region(
-                        areas = listOf(
-                            NaverMapResponse.Result.Region.Area(
-                                name = "kr",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "",
-                                        x = 0.0,
-                                        y = 0.0
-                                    )
+                        area0 = NaverMapResponse.Result.Region.Area(
+                            name = "kr",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "",
+                                    x = 0.0,
+                                    y = 0.0
+                                )
+                            )
+                        ),
+                        area1 = NaverMapResponse.Result.Region.Area(
+                            name = "서울특별시",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "NHN:2048",
+                                    x = 953935.4983318285,
+                                    y = 1952044.0947760872
                                 )
                             ),
-                            NaverMapResponse.Result.Region.Area(
-                                name = "서울특별시",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "NHN:2048",
-                                        x = 953935.4983318285,
-                                        y = 1952044.0947760872
-                                    )
-                                ),
-                                alias = "서울"
-                            ),
-                            NaverMapResponse.Result.Region.Area(
-                                name = "영등포구",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "NHN:2048",
-                                        x = 946631.3184505092,
-                                        y = 1947630.558633506
-                                    )
+                            alias = "서울"
+                        ),
+                        area2 = NaverMapResponse.Result.Region.Area(
+                            name = "영등포구",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "NHN:2048",
+                                    x = 946631.3184505092,
+                                    y = 1947630.558633506
                                 )
-                            ),
-                            NaverMapResponse.Result.Region.Area(
-                                name = "문래동6가",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "NHN:2048",
-                                        x = 945610.2230206165,
-                                        y = 1946934.2022894057
-                                    )
+                            )
+                        ),
+                        area3 = NaverMapResponse.Result.Region.Area(
+                            name = "문래동6가",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "NHN:2048",
+                                    x = 945610.2230206165,
+                                    y = 1946934.2022894057
                                 )
-                            ),
-                            NaverMapResponse.Result.Region.Area(
-                                name = "",
-                                coords = NaverMapResponse.Coords(
-                                    center = NaverMapResponse.Coords.Center(
-                                        crs = "",
-                                        x = 0.0,
-                                        y = 0.0
-                                    )
+                            )
+                        ),
+                        area4 = NaverMapResponse.Result.Region.Area(
+                            name = "",
+                            coords = NaverMapResponse.Coords(
+                                center = NaverMapResponse.Coords.Center(
+                                    crs = "",
+                                    x = 0.0,
+                                    y = 0.0
                                 )
                             )
                         )

@@ -23,8 +23,8 @@ fun ScreenNav(navController: NavHostController, activityViewModel: ActivityViewM
 
     NavHost(navController = navController, startDestination = ScreenRoute.Intro.name ) {
         composable(route = ScreenRoute.Intro.name){
-//            IntroScreen(onNavigate = { navController.navigate(ScreenRoute.Weather.name) {
-            IntroScreen(onNavigate = { navController.navigate(ScreenRoute.NaverMap.name) {
+            IntroScreen(onNavigate = { navController.navigate(ScreenRoute.Weather.name) {
+//            IntroScreen(onNavigate = { navController.navigate(ScreenRoute.NaverMap.name) {
                 popUpTo(ScreenRoute.Intro.name){inclusive = true}
                 launchSingleTop = true
             } })

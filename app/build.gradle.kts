@@ -102,4 +102,9 @@ dependencies {
     implementation(libs.logging.interceptor)
 
     implementation(libs.logger)
+
+    implementation(libs.gson)
+
+    implementation(libs.google.location)
+
 }

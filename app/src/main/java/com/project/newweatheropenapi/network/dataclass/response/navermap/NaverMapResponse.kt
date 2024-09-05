@@ -22,8 +22,26 @@ data class NaverMapResponse(
             val type: String
         )
 
+        data class Region(
+            val area0: Area,
+            val area1: Area,
+            val area2: Area,
+            val area3: Area,
+            val area4: Area
+        ) {
+            data class Area(
+                val coords: Coords,
+                val name: String,
+                val alias: String = ""
+            )
+        }
+
         data class Land(
-            val additions: List<Addition>,
+            val addition0: Addition,
+            val addition1: Addition,
+            val addition2: Addition,
+            val addition3: Addition,
+            val addition4: Addition,
             val coords: Coords,
             val name: String,
             val number1: String,
@@ -33,16 +51,6 @@ data class NaverMapResponse(
             data class Addition(
                 val type: String,
                 val value: String
-            )
-        }
-
-        data class Region(
-            val areas: List<Area> // Assume all areas are similar and use a list
-        ) {
-            data class Area(
-                val coords: Coords,
-                val name: String,
-                val alias: String? = null
             )
         }
     }
