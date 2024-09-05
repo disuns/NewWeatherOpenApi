@@ -1,15 +1,14 @@
-package com.project.newweatheropenapi.common
+package com.project.newweatheropenapi.utils
 
-import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
+import android.content.Context
 import com.project.newweatheropenapi.R
-import com.project.newweatheropenapi.app.WeatherApplication
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DataConverter @Inject constructor(private val application: WeatherApplication){
+class DataConverter @Inject constructor(@ApplicationContext private val context: Context){
 
 //    fun dataPotalResultCode(code: String) {
 //
@@ -183,21 +182,22 @@ class DataConverter @Inject constructor(private val application: WeatherApplicat
 //    }
 
     fun mapAddressConvert(reverseGeocoder: NaverMapResponse):String{
-//        with(reverseGeocoder){
-//            return if(this.status.code == 0) {
-//                with(results[results.lastIndex]){
-//                    when(name){
-//                        ROAD_ADDR->{"${region.area1.name} ${region.area2.name} ${land.name} ${land.number1}"}
-//                        ADDR->{"${region.area1.name} ${region.area2.name} ${region.area3.name} ${land.number1}"}
-//                        else->{application.getString(R.string.nullString)}
-//                    }
-//                }
-//            }
-//            else{
-//                application.getString(R.string.UNKNOWN_ADDRESS)
-//            }
-//        }
-        return "바꾸는거 테스트"
+        with(reverseGeocoder){
+            return if(this.status.code == 0) {
+                with(results[results.lastIndex]){
+                    when(name){
+                        ROAD_ADDR ->{"${region.area1.name} ${region.area2.name} ${land.name} ${land.number1}"}
+                        ADDR ->{"${region.area1.name} ${region.area2.name} ${region.area3.name} ${land.number1}"}
+                        else->{context.getString(R.string.loadingImage)}
+//                        "R.string.nullString"
+                    }
+                }
+            }
+            else{
+                context.getString(R.string.loadingImage)
+//                R.string.UNKNOWN_ADDRESS
+            }
+        }
     }
 
 //    fun landCodeGu(land:String):String{

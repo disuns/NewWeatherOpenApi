@@ -1,13 +1,13 @@
 package com.project.newweatheropenapi.viewmodel
 
-import com.project.newweatheropenapi.common.AIR_CODE
-import com.project.newweatheropenapi.common.DATA_POTAL_SERVICE_KEY
-import com.project.newweatheropenapi.common.DATA_TYPE_LOWER
-import com.project.newweatheropenapi.common.DATE_TERM
-import com.project.newweatheropenapi.common.NUM_OF_ROWS_AIR
-import com.project.newweatheropenapi.common.PAGE_NO_DEFAULT
-import com.project.newweatheropenapi.common.RLTM_DATA_VERSION
-import com.project.newweatheropenapi.common.STATION_VERSION
+import com.project.newweatheropenapi.utils.AIR_CODE
+import com.project.newweatheropenapi.utils.DATA_POTAL_SERVICE_KEY
+import com.project.newweatheropenapi.utils.DATA_TYPE_LOWER
+import com.project.newweatheropenapi.utils.DATE_TERM
+import com.project.newweatheropenapi.utils.NUM_OF_ROWS_AIR
+import com.project.newweatheropenapi.utils.PAGE_NO_DEFAULT
+import com.project.newweatheropenapi.utils.RLTM_DATA_VERSION
+import com.project.newweatheropenapi.utils.STATION_VERSION
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.request.datapotal.AirQualityRequest
 import com.project.newweatheropenapi.network.dataclass.request.datapotal.RltmStationRequest

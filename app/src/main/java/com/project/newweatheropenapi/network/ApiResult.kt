@@ -1,6 +1,6 @@
 package com.project.newweatheropenapi.network
 
-import com.project.newweatheropenapi.common.logMessage
+import com.project.newweatheropenapi.utils.logMessage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

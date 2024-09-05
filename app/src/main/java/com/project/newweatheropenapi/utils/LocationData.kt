@@ -1,8 +1,8 @@
-package com.project.newweatheropenapi.common
+package com.project.newweatheropenapi.utils
 
 import com.naver.maps.geometry.LatLng
 
 data class LocationData(
     var latLng: LatLng,
-    val address : String
+    var address : String
 )

@@ -1,8 +1,8 @@
 package com.project.newweatheropenapi.network.service
 
-import com.project.newweatheropenapi.common.AIR_QUALITY_FRCST
-import com.project.newweatheropenapi.common.RLTM_STATION
-import com.project.newweatheropenapi.common.STATION_FIND
+import com.project.newweatheropenapi.utils.AIR_QUALITY_FRCST
+import com.project.newweatheropenapi.utils.RLTM_STATION
+import com.project.newweatheropenapi.utils.STATION_FIND
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.AirQualityResponse
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.RltmStationResponse
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.StationFindResponse

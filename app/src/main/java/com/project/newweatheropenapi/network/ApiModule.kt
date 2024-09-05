@@ -1,7 +1,7 @@
 package com.project.newweatheropenapi.network
 
-import com.project.newweatheropenapi.common.DATA_POTAL_URL
-import com.project.newweatheropenapi.common.MAPS_URL
+import com.project.newweatheropenapi.utils.DATA_POTAL_URL
+import com.project.newweatheropenapi.utils.MAPS_URL
 import com.project.newweatheropenapi.network.service.AirQualityService
 import com.project.newweatheropenapi.network.service.NaverMapService
 import com.project.newweatheropenapi.network.service.WeatherService

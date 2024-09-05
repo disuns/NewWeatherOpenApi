@@ -1,4 +1,4 @@
-package com.project.newweatheropenapi.utils
+package com.project.newweatheropenapi.utils.Managers
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color

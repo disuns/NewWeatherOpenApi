@@ -220,7 +220,7 @@ class NaverMapViewModelTest {
         // StateFlow 테스트
         viewModel.naverMapStateFlow.test {
             // 메서드 호출
-            viewModel.fetchNaverMap("126.88237267230349,37.51982548626224")
+            viewModel.fetchNaverMap("126.88237267230349,37.51982548626224", activityViewModel)
 
             // 처음 상태는 Loading인지 확인
             assertTrue(awaitItem() is ApiResult.Loading)
@@ -242,7 +242,7 @@ class NaverMapViewModelTest {
         // StateFlow 테스트
         viewModel.naverMapStateFlow.test {
             // 메서드 호출
-            viewModel.fetchNaverMap("126.88237267230349,37.51982548626224")
+            viewModel.fetchNaverMap("126.88237267230349,37.51982548626224", activityViewModel)
 
             // 처음 상태는 Loading인지 확인
             assertTrue(awaitItem() is ApiResult.Loading)

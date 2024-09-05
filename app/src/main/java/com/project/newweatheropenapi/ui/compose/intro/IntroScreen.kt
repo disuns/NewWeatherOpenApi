@@ -17,8 +17,8 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.app.WeatherApplication
-import com.project.newweatheropenapi.common.logMessage
-import com.project.newweatheropenapi.utils.ComposeHelpManager
+import com.project.newweatheropenapi.utils.logMessage
+import com.project.newweatheropenapi.utils.Managers.ComposeHelpManager
 
 
 @Composable

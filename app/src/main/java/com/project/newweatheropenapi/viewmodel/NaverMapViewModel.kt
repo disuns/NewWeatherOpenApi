@@ -2,58 +2,71 @@ package com.project.newweatheropenapi.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.naver.maps.geometry.LatLng
-import com.project.newweatheropenapi.common.DataConverter
-import com.project.newweatheropenapi.common.logMessage
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.request.navermap.NaverMapRequest
 import com.project.newweatheropenapi.network.dataclass.request.navermap.toMap
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
+import com.project.newweatheropenapi.utils.DataConverter
+import com.project.newweatheropenapi.utils.LocationData
+import com.project.newweatheropenapi.utils.Managers.LocationDataManager
+import com.project.newweatheropenapi.utils.logMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import retrofit2.http.Query
 import javax.inject.Inject
 
 @HiltViewModel
 class NaverMapViewModel @Inject constructor(
     private val repository: NaverMapRepository,
+    private val locationDataManager: LocationDataManager,
     private val dataConverter: DataConverter,
-    private val activityViewModel: ActivityViewModel
 ) : BaseViewModel() {
-
-    private val _naverMapStateFlow =
-        MutableStateFlow<ApiResult<NaverMapResponse>>(ApiResult.Loading)
+    private val _naverMapStateFlow = MutableStateFlow<ApiResult<NaverMapResponse>>(ApiResult.Loading)
     val naverMapStateFlow: StateFlow<ApiResult<NaverMapResponse>> = _naverMapStateFlow
 
     init {
-        observeNaverMapState()
+        onHandledFlow()
     }
 
-    fun fetchNaverMap(@Query("coords", encoded = true) coords: String) {
-        val request = NaverMapRequest(coords = coords)
+    fun getLocation() {
+//            _locationData.value = LocationData(LatLng(lat=37.51982548626224, lon = 126.88237267230349))
+        locationDataManager.getGps { latLng ->
+            fetchNaverMap(latLng.longitude, latLng.latitude)
+        }
+    }
+
+    fun fetchNaverMap(lon : Double, lat:Double) {
+        val latLng = "$lon,$lat"
+        locationDataManager.updateLocationData(LatLng(lat,lon),"")
+
+        val request = NaverMapRequest(coords = latLng)
         fetchData({ repository.getReverseGeoCo(request.toMap()) }, _naverMapStateFlow)
     }
 
-    private fun observeNaverMapState() {
+    fun reverseGeocode(result: NaverMapResponse) {
+        val address = dataConverter.mapAddressConvert(result)
+        locationDataManager.updateLocationData(locationDataManager.locationData.value.latLng, address)
+    }
+
+    private fun onHandledFlow() {
         viewModelScope.launch {
-            naverMapStateFlow.collect { result ->
-                when (result) {
+            naverMapStateFlow.collect { naverMapState ->
+                when (naverMapState) {
                     is ApiResult.Success -> {
-                        val address = dataConverter.mapAddressConvert(result.value)
-                        activityViewModel.updateLocationData(LatLng(result.value.results[0].region.area0.coords.center.x, result.value.results[0].region.area0.coords.center.y) , address)
+                        val response = (_naverMapStateFlow.value as ApiResult.Success).value
+                        if(response.status.code==0) {
+                            reverseGeocode(response)
+//                        updateLocationData(locationData)
+                        }
                     }
 
-                    is ApiResult.Error -> logMessage("error code : ${result.code}   exception : ${result.exception}")
-
-                    is ApiResult.Loading -> {}
-
-                    ApiResult.Empty -> logMessage("data empty")
+                    is ApiResult.Empty -> logMessage("No results")
+                    is ApiResult.Error -> logMessage("Error: ${naverMapState.exception}")
+                    is ApiResult.Loading -> logMessage("Loading")
                 }
             }
         }
     }
-
-
 }

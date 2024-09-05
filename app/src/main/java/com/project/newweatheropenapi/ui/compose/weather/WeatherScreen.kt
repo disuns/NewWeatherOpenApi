@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,18 +26,20 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.project.newweatheropenapi.utils.ComposeHelpManager
+import com.project.newweatheropenapi.utils.Managers.ComposeHelpManager
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.ui.theme.Color_bbdefb
-import com.project.newweatheropenapi.viewmodel.ActivityViewModel
+import com.project.newweatheropenapi.utils.Managers.LocationDataManager
+import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 import com.project.newweatheropenapi.viewmodel.WeatherViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WeatherScreen(
-    onNavigate : ()->Unit = {},
-    activityViewModel: ActivityViewModel,
-    viewModel: WeatherViewModel = hiltViewModel()) {
+    onNavigate: () -> Unit = {},
+    viewModel: WeatherViewModel = hiltViewModel(),
+    locationDataManager: LocationDataManager
+) {
 
     val backgroundColor = Color_bbdefb
     val paddingStart = ComposeHelpManager.previewDimenResource(R.dimen.PaddingStart, 14.0f )
@@ -47,9 +51,13 @@ fun WeatherScreen(
         .padding(start = paddingStart.dp, end = paddingEnd.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
         TitleColumn()
+        Button(onClick = onNavigate, modifier = Modifier.wrapContentHeight().fillMaxWidth()) {
+            Text(locationDataManager.locationData.value.address)
+        }
         NowWeatherColumn()
         TimeWeatherColumn()
         WeekForecastSection()
+
     }
 }
 

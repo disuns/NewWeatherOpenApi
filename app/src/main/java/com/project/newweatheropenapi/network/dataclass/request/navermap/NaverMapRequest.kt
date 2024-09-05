@@ -1,15 +1,12 @@
 package com.project.newweatheropenapi.network.dataclass.request.navermap
 
-import com.project.newweatheropenapi.common.DATA_TYPE_LOWER
-import com.project.newweatheropenapi.common.MAP_CLIENT_KEY
-import com.project.newweatheropenapi.common.MAP_CLIENT_KEY_ID
-import com.project.newweatheropenapi.common.MAP_COORDINATE_DEFAULT
-import com.project.newweatheropenapi.common.MAP_COORDINATE_TM
-import com.project.newweatheropenapi.common.MAP_ORDERS
-import com.project.newweatheropenapi.common.MAP_REQUEST_DEFAULT
-import retrofit2.http.Header
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
+import com.project.newweatheropenapi.utils.DATA_TYPE_LOWER
+import com.project.newweatheropenapi.utils.MAP_CLIENT_KEY
+import com.project.newweatheropenapi.utils.MAP_CLIENT_KEY_ID
+import com.project.newweatheropenapi.utils.MAP_COORDINATE_DEFAULT
+import com.project.newweatheropenapi.utils.MAP_COORDINATE_TM
+import com.project.newweatheropenapi.utils.MAP_ORDERS
+import com.project.newweatheropenapi.utils.MAP_REQUEST_DEFAULT
 
 data class NaverMapRequest (
     val request: String = MAP_REQUEST_DEFAULT,

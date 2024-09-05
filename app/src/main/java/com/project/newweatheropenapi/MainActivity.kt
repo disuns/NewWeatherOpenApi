@@ -9,26 +9,22 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.project.newweatheropenapi.ui.compose.InitScreen
 import com.project.newweatheropenapi.ui.theme.NewWeatherOpenApiTheme
+import com.project.newweatheropenapi.utils.Managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.ActivityViewModel
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var locationDataManager: LocationDataManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val activityViewModel: ActivityViewModel = hiltViewModel()
-            val naverMapViewModel: NaverMapViewModel = hiltViewModel()
-
-            val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(applicationContext)
             NewWeatherOpenApiTheme{
-                activityViewModel.getLocation(fusedLocationClient) { latLng ->
-                    val coords = "${latLng.latitude},${latLng.longitude}"
-                    naverMapViewModel.fetchNaverMap(coords)
-                }
-                InitScreen(activityViewModel)
+                InitScreen(locationDataManager)
             }
         }
     }

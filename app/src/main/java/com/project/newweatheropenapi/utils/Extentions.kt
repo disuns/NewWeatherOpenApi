@@ -1,4 +1,4 @@
-package com.project.newweatheropenapi.common
+package com.project.newweatheropenapi.utils
 
 import android.content.Context
 import android.net.ConnectivityManager
