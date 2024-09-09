@@ -4,14 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.ui.Modifier
 import com.project.newweatheropenapi.ui.compose.InitScreen
 import com.project.newweatheropenapi.ui.theme.NewWeatherOpenApiTheme
 import com.project.newweatheropenapi.utils.Managers.LocationDataManager
-import com.project.newweatheropenapi.viewmodel.ActivityViewModel
-import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -24,7 +22,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NewWeatherOpenApiTheme{
-                InitScreen(locationDataManager)
+                Box(Modifier.safeDrawingPadding()){
+                    InitScreen(locationDataManager)
+                }
             }
         }
     }

@@ -12,6 +12,7 @@
     <dimen name="PaddingEnd">10dp</dimen>
     <dimen name="NowFcstIV">110dp</dimen>
     <dimen name="SearchViewPadding">10dp</dimen>
+    <dimen name="SearchButtonPadding">10dp</dimen>
 
     <dimen name="FcstTitle">28dp</dimen>
     <dimen name="WeatherRvTitle">24dp</dimen>
@@ -44,7 +45,6 @@
     <dimen name="CardViewMargin">90dp</dimen>
     <dimen name="SpinnerPadding">12dp</dimen>
     <dimen name="SpinnerItemPadding">8dp</dimen>
-    <dimen name="SearchButtonPadding">10dp</dimen>
     <dimen name="AirQualityImageMargin">50dp</dimen>
     <dimen name="AirQualityDefaultMargin">5dp</dimen>
 </resources>

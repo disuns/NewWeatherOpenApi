@@ -11,4 +11,10 @@
 <!--    navtest용-->
     <string name="airQuality">airQuality</string>
     <string name="navermap">navermap</string>
+
+
+    <string-array name="Tab">
+        <item>실시간 예보</item>
+        <item>대기 예보</item>
+    </string-array>
 </resources>

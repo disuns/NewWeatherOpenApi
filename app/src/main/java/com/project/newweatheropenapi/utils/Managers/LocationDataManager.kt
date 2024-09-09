@@ -11,7 +11,6 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
 import com.naver.maps.geometry.LatLng
 import com.project.newweatheropenapi.utils.LocationData
-import com.project.newweatheropenapi.utils.logMessage
 import javax.inject.Inject
 
 class LocationDataManager @Inject constructor(

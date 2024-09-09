@@ -4,6 +4,8 @@ import app.cash.turbine.test
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
+import com.project.newweatheropenapi.utils.DataConverter
+import com.project.newweatheropenapi.utils.Managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -24,6 +26,8 @@ import org.junit.Test
 class NaverMapViewModelTest {
 
     private val repository: NaverMapRepository = mockk()
+    private val locationDataManager : LocationDataManager = mockk()
+    private val dataConverter : DataConverter = mockk()
     private lateinit var viewModel: NaverMapViewModel
 
     // 테스트 환경의 코루틴 디스패처 설정
@@ -31,7 +35,7 @@ class NaverMapViewModelTest {
     @Before
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
-        viewModel = NaverMapViewModel(repository)
+        viewModel = NaverMapViewModel(repository, locationDataManager, dataConverter)
     }
 
     // 테스트 후 디스패처 리셋
@@ -220,7 +224,7 @@ class NaverMapViewModelTest {
         // StateFlow 테스트
         viewModel.naverMapStateFlow.test {
             // 메서드 호출
-            viewModel.fetchNaverMap("126.88237267230349,37.51982548626224", activityViewModel)
+            viewModel.fetchNaverMap(126.88237267230349,37.51982548626224)
 
             // 처음 상태는 Loading인지 확인
             assertTrue(awaitItem() is ApiResult.Loading)
@@ -242,7 +246,7 @@ class NaverMapViewModelTest {
         // StateFlow 테스트
         viewModel.naverMapStateFlow.test {
             // 메서드 호출
-            viewModel.fetchNaverMap("126.88237267230349,37.51982548626224", activityViewModel)
+            viewModel.fetchNaverMap(126.88237267230349,37.51982548626224)
 
             // 처음 상태는 Loading인지 확인
             assertTrue(awaitItem() is ApiResult.Loading)
