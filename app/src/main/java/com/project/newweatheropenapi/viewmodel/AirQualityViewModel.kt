@@ -26,13 +26,13 @@ import javax.inject.Inject
 @HiltViewModel
 class AirQualityViewModel @Inject constructor(private val repository: AirQualityRepository) :
     BaseViewModel() {
-    private val _airQualityStateFlow = MutableStateFlow<ApiResult<AirQualityResponse>>(ApiResult.Loading)
+    private val _airQualityStateFlow = MutableStateFlow<ApiResult<AirQualityResponse>>(ApiResult.Empty)
     val airQualityStateFlow: StateFlow<ApiResult<AirQualityResponse>> = _airQualityStateFlow
 
-    private val _rltmStationStateFlow = MutableStateFlow<ApiResult<RltmStationResponse>>(ApiResult.Loading)
+    private val _rltmStationStateFlow = MutableStateFlow<ApiResult<RltmStationResponse>>(ApiResult.Empty)
     val rltmStationStateFlow: StateFlow<ApiResult<RltmStationResponse>> = _rltmStationStateFlow
 
-    private val _stationFindStateFlow = MutableStateFlow<ApiResult<StationFindResponse>>(ApiResult.Loading)
+    private val _stationFindStateFlow = MutableStateFlow<ApiResult<StationFindResponse>>(ApiResult.Empty)
     val stationFindStateFlow: StateFlow<ApiResult<StationFindResponse>> = _stationFindStateFlow
 
     fun fetchAirQuality(@Query("searchDate") searchDate: String) {

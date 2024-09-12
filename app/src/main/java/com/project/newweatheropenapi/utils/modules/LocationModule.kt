@@ -1,9 +1,9 @@
-package com.project.newweatheropenapi.utils.Modules
+package com.project.newweatheropenapi.utils.modules
 
 import android.content.Context
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.project.newweatheropenapi.utils.Managers.LocationDataManager
+import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

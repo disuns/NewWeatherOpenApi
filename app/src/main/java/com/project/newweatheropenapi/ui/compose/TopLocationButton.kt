@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.project.newweatheropenapi.R
-import com.project.newweatheropenapi.utils.Managers.ComposeHelpManager
+import com.project.newweatheropenapi.utils.managers.ComposeHelpManager
 
 @Composable
 fun TopLocationButton(modifier: Modifier, query : String = "", onClick:() -> Unit) {

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -45,8 +44,8 @@ import com.project.newweatheropenapi.utils.isNetworkCheck
 import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
-import com.project.newweatheropenapi.utils.Managers.ComposeHelpManager
-import com.project.newweatheropenapi.utils.Managers.LocationDataManager
+import com.project.newweatheropenapi.utils.managers.ComposeHelpManager
+import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 
 @OptIn(ExperimentalNaverMapApi::class)
@@ -66,10 +65,10 @@ fun NaverMapScreen(
         )
     }
 
-    val mapPosition = locationDataManager.locationData.value
+    val mapPosition = locationDataManager.locationData.collectAsState()
     val cameraPositionState: CameraPositionState = rememberCameraPositionState {
-        mapPosition?.let {
-            position = CameraPosition(it.latLng, 15.0)
+        mapPosition.let {
+            position = CameraPosition(it.value.latLng, 15.0)
         }
     }
 
@@ -81,7 +80,6 @@ fun NaverMapScreen(
     LaunchedEffect(cameraPositionState.isMoving) {
         if (!cameraPositionState.isMoving) {
             if (context.isNetworkCheck()) {
-                logMessage("네이버 맵")
                 viewModel.fetchNaverMap(
                     cameraPositionState.position.target.longitude,
                     cameraPositionState.position.target.latitude
@@ -100,7 +98,7 @@ fun NaverMapScreen(
             Marker(state = MarkerState(position = currentPosition))
 
         }
-        MapSearchView(initQuery = mapPosition.address, onSearch = {}, onQueryChanged = {})
+        MapSearchView(initQuery = mapPosition.value.address, onSearch = {}, onQueryChanged = {})
 
         //        moveCameraWithPosition(cameraPositionState= cameraPositionState, position = home)
 

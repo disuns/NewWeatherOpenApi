@@ -5,7 +5,7 @@ import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
 import com.project.newweatheropenapi.utils.DataConverter
-import com.project.newweatheropenapi.utils.Managers.LocationDataManager
+import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 import io.mockk.clearAllMocks
 import io.mockk.coEvery

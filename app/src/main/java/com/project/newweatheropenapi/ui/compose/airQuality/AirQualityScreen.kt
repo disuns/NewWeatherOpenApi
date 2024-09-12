@@ -11,11 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.project.newweatheropenapi.utils.Managers.ComposeHelpManager
+import com.project.newweatheropenapi.utils.managers.ComposeHelpManager
 import com.project.newweatheropenapi.R
-import com.project.newweatheropenapi.utils.Managers.LocationDataManager
+import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
-import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 
 @Composable
 fun AirQualityScreen(

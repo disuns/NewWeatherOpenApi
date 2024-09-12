@@ -1,178 +1,52 @@
 package com.project.newweatheropenapi.utils
 
 import android.content.Context
+import com.naver.maps.geometry.LatLng
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.abs
+import kotlin.math.atan
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.floor
+import kotlin.math.ln
+import kotlin.math.pow
+import kotlin.math.sin
+import kotlin.math.sqrt
+import kotlin.math.tan
 
 @Singleton
-class DataConverter @Inject constructor(@ApplicationContext private val context: Context){
-
-//    fun dataPotalResultCode(code: String) {
-//
-//        val errorMsg: String = with(application) {
-//            when (code) {
-//                APPLICATION_ERROR -> {
-//                    getString(R.string.APPLICATION_ERROR)
-//                }
-//                DB_ERROR -> {
-//                    getString(R.string.DB_ERROR)
-//                }
-//                NODATA_ERROR -> {
-//                    getString(R.string.NODATA_ERROR)
-//                }
-//                HTTP_ERROR -> {
-//                    getString(R.string.HTTP_ERROR)
-//                }
-//                SERVICETIME_OUT -> {
-//                    getString(R.string.SERVICETIME_OUT)
-//                }
-//                INVALID_REQUEST_PARAMETER_ERROR -> {
-//                    getString(R.string.INVALID_REQUEST_PARAMETER_ERROR)
-//                }
-//                NO_MANDATORY_REQUEST_PARAMETERS_ERROR -> {
-//                    getString(R.string.NO_MANDATORY_REQUEST_PARAMETERS_ERROR)
-//                }
-//                NO_OPENAPI_SERVICE_ERROR -> {
-//                    getString(R.string.NO_OPENAPI_SERVICE_ERROR)
-//                }
-//                SERVICE_ACCESS_DENIED_ERROR -> {
-//                    getString(R.string.SERVICE_ACCESS_DENIED_ERROR)
-//                }
-//                TEMPORARILY_DISABLE_THE_SERVICEKEY_ERROR -> {
-//                    getString(R.string.TEMPORARILY_DISABLE_THE_SERVICEKEY_ERROR)
-//                }
-//                LIMITED_NUMBER_OF_SERVICE_REQUESTS_EXCEEDS_ERROR -> {
-//                    getString(R.string.LIMITED_NUMBER_OF_SERVICE_REQUESTS_EXCEEDS_ERROR)
-//                }
-//                SERVICE_KEY_IS_NOT_REGISTERED_ERROR -> {
-//                    getString(R.string.SERVICE_KEY_IS_NOT_REGISTERED_ERROR)
-//                }
-//                DEADLINE_HAS_EXPIRED_ERROR -> {
-//                    getString(R.string.DEADLINE_HAS_EXPIRED_ERROR)
-//                }
-//                UNREGISTERED_IP_ERROR -> {
-//                    getString(R.string.UNREGISTERED_IP_ERROR)
-//                }
-//                UNSIGNED_CALL_ERROR -> {
-//                    getString(R.string.UNSIGNED_CALL_ERROR)
-//                }
-//                else -> {
-//                    getString(R.string.UNKNOWN_ERROR)
-//                }
-//            }
-//        }
-//
-////        Log.e("convert", errorMsg)
-//        weatherApplication.toastMessage(errorMsg)
-//    }
+class DataConverter @Inject constructor(@ApplicationContext private val context: Context) {
     //이미지+날씨정보
 
 //    fun rainPerConvert(code: String)=  application.getString(R.string.perUnit, code)
 //
-//    fun tempConvert(code: String)=  application.getString(R.string.tempUnit, code)
 //
-//    fun nowWetConvert(code: String)= application.getString(R.string.nowWetUnit, code)
+//
+//
 //
 //    fun wetConvert(code: String)= application.getString(R.string.perUnit, code)
 //
 //    fun nowRainConvert(code: String)= application.getString(R.string.nowRainUnit, code)
 //
-//    fun rainConvert(code: String)= application.getString(R.string.rainUnit, code)
 //
-//    fun windDir(code: String): String {
-//        return with(application) {
-//            when (((code.toInt() + 22.5 * 0.5) / 22.5).toInt()) {
-//                NUM1.toInt() -> getString(R.string.NNE)
-//                NUM2.toInt() -> getString(R.string.NE)
-//                NUM3.toInt() -> getString(R.string.ENE)
-//                NUM4.toInt() -> getString(R.string.E)
-//                NUM5.toInt() -> getString(R.string.ESE)
-//                NUM6.toInt() -> getString(R.string.SE)
-//                NUM7.toInt() -> getString(R.string.SSE)
-//                NUM8.toInt() -> getString(R.string.S)
-//                NUM9.toInt() -> getString(R.string.SSW)
-//                NUM10.toInt() -> getString(R.string.SW)
-//                NUM11.toInt() -> getString(R.string.WSW)
-//                NUM12.toInt() -> getString(R.string.W)
-//                NUM13.toInt() -> getString(R.string.WNW)
-//                NUM14.toInt() -> getString(R.string.NW)
-//                NUM15.toInt() -> getString(R.string.NNW)
-//                else -> getString(R.string.N)
-//            }
-//        }
-//    }
 //
-//    fun windPower(dir: String, code: String)= application.getString(R.string.nowWindUnit, dir, code)
+
+//
+//
 //
 //    fun windPower(code: String) = application.getString(R.string.windUnit, code)
 //
-//    fun fcstRainImgConvert(code: String): FcstImgEnum {
-//        return when (code) {
-//            NUM1 -> {
-//                FcstImgEnum.Rain
-//            }
-//            NUM2 -> {
-//                FcstImgEnum.Rain
-//            }//비+눈
-//            NUM3 -> {
-//                FcstImgEnum.Snow
-//            }
-//            NUM4 -> {
-//                FcstImgEnum.Rain
-//            }
-//            NUM5 -> {
-//                FcstImgEnum.Rain
-//            }
-//            NUM6 -> {
-//                FcstImgEnum.Rain
-//            }//비+눈
-//            NUM7 -> {
-//                FcstImgEnum.Snow
-//            }
-//            else -> {
-//                FcstImgEnum.Sun
-//            }
-//        }
-//    }
+
 //
-//    @SuppressLint("UseCompatLoadingForDrawables")
-//    fun fcstImgConvert(enumFcstImgEnum: FcstImgEnum): Drawable? {
-//        return with(application) {
-//            when (enumFcstImgEnum) {
-//                FcstImgEnum.ClodeSun -> { getDrawable(R.drawable.cloudsun) }
-//                FcstImgEnum.Cloude -> { getDrawable(R.drawable.cloud) }
-//                FcstImgEnum.Rain -> { getDrawable(R.drawable.rain) }
-//                FcstImgEnum.Snow -> { getDrawable(R.drawable.snow) }
-//                else -> { getDrawable(R.drawable.sunny) }
-//            }
-//        }
-//    }
+
 //
-//    fun skyConvert(code: String): String {
-//        return with(application){
-//            when (code) {
-//                NUM3 -> { getString(R.string.manycloud) }
-//                NUM4 -> { getString(R.string.cloud) }
-//                else -> { getString(R.string.sun) }
-//            }
-//        }
+
 //
-//    }
-//
-//    fun skyImgEnum(code: String, fcstImgEnum: FcstImgEnum): FcstImgEnum {
-//        val fcstImg = if (fcstImgEnum == FcstImgEnum.Sun) {
-//            when (code) {
-//                NUM3 -> { FcstImgEnum.ClodeSun }
-//                NUM4 -> { FcstImgEnum.Cloude }
-//                else -> { FcstImgEnum.Sun }
-//            }
-//        }
-//        else fcstImgEnum
-//        return fcstImg
-//    }
+
 //
 //    fun timeDataConvert(code: String) = application.getString(R.string.time, code.substring(NUM0.toInt(),NUM2.toInt()))
 //
@@ -181,40 +55,59 @@ class DataConverter @Inject constructor(@ApplicationContext private val context:
 //        return application.getString(R.string.date,splitString[NUM2.toInt()],splitString[NUM3.toInt()])
 //    }
 
-    fun mapAddressConvert(reverseGeocoder: NaverMapResponse):String{
-        with(reverseGeocoder){
-            return if(this.status.code == 0) {
-                with(results[results.lastIndex]){
-                    when(name){
-                        ROAD_ADDR ->{"${region.area1.name} ${region.area2.name} ${land.name} ${land.number1}"}
-                        ADDR ->{"${region.area1.name} ${region.area2.name} ${region.area3.name} ${land.number1}"}
-                        else->{context.getString(R.string.loadingImage)}
+    fun mapAddressConvert(reverseGeocoder: NaverMapResponse): String {
+        with(reverseGeocoder) {
+            return if (this.status.code == 0) {
+                with(results[results.lastIndex]) {
+                    when (name) {
+                        ROAD_ADDR -> {
+                            "${region.area1.name} ${region.area2.name} ${land.name} ${land.number1}"
+                        }
+
+                        ADDR -> {
+                            "${region.area1.name} ${region.area2.name} ${region.area3.name} ${land.number1}"
+                        }
+
+                        else -> {
+                            context.getString(R.string.loadingImage)
+                        }
 //                        "R.string.nullString"
                     }
                 }
-            }
-            else{
+            } else {
                 context.getString(R.string.loadingImage)
 //                R.string.UNKNOWN_ADDRESS
             }
         }
     }
 
-//    fun landCodeGu(land:String):String{
-//        return with(application) {
-//            when(land){
-//                getString(R.string.land1), getString(R.string.land2), getString(R.string.land3)->{getString(R.string.landCode1)}
-//                getString(R.string.land4)->{getString(R.string.landCode2)}
-//                getString(R.string.land5), getString(R.string.land6), getString(R.string.land7)->{getString(R.string.landCode3)}
-//                getString(R.string.land8)->{getString(R.string.landCode4)}
-//                getString(R.string.land9),getString(R.string.land10)->{getString(R.string.landCode5)}
-//                getString(R.string.land11)->{getString(R.string.landCode6)}
-//                getString(R.string.land12), getString(R.string.land13)->{getString(R.string.landCode7)}
-//                getString(R.string.land14),getString(R.string.land15),getString(R.string.land16)->{getString(R.string.landCode8)}
-//                else->{getString(R.string.landCode9)}
-//            }
-//        }
-//    }
+    fun landCodeGu(address: String): String {
+        val landArray = context.resources.getStringArray(R.array.land)
+        val codeArray = context.resources.getStringArray(R.array.landCode)
+
+        if (address.contains(landArray[0]) || address.contains(landArray[1]) || address.contains(
+                landArray[2]
+            )
+        ) {
+            codeArray[0]
+        }
+        val landCodeGroups = listOf(
+            landArray.slice(0..2) to codeArray[0],
+            listOf(landArray[3]) to codeArray[1],
+            landArray.slice(4..6) to codeArray[2],
+            listOf(landArray[7]) to codeArray[3],
+            landArray.slice(8..9) to codeArray[4],
+            listOf(landArray[10]) to codeArray[5],
+            landArray.slice(11..12) to codeArray[6],
+            landArray.slice(13..15) to codeArray[7]
+        )
+
+        return landCodeGroups.find { (lands, _) ->
+            lands.any {
+                address.contains(it)
+            }
+        }?.second ?: codeArray[8]
+    }
 
 //    fun weekDateConvert(weekDate: WeekDate) = application.getString(R.string.weekDate, weekDate.month,weekDate.day,weekDate.dayOfWeek)
 
@@ -256,4 +149,60 @@ class DataConverter @Inject constructor(@ApplicationContext private val context:
 //
 //    fun actionKnact(actionKnack : String) = application.getString(R.string.actionKnack, actionKnack)
 
+    fun convertGRIDGPS(mode: Int, latLng: LatLng): LatLng {
+
+        val conLat = latLng.latitude
+        val conLon = latLng.longitude
+
+        val RE = 6371.00877 // 지구 반경(km)
+        val GRID = 5.0 // 격자 간격(km)
+        val SLAT1 = 30.0 // 투영 위도1(degree)
+        val SLAT2 = 60.0 // 투영 위도2(degree)
+        val OLON = 126.0 // 기준점 경도(degree)
+        val OLAT = 38.0 // 기준점 위도(degree)
+        val XO = 43.0 // 기준점 X좌표(GRID)
+        val YO = 136.0 // 기1준점 Y좌표(GRID)
+
+        //
+        // LCC DFS 좌표변환 ( code : "TO_GRID"(위경도->좌표, lat_X:위도,  lng_Y:경도), "TO_GPS"(좌표->위경도,  lat_X:x, lng_Y:y) )
+        //
+        val DEGRAD = Math.PI / 180.0
+        val RADDEG = 180.0 / Math.PI
+        val re = RE / GRID
+        val slat1 = SLAT1 * DEGRAD
+        val slat2 = SLAT2 * DEGRAD
+        val olon = OLON * DEGRAD
+        val olat = OLAT * DEGRAD
+        var sn =
+            ln(cos(slat1) / cos(slat2)) / ln(tan(Math.PI * 0.25 + slat2 * 0.5) / tan(Math.PI * 0.25 + slat1 * 0.5))
+        val sf = tan(Math.PI * 0.25 + slat1 * 0.5).pow(sn) * cos(slat1) / sn
+        val ro = re * sf / tan(Math.PI * 0.25 + olat * 0.5).pow(sn)
+
+        return if (mode == 0) {
+            val ra = re * sf / (tan(Math.PI * 0.25 + conLat * DEGRAD * 0.5)).pow(sn)
+            var theta = conLon * DEGRAD - olon
+            theta = when {
+                theta > Math.PI -> theta - 2.0 * Math.PI
+                theta < -Math.PI -> theta + 2.0 * Math.PI
+                else -> theta
+            }
+            theta *= sn
+
+            LatLng(floor(ra * sin(theta) + XO + 0.5), floor(ro - ra * cos(theta) + YO + 0.5))
+        } else {
+            val xn = conLat - XO
+            val yn = ro - conLon + YO
+            var ra = sqrt(xn * xn + yn * yn)
+            if (sn < 0.0)   ra = -ra
+            var alat = (re * sf / ra).pow(1.0 / sn)
+            alat = 2.0 * atan(alat) - Math.PI * 0.5
+            val theta = when{
+                abs(xn) <= 0.0 -> 0.0
+                abs(yn) <= 0.0 ->Math.PI * 0.5 * (if (xn < 0.0) -1 else 1)
+                else -> atan2(xn, yn)
+            }
+            val alon = theta / sn + olon
+            LatLng(alat * RADDEG, alon * RADDEG)
+        }
+    }
 }

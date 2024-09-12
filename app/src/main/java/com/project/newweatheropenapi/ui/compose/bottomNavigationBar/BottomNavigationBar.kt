@@ -34,7 +34,6 @@ fun BottomNavigationBar(navController: NavController) {
                 selected = currentRoute == screen.route,
                 onClick = {
                     navController.navigate(screen.route) {
-                        logMessage("얘가 문젠듯 " + navController.graph.startDestinationId)
                         popUpTo(navController.graph.startDestinationId) {
                             saveState = true
                             inclusive = true

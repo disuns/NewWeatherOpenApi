@@ -1,22 +1,17 @@
 package com.project.newweatheropenapi.ui.compose.weather
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.newweatheropenapi.R
-import com.project.newweatheropenapi.ui.compose.TopLocationButton
 import com.project.newweatheropenapi.ui.theme.Color_bbdefb
-import com.project.newweatheropenapi.utils.Managers.ComposeHelpManager
-import com.project.newweatheropenapi.utils.Managers.LocationDataManager
+import com.project.newweatheropenapi.utils.managers.ComposeHelpManager
+import com.project.newweatheropenapi.utils.managers.LocationDataManager
+import com.project.newweatheropenapi.utils.managers.TimeManager
 import com.project.newweatheropenapi.viewmodel.WeatherViewModel
+import java.sql.Time
 
 @Composable
 fun WeatherScreen(
@@ -24,49 +19,20 @@ fun WeatherScreen(
     viewModel: WeatherViewModel = hiltViewModel(),
     locationDataManager: LocationDataManager
 ) {
+    val locationData = locationDataManager.locationData.collectAsState()
+    val address = locationData.value.address
 
-    val backgroundColor = Color_bbdefb
-    val paddingStart = ComposeHelpManager.previewDimenResource(R.dimen.PaddingStart, 14.0f)
-    val paddingEnd = ComposeHelpManager.previewDimenResource(R.dimen.PaddingEnd, 10.0f)
-
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-    ){
-        TopLocationButton(
-            onClick = onNavigate,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            query = locationDataManager.locationData.value.address
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(11f)
-                .background(backgroundColor)
-                .padding(start = paddingStart.dp, end = paddingEnd.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            TitleColumn()
-            NowWeatherColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(4f)
-            )
-            TimeWeatherColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(4f)
-            )
-            WeekForecastSection(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(3f)
+    LaunchedEffect(address) {
+        if (address.isNotEmpty()) {
+            viewModel.fetchAllWeatherData(
+                nx = locationData.value.latLng.latitude.toString(),
+                ny = locationData.value.latLng.longitude.toString(),
+                address = address
             )
         }
     }
+
+    WeatherScreenUI(onNavigate, address, viewModel)
 }
 
 @Preview
@@ -82,40 +48,41 @@ private fun Preview(/*@PreviewParameter(LocationDataManagerPreviewParameterProvi
     val paddingStart = ComposeHelpManager.previewDimenResource(R.dimen.PaddingStart, 14.0f)
     val paddingEnd = ComposeHelpManager.previewDimenResource(R.dimen.PaddingEnd, 10.0f)
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(backgroundColor)
-    ) {
-        TopLocationButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-        ){}
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .weight(12f)
-                .padding(start = paddingStart.dp, end = paddingEnd.dp)
-        ) {
-            TitleColumn()
-            NowWeatherColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(4f)
-            )
-            TimeWeatherColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(4f)
-            )
-            WeekForecastSection(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(3f)
-            )
-        }
-    }
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .background(backgroundColor)
+//    ) {
+//        TopLocationButton(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .weight(1f)
+//        ){}
+//        Column(
+//            Modifier
+//                .fillMaxWidth()
+//                .weight(12f)
+//                .padding(start = paddingStart.dp, end = paddingEnd.dp)
+//        ) {
+//            TitleColumn()
+//            NowWeatherColumn(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .weight(4f),
+//                weatherState = weatherState
+//            )
+//            TimeWeatherColumn(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .weight(4f)
+//            )
+//            WeekForecastSection(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .weight(3f)
+//            )
+//        }
+//    }
 }
 
 //class LocationDataManagerPreviewParameterProvider(

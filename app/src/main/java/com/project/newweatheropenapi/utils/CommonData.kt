@@ -21,8 +21,8 @@ const val UNREGISTERED_IP_ERROR = "32"
 const val UNSIGNED_CALL_ERROR = "33"
 
 const val SKY = "SKY"
-const val TMP_TIME = "TMP"
-const val TMP_NOW = "T1H"
+const val TMP = "TMP"
+//const val TMP_NOW = "T1H"
 const val WIND_DIR = "VEC"
 const val WIND_POWER = "WSD"
 const val RAIN_TYPE = "PTY"
@@ -46,7 +46,7 @@ const val NUM_OF_ROWS_DEFAULT = "1000"
 const val NUM_OF_ROWS_AIR = "100"
 const val NUM_OF_ROWS_WEEK = "10"
 
-const val DATA_POTAL_URL = "http://apis.data.go.kr/"
+const val DATA_POTAL_URL = "https://apis.data.go.kr/"
 const val MAPS_URL = "https://naveropenapi.apigw.ntruss.com/"
 
 const val DATA_TYPE_UPPER = "JSON"
@@ -72,8 +72,8 @@ const val MAP_REVERSE_GEOCODE = "/map-reversegeocode/v2/gc"
 /**
  * 단기예보
  */
-const val NOW_FCST = "/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
-const val VILAGE_FCST = "/1360000/VilageFcstInfoService_2.0/getVilageFcst"
+const val TIME_WEATHER = "/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
+const val WEATHER = "/1360000/VilageFcstInfoService_2.0/getVilageFcst"
 /**
  * 중기예보
  */

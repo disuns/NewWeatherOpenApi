@@ -8,9 +8,9 @@ import com.project.newweatheropenapi.network.dataclass.request.navermap.toMap
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
 import com.project.newweatheropenapi.utils.DataConverter
-import com.project.newweatheropenapi.utils.LocationData
-import com.project.newweatheropenapi.utils.Managers.LocationDataManager
+import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.utils.logMessage
+import com.project.newweatheropenapi.utils.managers.LoadingStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,7 +23,7 @@ class NaverMapViewModel @Inject constructor(
     private val locationDataManager: LocationDataManager,
     private val dataConverter: DataConverter,
 ) : BaseViewModel() {
-    private val _naverMapStateFlow = MutableStateFlow<ApiResult<NaverMapResponse>>(ApiResult.Loading)
+    private val _naverMapStateFlow = MutableStateFlow<ApiResult<NaverMapResponse>>(ApiResult.Empty)
     val naverMapStateFlow: StateFlow<ApiResult<NaverMapResponse>> = _naverMapStateFlow
 
     init {
@@ -32,8 +32,8 @@ class NaverMapViewModel @Inject constructor(
 
     fun getLocation() {
 //            _locationData.value = LocationData(LatLng(lat=37.51982548626224, lon = 126.88237267230349))
-        locationDataManager.getGps { latLng ->
-            fetchNaverMap(latLng.longitude, latLng.latitude)
+        locationDataManager.getGps { lat, lon ->
+            fetchNaverMap(lon, lat)
         }
     }
 
@@ -58,13 +58,11 @@ class NaverMapViewModel @Inject constructor(
                         val response = (_naverMapStateFlow.value as ApiResult.Success).value
                         if(response.status.code==0) {
                             reverseGeocode(response)
-//                        updateLocationData(locationData)
                         }
                     }
-
-                    is ApiResult.Empty -> logMessage("No results")
+                    is ApiResult.Empty -> {}
                     is ApiResult.Error -> logMessage("Error: ${naverMapState.exception}")
-                    is ApiResult.Loading -> logMessage("Loading")
+                    is ApiResult.Loading -> {}
                 }
             }
         }

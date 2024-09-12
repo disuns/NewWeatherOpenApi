@@ -1,9 +1,7 @@
-package com.project.newweatheropenapi.utils.Managers
+package com.project.newweatheropenapi.utils.managers
 
 import android.annotation.SuppressLint
 import android.os.Looper
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -11,16 +9,19 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
 import com.naver.maps.geometry.LatLng
 import com.project.newweatheropenapi.utils.LocationData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class LocationDataManager @Inject constructor(
     private val fusedLocationClient : FusedLocationProviderClient
 ) {
-    private val _locationData = mutableStateOf(LocationData(LatLng(0.0,0.0),""))
-    val locationData : State<LocationData> = _locationData
+    private val _locationData = MutableStateFlow(LocationData(LatLng(0.0,0.0),""))
+    val locationData : StateFlow<LocationData> = _locationData.asStateFlow()
 
     @SuppressLint("MissingPermission")
-    fun getGps(onLocationFetched: (LatLng) -> Unit) {
+    fun getGps(onLocationFetched: (Double, Double) -> Unit) {
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
             .setMinUpdateIntervalMillis(5000)
             .build()
@@ -29,8 +30,7 @@ class LocationDataManager @Inject constructor(
             override fun onLocationResult(locationResult: LocationResult) {
                 val location = locationResult.lastLocation
                 location?.let {
-                    val latLng = LatLng(it.latitude, it.longitude)
-                    onLocationFetched(latLng)
+                    onLocationFetched(it.latitude, it.longitude)
                     fusedLocationClient.removeLocationUpdates(this)
                 }
             }

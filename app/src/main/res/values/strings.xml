@@ -8,6 +8,51 @@
 
     <string name="loadingImage">이미지 로딩중</string>
 
+<!--    에러 로그용-->
+    <string name="APPLICATION_ERROR">어플리케이션 에러</string>
+    <string name="DB_ERROR">데이터베이스 에러</string>
+    <string name="NODATA_ERROR">데이터없음 에러</string>
+    <string name="HTTP_ERROR">HTTP 에러</string>
+    <string name="SERVICETIME_OUT">서비스 연결실 에러</string>
+    <string name="INVALID_REQUEST_PARAMETER_ERROR">잘못된 요청 파라메터 에러</string>
+    <string name="NO_MANDATORY_REQUEST_PARAMETERS_ERROR">필수요청 파라메터가 없음</string>
+    <string name="NO_OPENAPI_SERVICE_ERROR">해당 오픈 API서비스가 없거나 폐기됨</string>
+    <string name="SERVICE_ACCESS_DENIED_ERROR">서비스 접근거부</string>
+    <string name="TEMPORARILY_DISABLE_THE_SERVICEKEY_ERROR">일시적으로 사용할 수 없는 서비스 키</string>
+    <string name="LIMITED_NUMBER_OF_SERVICE_REQUESTS_EXCEEDS_ERROR">서비스 요청제한횟수 초과에러</string>
+    <string name="SERVICE_KEY_IS_NOT_REGISTERED_ERROR">등록되지 않은 서비스키</string>
+    <string name="DEADLINE_HAS_EXPIRED_ERROR">기한만료된 서비스키</string>
+    <string name="UNREGISTERED_IP_ERROR">등록되지 않은 IP</string>
+    <string name="UNSIGNED_CALL_ERROR">서명되지 않은 호출</string>
+    <string name="UNKNOWN_ERROR">기타에러</string>
+    <string name="UNKNOWN_ADDRESS">주소를 찾을 수 없습니다</string>
+<!--    변환 데이터 Unit-->
+    <string name="tempUnit">%s℃</string>
+    <string name="rainUnit">%s</string>
+    <string name="nowWetUnit">습도 : %s%%</string>
+    <string name="nowWindUnit">풍속 : %s %sm/s</string>
+<!--    방향-->
+    <string name="N">북</string>
+    <string name="NNE">북북동</string>
+    <string name="NE">북동</string>
+    <string name="ENE">동북동</string>
+    <string name="E">동</string>
+    <string name="ESE">동남동</string>
+    <string name="SE">남동</string>
+    <string name="SSE">남남동</string>
+    <string name="S">남</string>
+    <string name="SSW">남남서</string>
+    <string name="SW">남서</string>
+    <string name="WSW">서남서</string>
+    <string name="W">서</string>
+    <string name="WNW">서북서</string>
+    <string name="NW">북서</string>
+    <string name="NNW">북북서</string>
+<!--    하늘상태-->
+    <string name="sun">맑음</string>
+    <string name="manycloud">구름많음</string>
+    <string name="cloud">흐림</string>
+
 <!--    navtest용-->
     <string name="airQuality">airQuality</string>
     <string name="navermap">navermap</string>
@@ -16,5 +61,46 @@
     <string-array name="Tab">
         <item>실시간 예보</item>
         <item>대기 예보</item>
+    </string-array>
+
+    <string-array name="Week">
+        <item>일</item>
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+    </string-array>
+
+    <string-array name="land">
+        <item>서울특별시</item>
+        <item>인천광역시</item>
+        <item>경기도</item>
+        <item>강원도</item>
+        <item>대전광역시</item>
+        <item>세종특별자치시</item>
+        <item>충청남도</item>
+        <item>충청북도</item>
+        <item>광주광역시</item>
+        <item>전라남도</item>
+        <item>전라북도</item>
+        <item>대구광역시</item>
+        <item>경상북도</item>
+        <item>부산광역시</item>
+        <item>울산광역시</item>
+        <item>경상남도</item>
+    </string-array>
+
+    <string-array name="landCode">
+        <item>11B00000</item>
+        <item>11D10000</item>
+        <item>11C20000</item>
+        <item>11C10000</item>
+        <item>11F20000</item>
+        <item>11F10000</item>
+        <item>11H10000</item>
+        <item>11H20000</item>
+        <item>11G0000</item>
     </string-array>
 </resources>

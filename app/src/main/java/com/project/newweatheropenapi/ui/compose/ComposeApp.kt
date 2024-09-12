@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -17,7 +18,7 @@ import com.project.newweatheropenapi.ui.compose.bottomNavigationBar.BottomNaviga
 import com.project.newweatheropenapi.ui.compose.intro.IntroScreen
 import com.project.newweatheropenapi.ui.compose.navermap.NaverMapScreen
 import com.project.newweatheropenapi.ui.compose.weather.WeatherScreen
-import com.project.newweatheropenapi.utils.Managers.LocationDataManager
+import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 
 @Composable
@@ -26,7 +27,9 @@ fun InitScreen(
     naverMapViewModel: NaverMapViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
-    naverMapViewModel.getLocation()
+    LaunchedEffect(Unit) {
+        naverMapViewModel.getLocation()
+    }
 
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
