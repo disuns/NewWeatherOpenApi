@@ -27,6 +27,7 @@ turbine = "0.7.0"
 logger= "2.2.0"
 gson = "2.11.0"
 google-location = "21.3.0"
+compose-ui-util = "1.7.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -52,7 +53,6 @@ hilt_navigation_compose = {module = "androidx.hilt:hilt-navigation-compose", ver
 #navermap
 naver-map-compose = {module = "io.github.fornewid:naver-map-compose", version.ref = "naver_map_compose" }
 naver-map-location = {module = "io.github.fornewid:naver-map-location", version.ref = "naver_map_location" }
-
 #firebase
 firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref ="firebase-bom"}
 #tedpermission
@@ -75,6 +75,7 @@ logger = { module = "com.orhanobut:logger", version.ref = "logger"}
 gson = { module = "com.google.code.gson:gson", version.ref = "gson"}
 #google-location
 google-location = {module = "com.google.android.gms:play-services-location",version.ref = "google-location"}
+compose-ui-util = {module = "androidx.compose.ui:ui-util",version.ref = "compose-ui-util"}
 
 
 [plugins]

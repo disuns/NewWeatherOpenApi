@@ -106,5 +106,6 @@ dependencies {
     implementation(libs.gson)
 
     implementation(libs.google.location)
+    implementation(libs.compose.ui.util)
 
 }

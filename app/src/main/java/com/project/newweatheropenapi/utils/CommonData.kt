@@ -21,8 +21,8 @@ const val UNREGISTERED_IP_ERROR = "32"
 const val UNSIGNED_CALL_ERROR = "33"
 
 const val SKY = "SKY"
-const val TMP = "TMP"
-//const val TMP_NOW = "T1H"
+const val TMP_TIME = "TMP"
+const val TMP_NOW = "T1H"
 const val WIND_DIR = "VEC"
 const val WIND_POWER = "WSD"
 const val RAIN_TYPE = "PTY"
@@ -37,10 +37,6 @@ const val ADDR="addr"
 /**
  * Rest 및 Delay 관련
  */
-const val CONNECT_TIME_OUT = 20L
-const val LOADING_TIME = 1000L
-const val READ_TIME_OUT = 15L
-
 const val PAGE_NO_DEFAULT = "1"
 const val NUM_OF_ROWS_DEFAULT = "1000"
 const val NUM_OF_ROWS_AIR = "100"
@@ -72,8 +68,8 @@ const val MAP_REVERSE_GEOCODE = "/map-reversegeocode/v2/gc"
 /**
  * 단기예보
  */
-const val TIME_WEATHER = "/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
-const val WEATHER = "/1360000/VilageFcstInfoService_2.0/getVilageFcst"
+const val WEATHER = "/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
+const val TIME_WEATHER = "/1360000/VilageFcstInfoService_2.0/getVilageFcst"
 /**
  * 중기예보
  */

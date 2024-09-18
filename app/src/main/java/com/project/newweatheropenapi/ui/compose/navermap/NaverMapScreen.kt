@@ -2,16 +2,17 @@ package com.project.newweatheropenapi.ui.compose.navermap
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,8 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
@@ -40,11 +42,10 @@ import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.project.newweatheropenapi.R
-import com.project.newweatheropenapi.utils.isNetworkCheck
-import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
-import com.project.newweatheropenapi.utils.managers.ComposeHelpManager
+import com.project.newweatheropenapi.utils.isNetworkCheck
+import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 
@@ -98,7 +99,7 @@ fun NaverMapScreen(
             Marker(state = MarkerState(position = currentPosition))
 
         }
-        MapSearchView(initQuery = mapPosition.value.address, onSearch = {}, onQueryChanged = {})
+        MapSearchView(initQuery = mapPosition.value.address, onSearch = {})
 
         //        moveCameraWithPosition(cameraPositionState= cameraPositionState, position = home)
 
@@ -128,46 +129,55 @@ fun ApiResultState(viewModel: NaverMapViewModel) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapSearchView(
     initQuery: String,
-    onQueryChanged: (String) -> Unit,
     onSearch: (String) -> Unit
 ) {
     var query by remember { mutableStateOf(initQuery) }
 
-    val searchViewPadding = ComposeHelpManager.previewDimenResource(
-        resourceId = R.dimen.SearchViewPadding,
-        hardcoding = 10.0f
-    ).dp
+    val searchViewPadding = dimensionResource(R.dimen.SearchViewPadding)
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .padding(searchViewPadding, searchViewPadding, searchViewPadding)
-    ) {
-        TextField(
-            value = query,
-            onValueChange = { newValue ->
-                query = newValue
-                onQueryChanged(newValue)
-            },
-            placeholder = { Text("Search") },
+    Box(Modifier.background(Color.Transparent).padding()
+        .padding(start = searchViewPadding, end = searchViewPadding, top = searchViewPadding)){
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Gray), // 배경 색상 설정
-            singleLine = true
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Button(
-            onClick = { onSearch(query) }, // 검색 버튼 클릭 시 호출
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+                .background(Color.Gray)
+                .padding(start = searchViewPadding),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Search")
+            Icon(
+                painter = painterResource(id = R.drawable.ic_baseline_search_24),
+                contentDescription = null,
+                tint = Color.Black,
+            )
+            Spacer(modifier = Modifier.width(searchViewPadding))
+            BasicTextField(
+                value = query,
+                onValueChange = { newValue ->
+                    query = newValue
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.Gray)
+                    .weight(1f),
+                singleLine = true,
+                keyboardActions = KeyboardActions (
+                    onSearch = {onSearch(query)}
+                ),
+            )
+
+            IconButton(
+                onClick = { query = "" },
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_cancel_24),
+                    tint = Color.Black,
+                    contentDescription = null,
+                )
+            }
         }
     }
 
@@ -189,10 +199,9 @@ fun MapSearchView(
 
 @Preview
 @Composable
-private fun previewMapSearchNowView() {
+private fun PreviewMapSearchNowView() {
     MapSearchView(
         initQuery = "테스트중",
-        onQueryChanged = { logMessage("ff") },
         onSearch = { logMessage("ff") })
 }
 
@@ -206,7 +215,7 @@ private fun moveCameraWithPosition(position: LatLng, cameraPositionState: Camera
 @Composable
 private fun Preview() {
     Box(modifier = Modifier.fillMaxSize()) {
-        previewMapSearchNowView()
+        PreviewMapSearchNowView()
         Box(modifier = Modifier.fillMaxSize())
     }
 }

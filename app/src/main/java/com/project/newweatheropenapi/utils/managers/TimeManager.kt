@@ -4,16 +4,15 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.dataclass.WeekDate
-import com.project.newweatheropenapi.utils.logMessage
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @SuppressLint("SimpleDateFormat")
 @Singleton
-class TimeManager @Inject constructor(@ApplicationContext private val context: Context){
+class TimeManager @Inject constructor(@ApplicationContext private val context: Context) {
     private val dateFormat = SimpleDateFormat("yyyyMMdd")
     private val timeFormat = SimpleDateFormat("HH")
     private val timeFormatWithMinutes = SimpleDateFormat("HHmm")
@@ -23,7 +22,7 @@ class TimeManager @Inject constructor(@ApplicationContext private val context: C
     private val monthFormat = SimpleDateFormat("MM")
     private val dayFormat = SimpleDateFormat("dd")
 
-    private fun getCurrentCalendar()= Calendar.getInstance()
+    private fun getCurrentCalendar() = Calendar.getInstance()
 
     fun urlNowDate(): String {
         val now = getCurrentCalendar().apply {
@@ -36,7 +35,7 @@ class TimeManager @Inject constructor(@ApplicationContext private val context: C
 
     fun urlNowTime(): String {
         val now = getCurrentCalendar().apply {
-            add(Calendar.MINUTE, -30) // Subtract 30 minutes
+            add(Calendar.MINUTE, -30)
         }
         val formattedTime = timeFormatWithMinutes.format(now.time)
         return if (timeFormat.format(now.time).toInt() < 1) {
@@ -59,17 +58,19 @@ class TimeManager @Inject constructor(@ApplicationContext private val context: C
         val currentHour = timeFormat.format(getCurrentCalendar().time).toInt()
 
         val timeMap = listOf(
-            "2300" to 2,
-            "0200" to 5,
-            "0500" to 8,
-            "0800" to 11,
-            "1100" to 14,
-            "1400" to 17,
-            "1700" to 20,
-            "2000" to 23
+            "2000" to 20,
+            "1700" to 17,
+            "1400" to 14,
+            "1100" to 11,
+            "0800" to 8,
+            "0500" to 5,
+            "0200" to 2,
+            "2300" to 0
         )
 
-        return timeMap.findLast { currentHour >= it.second }?.first ?: "2300"
+        return timeMap.find {
+            currentHour >= it.second
+        }?.first ?: "2300"
     }
 
     fun urlWeekWeatherTime(): String {

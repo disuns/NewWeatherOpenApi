@@ -5,6 +5,7 @@
     <string name="gpsNeed">위치제공이 필요합니다.</string>
     <string name="nowWeather">현재날씨</string>
     <string name="timeWeather">시간대별 예보</string>
+    <string name="weekWeather">주간 예보</string>
 
     <string name="loadingImage">이미지 로딩중</string>
 
@@ -29,8 +30,14 @@
 <!--    변환 데이터 Unit-->
     <string name="tempUnit">%s℃</string>
     <string name="rainUnit">%s</string>
+    <string name="nowRainUnit">강수량 : %s</string>
     <string name="nowWetUnit">습도 : %s%%</string>
     <string name="nowWindUnit">풍속 : %s %sm/s</string>
+    <string name="perUnit">%s%%</string>
+    <string name="windUnit">%sm/s</string>
+    <string name="weekDate">%s.%s(%s)</string>
+    <string name="time">%s시</string>
+    <string name="date">%s.%s</string>
 <!--    방향-->
     <string name="N">북</string>
     <string name="NNE">북북동</string>
@@ -52,6 +59,9 @@
     <string name="sun">맑음</string>
     <string name="manycloud">구름많음</string>
     <string name="cloud">흐림</string>
+<!--    오전/오후-->
+    <string name="am">오전</string>
+    <string name="pm">오후</string>
 
 <!--    navtest용-->
     <string name="airQuality">airQuality</string>

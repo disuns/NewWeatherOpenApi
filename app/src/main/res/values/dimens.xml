@@ -2,10 +2,14 @@
 <resources>
     <!--text-->
     <dimen name="Loading">30sp</dimen>
-    <dimen name="WeatherTitle">28dp</dimen>
-    <dimen name="NowTempText">64dp</dimen>
-    <dimen name="NowWeatherText">30dp</dimen>
-    <dimen name="NowWetRainWindColumn">18dp</dimen>
+    <dimen name="WeatherTitle">28sp</dimen>
+    <dimen name="NowTempText">64sp</dimen>
+    <dimen name="NowWeatherText">30sp</dimen>
+    <dimen name="NowWetRainWindColumn">18sp</dimen>
+    <dimen name="TimeItemTextDateTime">20sp</dimen>
+    <dimen name="TimeItemText">18sp</dimen>
+    <dimen name="TimeItemWindText">14sp</dimen>
+    <dimen name="WeatherViewTitle">24dp</dimen>
 
     <!--ui-->
     <dimen name="PaddingStart">14dp</dimen>
@@ -13,13 +17,23 @@
     <dimen name="NowFcstIV">110dp</dimen>
     <dimen name="SearchViewPadding">10dp</dimen>
     <dimen name="SearchButtonPadding">10dp</dimen>
+    <dimen name="CardViewPadding">90dp</dimen>
+    <dimen name="TimeItemElevation">3dp</dimen>
+    <dimen name="WeekItemElevation">1dp</dimen>
+    <dimen name="WeekItemPadding">4dp</dimen>
+    <dimen name="ItemCornerShape">12dp</dimen>
+    <dimen name="TimeItemInPadding">4dp</dimen>
+    <dimen name="TimeItemWeatherSize">50dp</dimen>
+    <dimen name="TimeItemSpaceByPadding">25dp</dimen>
+    <dimen name="TimeItemImageSmallSize">28dp</dimen>
+    <dimen name="ItemPadding">8dp</dimen>
+    <dimen name="WeekItemImageSmall">15dp</dimen>
+    <dimen name="WeekItemText">18dp</dimen>
+
+
+
 
     <dimen name="FcstTitle">28dp</dimen>
-    <dimen name="WeatherRvTitle">24dp</dimen>
-    <dimen name="WeekRVItemText">18dp</dimen>
-    <dimen name="TimeItemTextDateTime">20dp</dimen>
-    <dimen name="TimeItemText">18dp</dimen>
-    <dimen name="TimeItemWindText">14dp</dimen>
     <dimen name="MainText">16dp</dimen>
     <dimen name="IndexTitle">28dp</dimen>
     <dimen name="ViewPagerImageTitle">24dp</dimen>
@@ -29,20 +43,9 @@
 
 
     <dimen name="WeekRVItemIV">30dp</dimen>
-    <dimen name="WeekRVItemIVSmall">15dp</dimen>
-    <dimen name="TimeItemFcstMargin">25dp</dimen>
-    <dimen name="ItemMargin">4dp</dimen>
-    <dimen name="TimeItemIV">50dp</dimen>
-    <dimen name="TimeItemIVSmall">28dp</dimen>
-    <dimen name="ItemCornerRadius">12dp</dimen>
-    <dimen name="TimeItemElevation">3dp</dimen>
-    <dimen name="TimeItemcontentPadding">4dp</dimen>
-    <dimen name="WeekItemcontentPaddingElevation">1dp</dimen>
-    <dimen name="WeekRVMarginIV">3dp</dimen>
     <dimen name="WeekRVMarginTV">10dp</dimen>
     <dimen name="FcstOffsetBetweenPages">80dp</dimen>
     <dimen name="IndexOffsetBetweenPages">40dp</dimen>
-    <dimen name="CardViewMargin">90dp</dimen>
     <dimen name="SpinnerPadding">12dp</dimen>
     <dimen name="SpinnerItemPadding">8dp</dimen>
     <dimen name="AirQualityImageMargin">50dp</dimen>

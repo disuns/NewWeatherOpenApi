@@ -11,14 +11,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.app.WeatherApplication
 import com.project.newweatheropenapi.utils.logMessage
-import com.project.newweatheropenapi.utils.managers.ComposeHelpManager
+import com.project.newweatheropenapi.utils.sp
 
 
 @Composable
@@ -33,12 +34,9 @@ fun IntroScreen(onNavigate: () -> Unit = {}) {
         contentAlignment = Alignment.Center
     ) {
 //        (context.applicationContext as WeatherApplication).isNetworkCheck()
-        val text = ComposeHelpManager.previewStringResource(R.string.loading, "Loading")
-        val fontSize = ComposeHelpManager.previewDimenResource(R.dimen.Loading, 30.0f).sp
-
         Text(
-            text = text,
-            fontSize = fontSize,
+            text = stringResource(R.string.loading),
+            fontSize = dimensionResource(R.dimen.Loading).sp(),
             style = MaterialTheme.typography.bodyLarge
         )
     }

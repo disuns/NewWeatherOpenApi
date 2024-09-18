@@ -1,10 +1,10 @@
 package com.project.newweatheropenapi
 
+import android.content.Context
 import app.cash.turbine.test
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
-import com.project.newweatheropenapi.utils.DataConverter
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 import io.mockk.clearAllMocks
@@ -22,20 +22,22 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito
 
 class NaverMapViewModelTest {
 
     private val repository: NaverMapRepository = mockk()
     private val locationDataManager : LocationDataManager = mockk()
-    private val dataConverter : DataConverter = mockk()
     private lateinit var viewModel: NaverMapViewModel
+    private lateinit var context: Context
 
     // 테스트 환경의 코루틴 디스패처 설정
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
         Dispatchers.setMain(StandardTestDispatcher())
-        viewModel = NaverMapViewModel(repository, locationDataManager, dataConverter)
+        context = Mockito.mock(Context::class.java)
+        viewModel = NaverMapViewModel(repository, locationDataManager, context)
     }
 
     // 테스트 후 디스패처 리셋

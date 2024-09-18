@@ -1,5 +1,6 @@
 package com.project.newweatheropenapi.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.naver.maps.geometry.LatLng
 import com.project.newweatheropenapi.network.ApiResult
@@ -7,11 +8,11 @@ import com.project.newweatheropenapi.network.dataclass.request.navermap.NaverMap
 import com.project.newweatheropenapi.network.dataclass.request.navermap.toMap
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
-import com.project.newweatheropenapi.utils.DataConverter
-import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.utils.logMessage
-import com.project.newweatheropenapi.utils.managers.LoadingStateManager
+import com.project.newweatheropenapi.utils.managers.LocationDataManager
+import com.project.newweatheropenapi.utils.mapAddressConvert
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ import javax.inject.Inject
 class NaverMapViewModel @Inject constructor(
     private val repository: NaverMapRepository,
     private val locationDataManager: LocationDataManager,
-    private val dataConverter: DataConverter,
+    @ApplicationContext val context: Context
 ) : BaseViewModel() {
     private val _naverMapStateFlow = MutableStateFlow<ApiResult<NaverMapResponse>>(ApiResult.Empty)
     val naverMapStateFlow: StateFlow<ApiResult<NaverMapResponse>> = _naverMapStateFlow
@@ -46,7 +47,7 @@ class NaverMapViewModel @Inject constructor(
     }
 
     fun reverseGeocode(result: NaverMapResponse) {
-        val address = dataConverter.mapAddressConvert(result)
+        val address = result.mapAddressConvert(context)
         locationDataManager.updateLocationData(locationDataManager.locationData.value.latLng, address)
     }
 

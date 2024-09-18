@@ -25,12 +25,10 @@ class ApiModule {
     @Singleton
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
-        val connectionTimeOut = (1000 * 30).toLong()
-        val readTimeOut = (1000 * 5).toLong()
-
         return OkHttpClient.Builder()
-            .readTimeout(readTimeOut, TimeUnit.MILLISECONDS)
-            .connectTimeout(connectionTimeOut, TimeUnit.MILLISECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(provideLoggingInterceptor())
             .build()
     }
