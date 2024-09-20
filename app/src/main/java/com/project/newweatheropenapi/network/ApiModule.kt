@@ -81,6 +81,6 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun provideAirQualityService(@NaverMapServiceRetrofit retrofit: Retrofit): AirQualityService =
+    fun provideAirQualityService(@WeatherServiceRetrofit retrofit: Retrofit): AirQualityService =
         retrofit.create(AirQualityService::class.java)
 }

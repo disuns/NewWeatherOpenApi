@@ -1,6 +1,5 @@
 package com.project.newweatheropenapi.enum
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat

@@ -1,7 +1,6 @@
 package com.project.newweatheropenapi.ui.compose.weather
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -39,6 +38,8 @@ import com.project.newweatheropenapi.dataclass.TimeWeatherData
 import com.project.newweatheropenapi.enum.imgConvert
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
+import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
+import com.project.newweatheropenapi.ui.compose.common.DefaultError
 import com.project.newweatheropenapi.ui.theme.Color_7192ad
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.RAIN_MM
@@ -63,95 +64,64 @@ import com.project.newweatheropenapi.utils.windDir
 import com.project.newweatheropenapi.utils.windPower
 import kotlin.math.absoluteValue
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun TimeWeatherColumn(modifier: Modifier, timeWeatherState: ApiResult<WeatherResponse>) {
     val context = LocalContext.current
 
-    when (timeWeatherState) {
-        is ApiResult.Success -> {
-            if (timeWeatherState.value.response.header.resultCode != NO_ERROR) {
-                Box(modifier = modifier) {
-                    Text("실패")
-                }
-                timeWeatherState.value.response.header.resultCode.dataPotalResultCode(context)
-            } else {
-                val list = timeDataList(timeWeatherState.value)
-                val pagerState = rememberPagerState(
-                    pageCount = { list.size }
+    ApiResultHandler(modifier, timeWeatherState) { successState ->
+        if (successState.value.response.header.resultCode != NO_ERROR) {
+            DefaultError(modifier)
+            successState.value.response.header.resultCode.dataPotalResultCode(context)
+        } else {
+            val list = timeDataList(successState.value)
+            val pagerState = rememberPagerState(
+                pageCount = { list.size }
+            )
+            Column(
+                modifier = modifier
+            ) {
+                Text(
+                    text = stringResource(R.string.timeWeather),
+                    fontSize = dimensionResource(R.dimen.WeatherViewTitle).sp(),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
                 )
-                Column(
-                    modifier = modifier
-                ) {
-                    GlideImage(
-                        model = R.drawable.dotted_line_long,
-                        contentDescription = stringResource(R.string.loadingImage),
-                        modifier = Modifier
-                            .fillMaxWidth()
+
+                HorizontalPager(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 8.dp),
+                    state = pagerState,
+                    contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.CardViewPadding)),
+                    pageSpacing = dimensionResource(R.dimen.CardViewPadding)/2
+                ) { page ->
+                    WeatherTimeItem(
+                        modifier = Modifier.graphicsLayer {
+                            val pageOffset =
+                                (pagerState.currentPage - page + pagerState.currentPageOffsetFraction)
+                            val offsetFraction = pageOffset.absoluteValue.coerceIn(0f, 1f)
+
+                            alpha = lerp(
+                                start = 0.5f,
+                                stop = 1.0f,
+                                fraction = 1f - offsetFraction,
+                            )
+
+                            scaleX = lerp(
+                                start = 1f,
+                                stop = 0.8f,
+                                fraction = offsetFraction,
+                            )
+
+                            scaleY = scaleX
+                            translationX =
+                                size.width * (1 - scaleX) / 2 * (if (pagerState.currentPage > page) 1 else -1)
+                        },
+                        timeWeatherData = list[page]
                     )
-
-                    Text(
-                        text = stringResource(R.string.timeWeather),
-                        fontSize = dimensionResource(R.dimen.WeatherViewTitle).sp(),
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
-                            .padding(top = 8.dp)
-                    )
-
-                    HorizontalPager(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 8.dp),
-                        state = pagerState,
-                        contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.CardViewPadding)),
-                        pageSpacing = dimensionResource(R.dimen.CardViewPadding)/2
-                    ) { page ->
-                        WeatherTimeItem(
-                            modifier = Modifier.graphicsLayer {
-                                val pageOffset =
-                                    (pagerState.currentPage - page + pagerState.currentPageOffsetFraction)
-                                val offsetFraction = pageOffset.absoluteValue.coerceIn(0f, 1f)
-
-                                alpha = lerp(
-                                    start = 0.5f,
-                                    stop = 1.0f,
-                                    fraction = 1f - offsetFraction,
-                                )
-
-                                scaleX = lerp(
-                                    start = 1f,
-                                    stop = 0.8f,
-                                    fraction = offsetFraction,
-                                )
-
-                                scaleY = scaleX
-                                translationX =
-                                    size.width * (1 - scaleX) / 2 * (if (pagerState.currentPage > page) 1 else -1)
-                            },
-                            timeWeatherData = list[page]
-                        )
-                    }
                 }
-            }
-        }
-
-        is ApiResult.Empty -> {
-            Box(modifier = modifier) {
-                Text("비었다")
-            }
-        }
-
-        is ApiResult.Error -> {
-            Box(modifier = modifier) {
-                Text("실패")
-            }
-        }
-
-        is ApiResult.Loading -> {
-            Box(modifier = modifier) {
-                Text("로딩중")
             }
         }
     }

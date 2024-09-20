@@ -86,11 +86,9 @@ class TimeManager @Inject constructor(@ApplicationContext private val context: C
         val calendar = getCurrentCalendar().apply {
             add(Calendar.DAY_OF_MONTH, dayLater)
         }
-        val monthFormat = SimpleDateFormat("MM")
-        val dayFormat = SimpleDateFormat("dd")
 
         val week = context.resources.getStringArray(R.array.Week)
-        val dayOfWeekIndex = calendar.get(Calendar.DAY_OF_WEEK) - 1
+        val dayOfWeekIndex = calendar[Calendar.DAY_OF_WEEK] - 1
 
         val weekDay = if (dayOfWeekIndex in week.indices) {
             week[dayOfWeekIndex]
@@ -101,5 +99,5 @@ class TimeManager @Inject constructor(@ApplicationContext private val context: C
         return WeekDate(monthFormat.format(calendar.time), dayFormat.format(calendar.time), weekDay)
     }
 
-    fun urlAirQualityDate() = airQualityDateFormat.format(getCurrentCalendar().time)
+    fun urlAirQualityDate(): String = airQualityDateFormat.format(getCurrentCalendar().time)
 }

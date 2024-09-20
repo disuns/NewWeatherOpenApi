@@ -1,5 +1,8 @@
 package com.project.newweatheropenapi.ui.compose.navermap
 
+import android.content.Context
+import android.location.Geocoder
+import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -10,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
@@ -19,14 +21,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naver.maps.geometry.LatLng
@@ -42,17 +42,17 @@ import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.project.newweatheropenapi.R
-import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
+import com.project.newweatheropenapi.ui.theme.icon.CancelImageVector
+import com.project.newweatheropenapi.ui.theme.icon.SearchImageVector
 import com.project.newweatheropenapi.utils.isNetworkCheck
 import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
+import java.io.IOException
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun NaverMapScreen(
-    onNavigate: () -> Unit = {},
     viewModel: NaverMapViewModel = hiltViewModel(),
     locationDataManager: LocationDataManager
 ) {
@@ -72,22 +72,16 @@ fun NaverMapScreen(
             position = CameraPosition(it.value.latLng, 15.0)
         }
     }
-
-//    ApiResultState(viewModel)
-
-    // 최신 카메라 위치 추적
-    val currentPosition by rememberUpdatedState(cameraPositionState.position.target)
+    var isInitialLoad by remember { mutableStateOf(true) }
 
     LaunchedEffect(cameraPositionState.isMoving) {
-        if (!cameraPositionState.isMoving) {
-            if (context.isNetworkCheck()) {
-                viewModel.fetchNaverMap(
-                    cameraPositionState.position.target.longitude,
-                    cameraPositionState.position.target.latitude
-                )
-            }
-
+        if (!isInitialLoad && !cameraPositionState.isMoving && context.isNetworkCheck()) {
+            viewModel.fetchNaverMap(
+                cameraPositionState.position.target.longitude,
+                cameraPositionState.position.target.latitude
+            )
         }
+        isInitialLoad = false
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -96,40 +90,44 @@ fun NaverMapScreen(
             uiSettings = MapUiSettings(isLocationButtonEnabled = false),
             cameraPositionState = cameraPositionState
         ) {
-            Marker(state = MarkerState(position = currentPosition))
-
+            Marker(state = MarkerState(position = cameraPositionState.position.target))
         }
-        MapSearchView(initQuery = mapPosition.value.address, onSearch = {})
-
-        //        moveCameraWithPosition(cameraPositionState= cameraPositionState, position = home)
-
+        MapSearchView(initQuery = mapPosition.value.address, onSearch = { query ->
+            if (query.isNotEmpty()) {
+                addressAndMoveCamera(query, cameraPositionState, context)
+            }
+        })
     }
 }
 
-@Composable
-fun ApiResultState(viewModel: NaverMapViewModel) {
-    val naverMapState by viewModel.naverMapStateFlow.collectAsState()
-    when (naverMapState) {
-        is ApiResult.Loading -> {}
-        is ApiResult.Success -> {
-            logMessage((naverMapState as ApiResult.Success<NaverMapResponse>).value)
-            viewModel.reverseGeocode((naverMapState as ApiResult.Success<NaverMapResponse>).value)
-            //위 코드 작동 후 ui에 적용
-        }
+private fun addressAndMoveCamera(query: String, cameraPositionState: CameraPositionState, context: Context) {
+    val geocoder = Geocoder(context)
 
-        is ApiResult.Error -> {
-            logMessage(
-                ("에러발생 : " + (naverMapState as ApiResult.Error).exception?.message)
-            )
+    try {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            geocoder.getFromLocationName(query, 1) { addressList ->
+                addressList.firstOrNull()?.let { address ->
+                    moveCameraWithPosition(
+                        cameraPositionState = cameraPositionState,
+                        position = LatLng(address.latitude, address.longitude)
+                    )
+                }
+            }
+        } else {
+            val addressList = geocoder.getFromLocationName(query, 1)
+            if (!addressList.isNullOrEmpty()) {
+                val address = addressList[0]
+                moveCameraWithPosition(
+                    cameraPositionState = cameraPositionState,
+                    position = LatLng(address.latitude, address.longitude)
+                )
+            }
         }
-
-        is ApiResult.Empty -> {
-
-        }
+    } catch (e: IOException) {
+        e.stackTrace
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapSearchView(
     initQuery: String,
@@ -139,8 +137,11 @@ fun MapSearchView(
 
     val searchViewPadding = dimensionResource(R.dimen.SearchViewPadding)
 
-    Box(Modifier.background(Color.Transparent).padding()
-        .padding(start = searchViewPadding, end = searchViewPadding, top = searchViewPadding)){
+    Box(
+        Modifier
+            .background(Color.Transparent)
+            .padding(start = searchViewPadding, end = searchViewPadding, top = searchViewPadding)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -149,7 +150,7 @@ fun MapSearchView(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_baseline_search_24),
+                imageVector = SearchImageVector,
                 contentDescription = null,
                 tint = Color.Black,
             )
@@ -164,8 +165,8 @@ fun MapSearchView(
                     .background(Color.Gray)
                     .weight(1f),
                 singleLine = true,
-                keyboardActions = KeyboardActions (
-                    onSearch = {onSearch(query)}
+                keyboardActions = KeyboardActions(
+                    onDone = { onSearch(query) }
                 ),
             )
 
@@ -173,7 +174,7 @@ fun MapSearchView(
                 onClick = { query = "" },
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_baseline_cancel_24),
+                    imageVector = CancelImageVector,
                     tint = Color.Black,
                     contentDescription = null,
                 )
@@ -184,17 +185,6 @@ fun MapSearchView(
     LaunchedEffect(initQuery) {
         query = initQuery
     }
-
-
-//                val geocoder = Geocoder(LocalContext.current)
-//
-//                val addressList = geocoder.getFromLocationName(location, 1)
-//                val address = addressList?.firstOrNull()
-//
-//                address?.let {
-//                    markerSetCamPos(marker, it.latitude, it.longitude)
-//                    naverMap.moveCamera(CameraUpdate.scrollTo(LatLng(it.latitude, it.longitude)))
-//                }
 }
 
 @Preview
@@ -202,7 +192,8 @@ fun MapSearchView(
 private fun PreviewMapSearchNowView() {
     MapSearchView(
         initQuery = "테스트중",
-        onSearch = { logMessage("ff") })
+        onSearch = { logMessage("ff") }
+    )
 }
 
 @OptIn(ExperimentalNaverMapApi::class)
@@ -216,6 +207,5 @@ private fun moveCameraWithPosition(position: LatLng, cameraPositionState: Camera
 private fun Preview() {
     Box(modifier = Modifier.fillMaxSize()) {
         PreviewMapSearchNowView()
-        Box(modifier = Modifier.fillMaxSize())
     }
 }

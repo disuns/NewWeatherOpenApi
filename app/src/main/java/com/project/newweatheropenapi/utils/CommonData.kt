@@ -63,7 +63,6 @@ const val MAP_ORDERS = "addr,roadaddr"
 const val MAP_CLIENT_KEY_ID = "47cfbsdnq2"
 const val MAP_CLIENT_KEY = "f8EYncOzdp6LVjHoVOxl6VkzpAteQFlcgv2yrihT"
 const val MAP_REVERSE_GEOCODE = "/map-reversegeocode/v2/gc"
-//const val MAP_GEOCODE = "/map-geocode/v2/geocode"
 
 /**
  * 단기예보

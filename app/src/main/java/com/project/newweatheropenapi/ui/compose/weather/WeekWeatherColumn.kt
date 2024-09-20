@@ -1,7 +1,6 @@
 package com.project.newweatheropenapi.ui.compose.weather
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,77 +35,49 @@ import com.project.newweatheropenapi.dataclass.WeekDate
 import com.project.newweatheropenapi.dataclass.WeekWeatherData
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRainSkyResponse
+import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
+import com.project.newweatheropenapi.ui.compose.common.DefaultError
 import com.project.newweatheropenapi.ui.theme.Color_7192ad
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.dataPotalResultCode
+import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.utils.managers.TimeManager
 import com.project.newweatheropenapi.utils.rainPerConvert
 import com.project.newweatheropenapi.utils.sp
 import com.project.newweatheropenapi.utils.weekDateConvert
 
-
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun WeekWeatherColumn(modifier: Modifier, weekRainSkyState: ApiResult<WeekRainSkyResponse>) {
     val context = LocalContext.current
-    when (weekRainSkyState) {
-        is ApiResult.Success -> {
-            if (weekRainSkyState.value.response.header.resultCode != NO_ERROR) {
-                Box(modifier = modifier) {
-                    Text("실패")
-                }
-                weekRainSkyState.value.response.header.resultCode.dataPotalResultCode(context)
-            } else {
-                val list = weekDataList(weekRainSkyState.value)
-                Column(
-                    modifier = modifier
+
+    ApiResultHandler(modifier, weekRainSkyState) { successState ->
+        if (successState.value.response.header.resultCode != NO_ERROR) {
+            DefaultError(modifier)
+            successState.value.response.header.resultCode.dataPotalResultCode(context)
+        } else {
+            val list = weekDataList(successState.value)
+            Column(
+                modifier = modifier
+            ) {
+                Text(
+                    text = stringResource(R.string.weekWeather),
+                    fontSize = dimensionResource(R.dimen.WeatherViewTitle).sp(),
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.CenterHorizontally)
+                )
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(3.dp)
                 ) {
-                    GlideImage(
-                        model = R.drawable.dotted_line_long,
-                        contentDescription = stringResource(R.string.loadingImage),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    )
-
-                    Text(
-                        text = stringResource(R.string.weekWeather),
-                        fontSize = dimensionResource(R.dimen.WeatherViewTitle).sp(),
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.CenterHorizontally)
-                            .padding(top = 8.dp)
-                    )
-
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(vertical = 8.dp),
-                        verticalArrangement = Arrangement.spacedBy(3.dp)
-                    ) {
-                        items(list.size) { item ->
-                            WeekWeatherItem(list[item])
-                        }
+                    items(list.size) { item ->
+                        WeekWeatherItem(list[item])
                     }
                 }
-            }
-        }
-
-        is ApiResult.Empty -> {
-            Box(modifier = modifier) {
-                Text("비었다")
-            }
-        }
-
-        is ApiResult.Error -> {
-            Box(modifier = modifier) {
-                Text("실패")
-            }
-        }
-
-        is ApiResult.Loading -> {
-            Box(modifier = modifier) {
-                Text("로딩중")
             }
         }
     }
@@ -134,6 +105,7 @@ fun WeekWeatherItem(data: WeekWeatherData) {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            logMessage(data.weekDate.dayOfWeek)
             Text(
                 modifier = Modifier.weight(3f),
                 text = data.weekDate.weekDateConvert(context),

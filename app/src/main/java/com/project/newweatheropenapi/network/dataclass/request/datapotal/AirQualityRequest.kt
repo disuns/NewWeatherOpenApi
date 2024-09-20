@@ -6,7 +6,7 @@ data class AirQualityRequest(
     val pageNo: String,
     val numOfRows: String,
     val searchDate: String,
-    val InformCode: String
+    val informCode: String
 )
 
 fun AirQualityRequest.toMap(): Map<String, String> {
@@ -16,6 +16,6 @@ fun AirQualityRequest.toMap(): Map<String, String> {
         "pageNo" to pageNo,
         "numOfRows" to numOfRows,
         "searchDate" to searchDate,
-        "InformCode" to InformCode
+        "InformCode" to informCode
     )
 }

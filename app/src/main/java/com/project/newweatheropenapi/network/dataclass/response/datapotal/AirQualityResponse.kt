@@ -19,7 +19,7 @@ data class AirQualityResponse(
             val totalCount: Int
         ){
             data class Item(
-                val actionKnack: String,
+                val actionKnack: String?,
                 val dataTime: String,
                 val imageUrl1: String,
                 val imageUrl2: String,

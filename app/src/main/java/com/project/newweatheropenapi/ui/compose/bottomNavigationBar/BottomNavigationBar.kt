@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.sealed.ScreenRoute
-import com.project.newweatheropenapi.utils.logMessage
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
@@ -35,11 +34,11 @@ fun BottomNavigationBar(navController: NavController) {
                 onClick = {
                     navController.navigate(screen.route) {
                         popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
+//                            saveState = true
                             inclusive = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+//                        launchSingleTop = true
+//                        restoreState = true
                     }
                 }
             )

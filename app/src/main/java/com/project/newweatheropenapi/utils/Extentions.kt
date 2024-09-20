@@ -118,6 +118,7 @@ fun String.rainConvert(context: Context) = context.getString(R.string.rainUnit, 
 fun String.nowWetConvert(context: Context) = context.getString(R.string.nowWetUnit, this)
 fun String.windPower(context: Context, dir: String) =
     context.getString(R.string.nowWindUnit, dir, this)
+
 fun String.windPower(context: Context) =
     context.getString(R.string.windUnit, this)
 
@@ -129,7 +130,7 @@ fun String.dateConvert(context: Context): String {
     return context.getString(R.string.date, splitString[2], splitString[3])
 }
 
-fun String.wetConvert(context: Context)= context.getString(R.string.perUnit, this)
+fun String.wetConvert(context: Context) = context.getString(R.string.perUnit, this)
 
 fun String.rainPerConvert(context: Context) = context.getString(R.string.perUnit, this)
 
@@ -183,37 +184,32 @@ fun String.skyConvert(context: Context): String {
 }
 
 fun LatLng.convertGRIDGPS(mode: Int): LatLng {
+    val latitude = this.latitude
+    val longitude = this.longitude
 
-    val conLat = this.latitude
-    val conLon = this.longitude
+    val earthRadius = 6371.00877 // 지구 반경(km)
+    val gridSpacing = 5.0 // 격자 간격(km)
+    val standardLatitude1 = 30.0 // 투영 위도1(degree)
+    val standardLatitude2 = 60.0 // 투영 위도2(degree)
+    val referenceLongitude = 126.0 // 기준점 경도(degree)
+    val referenceLatitude = 38.0 // 기준점 위도(degree)
+    val originX = 43.0 // 기준점 X좌표(GRID)
+    val originY = 136.0 // 기준점 Y좌표(GRID)
 
-    val RE = 6371.00877 // 지구 반경(km)
-    val GRID = 5.0 // 격자 간격(km)
-    val SLAT1 = 30.0 // 투영 위도1(degree)
-    val SLAT2 = 60.0 // 투영 위도2(degree)
-    val OLON = 126.0 // 기준점 경도(degree)
-    val OLAT = 38.0 // 기준점 위도(degree)
-    val XO = 43.0 // 기준점 X좌표(GRID)
-    val YO = 136.0 // 기1준점 Y좌표(GRID)
-
-    //
-    // LCC DFS 좌표변환 ( code : "TO_GRID"(위경도->좌표, lat_X:위도,  lng_Y:경도), "TO_GPS"(좌표->위경도,  lat_X:x, lng_Y:y) )
-    //
-    val DEGRAD = Math.PI / 180.0
-    val RADDEG = 180.0 / Math.PI
-    val re = RE / GRID
-    val slat1 = SLAT1 * DEGRAD
-    val slat2 = SLAT2 * DEGRAD
-    val olon = OLON * DEGRAD
-    val olat = OLAT * DEGRAD
-    val sn =
-        ln(cos(slat1) / cos(slat2)) / ln(tan(Math.PI * 0.25 + slat2 * 0.5) / tan(Math.PI * 0.25 + slat1 * 0.5))
+    val degreeToRad = Math.PI / 180.0
+    val radToDegree = 180.0 / Math.PI
+    val re = earthRadius / gridSpacing
+    val slat1 = standardLatitude1 * degreeToRad
+    val slat2 = standardLatitude2 * degreeToRad
+    val olon = referenceLongitude * degreeToRad
+    val olat = referenceLatitude * degreeToRad
+    val sn = ln(cos(slat1) / cos(slat2)) / ln(tan(Math.PI * 0.25 + slat2 * 0.5) / tan(Math.PI * 0.25 + slat1 * 0.5))
     val sf = tan(Math.PI * 0.25 + slat1 * 0.5).pow(sn) * cos(slat1) / sn
     val ro = re * sf / tan(Math.PI * 0.25 + olat * 0.5).pow(sn)
 
     return if (mode == 0) {
-        val ra = re * sf / (tan(Math.PI * 0.25 + conLat * DEGRAD * 0.5)).pow(sn)
-        var theta = conLon * DEGRAD - olon
+        val ra = re * sf / (tan(Math.PI * 0.25 + latitude * degreeToRad * 0.5)).pow(sn)
+        var theta = longitude * degreeToRad - olon
         theta = when {
             theta > Math.PI -> theta - 2.0 * Math.PI
             theta < -Math.PI -> theta + 2.0 * Math.PI
@@ -221,68 +217,57 @@ fun LatLng.convertGRIDGPS(mode: Int): LatLng {
         }
         theta *= sn
 
-        LatLng(floor(ra * sin(theta) + XO + 0.5), floor(ro - ra * cos(theta) + YO + 0.5))
+        LatLng(floor(ra * sin(theta) + originX + 0.5), floor(ro - ra * cos(theta) + originY + 0.5))
     } else {
-        val xn = conLat - XO
-        val yn = ro - conLon + YO
+        val xn = latitude - originX
+        val yn = ro - longitude + originY
         var ra = sqrt(xn * xn + yn * yn)
-        if (sn < 0.0)   ra = -ra
+        if (sn < 0.0) ra = -ra
         var alat = (re * sf / ra).pow(1.0 / sn)
         alat = 2.0 * atan(alat) - Math.PI * 0.5
-        val theta = when{
+        val theta = when {
             abs(xn) <= 0.0 -> 0.0
-            abs(yn) <= 0.0 ->Math.PI * 0.5 * (if (xn < 0.0) -1 else 1)
+            abs(yn) <= 0.0 -> Math.PI * 0.5 * (if (xn < 0.0) -1 else 1)
             else -> atan2(xn, yn)
         }
         val alon = theta / sn + olon
-        LatLng(alat * RADDEG, alon * RADDEG)
+        LatLng(alat * radToDegree, alon * radToDegree)
     }
 }
 
 
 fun Dp.sp() = this.value.sp
 
+fun WeekDate.weekDateConvert(context: Context) =
+    context.getString(R.string.weekDate, this.month, this.day, this.dayOfWeek)
 
-fun WeekDate.weekDateConvert(context: Context) = context.getString(R.string.weekDate, this.month, this.day,this.dayOfWeek)
+fun String.rltmTitle(context: Context) = context.getString(R.string.rltmStation, this)
+
+fun String.rltmStationDate(context: Context) = context.getString(R.string.stationTime, this)
 
 
-//    fun rltmGradeConvert(grade:String) : String{
-//        with(application){
-//            val gradeString = when(grade){
-//                NUM1->{getString(R.string.grade1)}
-//                NUM2->{getString(R.string.grade2)}
-//                NUM3->{getString(R.string.grade3)}
-//                else->{getString(R.string.grade4)}
-//            }
-//
-//            return getString(R.string.grade, gradeString)
-//        }
-//    }
+fun String.rltmValueConvert(rltm: Int, context: Context): String {
+    val rltmChange = when (rltm) {
+        0 -> this
+        1, 2 -> context.getString(R.string.rltmUnit1, this)
+        else -> context.getString(R.string.rltmUnit2, this)
+    }
+    return context.getString(R.string.concentration, rltmChange)
+}
 
-//    fun rltmValueConvert(rltm:Int, value : String): String {
-//        with(application){
-//            val rltmChange = when(rltm){
-//                NUM0.toInt()->{value}
-//                NUM1.toInt(), NUM2.toInt()->{getString(R.string.rltmUnit1, value)}
-//                else->{getString(R.string.rltmUnit2, value)}
-//            }
-//
-//            return getString(R.string.concentration,rltmChange)
-//        }
-//    }
-//
-//    fun rltmTitle(value : String) = application.getString(R.string.rltmStation, value)
-//
-//    fun rltmStationDate(date : String) = application.getString(R.string.stationTime, date)
-//
-//    fun rltmFlag(flag : String) = application.getString(R.string.flag, flag)
-//
-//    fun airDateAndCode(date : String, code: String) = application.getString(R.string.dateAndCode, date, code)
-//
-//    fun airInformGrade(informGrade: String) = informGrade.split(",")
-//
-//    fun actionKnact(actionKnack : String) = application.getString(R.string.actionKnack, actionKnack)
+fun String.rltmGradeConvert(context: Context): String {
+    val gradeArray = context.resources.getStringArray(R.array.grade)
+    return context.getString(R.string.grade, gradeArray[this.toInt()-1])
+}
+
+fun String.rltmFlag(context: Context) = context.getString(R.string.flag, this)
 
 fun logMessage(message: Any?, tag: String = "MyApp") {
     Logger.t(tag).e(message.toString())
 }
+
+fun String.airDateAndCode(date : String, context: Context) = context.getString(R.string.dateAndCode, date, this)
+
+fun String.airInformGrade() = this.split(",")
+
+fun String.actionKnact(context: Context) = context.getString(R.string.actionKnack, this)

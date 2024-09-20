@@ -3,13 +3,14 @@ package com.project.newweatheropenapi.ui.compose.weather
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.WeatherViewModel
 
 @Composable
 fun WeatherScreen(
-    onNavigate: () -> Unit = {},
+    modifier: Modifier,
     viewModel: WeatherViewModel = hiltViewModel(),
     locationDataManager: LocationDataManager
 ) {
@@ -26,5 +27,5 @@ fun WeatherScreen(
         }
     }
 
-    WeatherScreenUI(onNavigate, address, viewModel)
+    WeatherScreenUI(modifier, viewModel)
 }

@@ -5,8 +5,8 @@ data class WeatherRequest(
     val pageNo:String,
     val numOfRows:String,
     val dataType:String,
-    val base_date:String,
-    val base_time:String,
+    val baseDate:String,
+    val baseTime:String,
     val nx:String,
     val ny:String
 )
@@ -17,8 +17,8 @@ fun WeatherRequest.toMap():Map<String, String>{
         "pageNo" to pageNo,
         "numOfRows" to numOfRows,
         "dataType" to dataType,
-        "base_date" to base_date,
-        "base_time" to base_time,
+        "base_date" to baseDate,
+        "base_time" to baseTime,
         "nx" to nx,
         "ny" to ny
     )

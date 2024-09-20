@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -54,6 +55,9 @@ fun ScreenNav(
     naverMapViewModel: NaverMapViewModel,
     paddingValues: PaddingValues
 ) {
+    val locationData = locationDataManager.locationData.collectAsState()
+    val address = locationData.value.address
+
     NavHost(
         navController = navController,
         startDestination = ScreenRoute.Intro.route,
@@ -66,20 +70,29 @@ fun ScreenNav(
                 })
         }
         composable(route = ScreenRoute.Weather.route) {
-            WeatherScreen(
-                onNavigate = { navigateTo(ScreenRoute.Weather, navController) },
-                locationDataManager = locationDataManager
-            )
+            ScreenWithTopLocationButton(
+                onClick = {navigateTo(ScreenRoute.Weather, navController)},
+                address = address
+            ) {modifier ->
+                WeatherScreen(
+                    modifier = modifier,
+                    locationDataManager = locationDataManager
+                )
+            }
         }
         composable(route = ScreenRoute.AirQuality.route) {
-            AirQualityScreen(
-                onNavigate = { navigateTo(ScreenRoute.AirQuality, navController) },
-                locationDataManager = locationDataManager
-            )
+            ScreenWithTopLocationButton(
+                onClick = {navigateTo(ScreenRoute.AirQuality, navController)},
+                address = address
+            ) {modifier ->
+                AirQualityScreen(
+                    modifier = modifier,
+                    locationDataManager = locationDataManager
+                )
+            }
         }
         composable(route = ScreenRoute.NaverMap.route) {
             NaverMapScreen(
-                onNavigate = { navigateTo(ScreenRoute.NaverMap, navController) },
                 locationDataManager = locationDataManager,
                 viewModel = naverMapViewModel
             )

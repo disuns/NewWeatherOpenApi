@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -20,68 +19,53 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.newweatheropenapi.R
-import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.ui.compose.TopLocationButton
+import com.project.newweatheropenapi.ui.compose.common.DotLineColumn
 import com.project.newweatheropenapi.ui.theme.Color_bbdefb
 import com.project.newweatheropenapi.utils.managers.LoadingStateManager
 import com.project.newweatheropenapi.utils.sp
 import com.project.newweatheropenapi.viewmodel.WeatherViewModel
 
 @Composable
-fun WeatherScreenUI(onNavigate: () -> Unit, address: String, viewModel: WeatherViewModel) {
+fun WeatherScreenUI(
+    modifier: Modifier,
+    viewModel: WeatherViewModel
+) {
     val weatherState by viewModel.weatherStateFlow.collectAsState()
     val timeWeatherState by viewModel.timeWeatherState.collectAsState()
     val weekRainSkyState by viewModel.weekRainSkyState.collectAsState()
 
-    val isLoading = weatherState is ApiResult.Loading ||
-            timeWeatherState is ApiResult.Loading ||
-            weekRainSkyState is ApiResult.Loading
-
-    LoadingStateManager.isShow(isLoading)
+    LoadingStateManager.isAnyLoadingCheck(weatherState, timeWeatherState, weekRainSkyState)
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
+            .background(Color_bbdefb)
+            .padding(
+                start = dimensionResource(R.dimen.PaddingStart),
+                end = dimensionResource(R.dimen.PaddingEnd)
+            ),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        TopLocationButton(
-            onClick = onNavigate,
+        TitleColumn()
+        NowWeatherColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
-            query = address
+                .weight(5f),
+            weatherState
         )
-
-        Column(
+        DotLineColumn()
+        TimeWeatherColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(14f)
-                .background(Color_bbdefb)
-                .padding(
-                    start = dimensionResource(R.dimen.PaddingStart),
-                    end = dimensionResource(R.dimen.PaddingEnd)
-                ),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            TitleColumn()
-            NowWeatherColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(5f),
-                weatherState
-            )
-            TimeWeatherColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(5f),
-                timeWeatherState
-            )
-            WeekWeatherColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(4f),
-                weekRainSkyState
-            )
-        }
+                .weight(5f),
+            timeWeatherState
+        )
+        DotLineColumn()
+        WeekWeatherColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(4f),
+            weekRainSkyState
+        )
     }
 }
 

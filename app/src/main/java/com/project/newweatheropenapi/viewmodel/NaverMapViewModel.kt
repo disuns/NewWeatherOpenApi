@@ -9,6 +9,7 @@ import com.project.newweatheropenapi.network.dataclass.request.navermap.toMap
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
 import com.project.newweatheropenapi.utils.logMessage
+import com.project.newweatheropenapi.utils.managers.LoadingStateManager
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.utils.mapAddressConvert
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,35 +33,45 @@ class NaverMapViewModel @Inject constructor(
     }
 
     fun getLocation() {
-//            _locationData.value = LocationData(LatLng(lat=37.51982548626224, lon = 126.88237267230349))
         locationDataManager.getGps { lat, lon ->
             fetchNaverMap(lon, lat)
         }
     }
 
-    fun fetchNaverMap(lon : Double, lat:Double) {
+    fun fetchNaverMap(lon: Double, lat: Double) {
         val latLng = "$lon,$lat"
-        locationDataManager.updateLocationData(LatLng(lat,lon),"")
+        locationDataManager.updateLocationData(LatLng(lat, lon))
 
         val request = NaverMapRequest(coords = latLng)
         fetchData({ repository.getReverseGeoCo(request.toMap()) }, _naverMapStateFlow)
     }
 
-    fun reverseGeocode(result: NaverMapResponse) {
+    private fun reverseGeocode(result: NaverMapResponse) {
         val address = result.mapAddressConvert(context)
-        locationDataManager.updateLocationData(locationDataManager.locationData.value.latLng, address)
+
+        val lastRegion = result.results.last().region.area3.coords.center
+
+        locationDataManager.updateLocationData(
+            locationDataManager.locationData.value.latLng,
+            address,
+            lastRegion.x.toString(),
+            lastRegion.y.toString()
+        )
     }
 
     private fun onHandledFlow() {
         viewModelScope.launch {
             naverMapStateFlow.collect { naverMapState ->
+                LoadingStateManager.isAnyLoadingCheck(naverMapState)
                 when (naverMapState) {
                     is ApiResult.Success -> {
                         val response = (_naverMapStateFlow.value as ApiResult.Success).value
-                        if(response.status.code==0) {
+
+                        if (response.status.code == 0) {
                             reverseGeocode(response)
                         }
                     }
+
                     is ApiResult.Empty -> {}
                     is ApiResult.Error -> logMessage("Error: ${naverMapState.exception}")
                     is ApiResult.Loading -> {}

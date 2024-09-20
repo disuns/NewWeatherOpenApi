@@ -1,5 +1,6 @@
 package com.project.newweatheropenapi.ui.compose
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,12 +17,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.project.newweatheropenapi.R
+import com.project.newweatheropenapi.ui.theme.icon.SearchImageVector
+
+@Composable
+fun ScreenWithTopLocationButton(
+    onClick: () -> Unit,
+    address: String,
+    content: @Composable (Modifier) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        TopLocationButton(
+            onClick = onClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            query = address
+        )
+        content(
+            Modifier
+                .fillMaxWidth()
+                .weight(14f)
+        )
+    }
+}
 
 @Composable
 fun TopLocationButton(modifier: Modifier, query : String = "", onClick:() -> Unit) {
@@ -38,7 +64,7 @@ fun TopLocationButton(modifier: Modifier, query : String = "", onClick:() -> Uni
             modifier = Modifier.fillMaxSize()
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_baseline_search_24),
+                imageVector = SearchImageVector,
                 contentDescription = null,
                 tint = Color.Black,
             )

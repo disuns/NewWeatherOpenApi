@@ -56,12 +56,11 @@ class WeatherViewModel @Inject constructor(
 
         viewModelScope.launch {
             val weatherDeferred = async { fetchWeather(latitude.toString(), longitude.toString()) }
+            weatherDeferred.await()
             val nowWeatherDeferred =
                 async { fetchTimeWeather(latitude.toString(), longitude.toString()) }
-            val weekRainSkyDeferred = async { fetchWeekRainSky(landCode) }
-
-            weatherDeferred.await()
             nowWeatherDeferred.await()
+            val weekRainSkyDeferred = async { fetchWeekRainSky(landCode) }
             weekRainSkyDeferred.await()
         }
     }
