@@ -14,15 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.ui.compose.common.DotLineColumn
 import com.project.newweatheropenapi.ui.theme.Color_bbdefb
+import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
 import com.project.newweatheropenapi.utils.managers.LoadingStateManager
-import com.project.newweatheropenapi.utils.sp
 import com.project.newweatheropenapi.viewmodel.WeatherViewModel
 
 @Composable
@@ -78,10 +76,7 @@ fun TitleColumn() {
     ) {
         Text(
             text = stringResource(R.string.nowWeather),
-            style = TextStyle(
-                fontSize = dimensionResource(R.dimen.WeatherTitle).sp(),
-                fontWeight = FontWeight.Bold
-            ),
+            style = defaultTitleTextStyle(),
             modifier = Modifier.align(Alignment.Center)
         )
     }

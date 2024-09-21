@@ -8,6 +8,7 @@
     <string name="weekWeather">주간 예보</string>
     <string name="nullString">-</string>
     <string name="airQualityTitle">전국 대기 예보</string>
+    <string name="predictionModel">시간대별 예측 모델</string>
 
     <string name="loadingImage">이미지 로딩중</string>
 
@@ -77,6 +78,9 @@
 <!--    navtest용-->
     <string name="airQuality">airQuality</string>
     <string name="navermap">navermap</string>
+
+<!--    대기예보 문구-->
+    <string name="airQualityDesc">[자료출처]환경부/한국환경공단\n(데이터는 실시간 관측된 자료이며 측정소 현지 사정이나 데이터의 수신상태에 따라 미수신 될 수 있음)</string>
 
 
     <string-array name="Tab">

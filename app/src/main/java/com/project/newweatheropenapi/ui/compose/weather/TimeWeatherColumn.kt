@@ -28,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -40,6 +39,7 @@ import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DefaultError
+import com.project.newweatheropenapi.ui.previewParamProvider.CardDataPreviewParamProvider
 import com.project.newweatheropenapi.ui.theme.Color_7192ad
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.RAIN_MM
@@ -94,8 +94,8 @@ fun TimeWeatherColumn(modifier: Modifier, timeWeatherState: ApiResult<WeatherRes
                         .fillMaxSize()
                         .padding(vertical = 8.dp),
                     state = pagerState,
-                    contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.CardViewPadding)),
-                    pageSpacing = dimensionResource(R.dimen.CardViewPadding)/2
+                    contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.WeatherCardViewPadding)),
+                    pageSpacing = dimensionResource(R.dimen.WeatherCardViewPadding)/2
                 ) { page ->
                     WeatherTimeItem(
                         modifier = Modifier.graphicsLayer {
@@ -277,21 +277,4 @@ fun PreviewCard(
     @PreviewParameter(CardDataPreviewParamProvider::class) weatherState: TimeWeatherData
 ) {
     WeatherTimeItem(timeWeatherData = weatherState)
-}
-
-class CardDataPreviewParamProvider : PreviewParameterProvider<TimeWeatherData> {
-    override val values = sequenceOf(
-        TimeWeatherData(
-            weatherDate = "20240916",
-            weatherTime = "1800",
-            temp = "29",
-            sky = "3",
-            rainPer = "30",
-            rainMm = "강수없음",
-            wet = "70",
-            windDir = "156",
-            windPower = "1.3",
-            rain = "0"
-        )
-    )
 }

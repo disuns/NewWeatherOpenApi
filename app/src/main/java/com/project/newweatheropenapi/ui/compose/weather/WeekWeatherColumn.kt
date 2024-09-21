@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -37,6 +36,7 @@ import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRainSkyResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DefaultError
+import com.project.newweatheropenapi.ui.previewParamProvider.WeekCardDataPreviewParamProvider
 import com.project.newweatheropenapi.ui.theme.Color_7192ad
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.dataPotalResultCode
@@ -241,20 +241,4 @@ fun PreviewWeekCard(
     @PreviewParameter(WeekCardDataPreviewParamProvider::class) weatherState: WeekWeatherData
 ) {
     WeekWeatherItem(data = weatherState)
-}
-
-class WeekCardDataPreviewParamProvider : PreviewParameterProvider<WeekWeatherData> {
-    override val values = sequenceOf(
-        WeekWeatherData(
-            weekDate = WeekDate(
-                month = "09",
-                day = "18",
-                dayOfWeek = "수"
-            ),
-            rainAm = "80",
-            rainPm = "20",
-            skyAm = "구름많고 비",
-            skyPm = "맑음"
-        )
-    )
 }

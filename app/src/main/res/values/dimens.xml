@@ -2,7 +2,6 @@
 <resources>
     <!--text-->
     <dimen name="Loading">30sp</dimen>
-    <dimen name="WeatherTitle">28sp</dimen>
     <dimen name="NowTempText">64sp</dimen>
     <dimen name="NowWeatherText">30sp</dimen>
     <dimen name="NowWetRainWindColumn">18sp</dimen>
@@ -10,9 +9,9 @@
     <dimen name="TimeItemText">18sp</dimen>
     <dimen name="TimeItemWindText">14sp</dimen>
     <dimen name="WeatherViewTitle">24dp</dimen>
-    <dimen name="AirQualityTitle">28sp</dimen>
     <dimen name="AirQualityDateCode">14sp</dimen>
     <dimen name="AirQualityCauseAndOverAll">18sp</dimen>
+    <dimen name="DefaultTitle">28sp</dimen>
 
     <!--ui-->
     <dimen name="PaddingStart">14dp</dimen>
@@ -20,7 +19,8 @@
     <dimen name="NowFcstIV">110dp</dimen>
     <dimen name="SearchViewPadding">10dp</dimen>
     <dimen name="SearchButtonPadding">10dp</dimen>
-    <dimen name="CardViewPadding">90dp</dimen>
+    <dimen name="WeatherCardViewPadding">90dp</dimen>
+    <dimen name="PredictionModelCardViewPadding">20dp</dimen>
     <dimen name="TimeItemElevation">3dp</dimen>
     <dimen name="WeekItemElevation">1dp</dimen>
     <dimen name="WeekItemPadding">4dp</dimen>
@@ -35,19 +35,5 @@
     <dimen name="SpinnerPadding">12dp</dimen>
     <dimen name="rltmStationCardPadding">5dp</dimen>
 
-
-
-
     <dimen name="MainText">16dp</dimen>
-    <dimen name="ViewPagerImageTitle">24dp</dimen>
-    <dimen name="IndexValueSize">16dp</dimen>
-
-
-    <dimen name="WeekRVItemIV">30dp</dimen>
-    <dimen name="WeekRVMarginTV">10dp</dimen>
-    <dimen name="FcstOffsetBetweenPages">80dp</dimen>
-    <dimen name="IndexOffsetBetweenPages">40dp</dimen>
-    <dimen name="SpinnerItemPadding">8dp</dimen>
-    <dimen name="AirQualityImageMargin">50dp</dimen>
-    <dimen name="AirQualityDefaultMargin">5dp</dimen>
 </resources>

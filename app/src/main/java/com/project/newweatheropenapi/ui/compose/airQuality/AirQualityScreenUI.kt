@@ -40,16 +40,17 @@ fun AirQualityScreenUI(modifier: Modifier, viewModel: AirQualityViewModel) {
         }
         item { DotLineColumn() }
         item {
-            PredictionModelColumn(
+            AirQualityColumn(
                 modifier = Modifier
                     .fillMaxWidth(),
                 airQualityState)
         }
         item { DotLineColumn() }
         item {
-            AirQualityColumn(
+            PredictionModelColumn(
                 modifier = Modifier
-                    .fillMaxWidth())
+                    .fillMaxWidth(),
+                airQualityState)
         }
     }
 

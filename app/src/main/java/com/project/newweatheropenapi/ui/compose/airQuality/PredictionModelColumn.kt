@@ -1,88 +1,109 @@
 package com.project.newweatheropenapi.ui.compose.airQuality
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.AirQualityResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DefaultError
+import com.project.newweatheropenapi.ui.previewParamProvider.AirQualityPreviewParamProvider
+import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
 import com.project.newweatheropenapi.utils.NO_ERROR
-import com.project.newweatheropenapi.utils.actionKnact
-import com.project.newweatheropenapi.utils.airDateAndCode
-import com.project.newweatheropenapi.utils.airInformGrade
 import com.project.newweatheropenapi.utils.dataPotalResultCode
-import com.project.newweatheropenapi.utils.logMessage
-import com.project.newweatheropenapi.utils.sp
+import kotlin.math.absoluteValue
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun PredictionModelColumn(modifier: Modifier, airQualityState: ApiResult<AirQualityResponse>){
+fun PredictionModelColumn(modifier: Modifier, airQualityState: ApiResult<AirQualityResponse>) {
     val context = LocalContext.current
 
-    ApiResultHandler(modifier,airQualityState){ successState ->
-        if(successState.value.response.header.resultCode!= NO_ERROR) {
-            DefaultError(modifier)
-            successState.value.response.header.resultCode.dataPotalResultCode(context)
-        }else{
-            val data = successState.value.response.body.items[0]
-            Column(modifier = modifier) {
-                Text(text = stringResource(R.string.airQualityTitle),
-                    fontSize = dimensionResource(R.dimen.AirQualityTitle).sp(),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
+    Column(modifier = modifier) {
+        ApiResultHandler(modifier, airQualityState) { successState ->
+            if (successState.value.response.header.resultCode != NO_ERROR) {
+                DefaultError(modifier)
+                successState.value.response.header.resultCode.dataPotalResultCode(context)
+            } else {
+                Text(
+                    text = stringResource(R.string.predictionModel),
+                    style = defaultTitleTextStyle()
                 )
 
-                Text(text = data.informCode.airDateAndCode(data.dataTime, context),
-                    fontSize = dimensionResource(R.dimen.AirQualityDateCode).sp(),
-                    modifier = Modifier.align(Alignment.End)
+                val airData = successState.value.response.body.items[0]
+
+                val imageList = mutableListOf(
+                    airData.imageUrl1,
+                    airData.imageUrl2,
+                    airData.imageUrl3
+                )
+                val pagerState = rememberPagerState(
+                    pageCount = { imageList.size }
                 )
 
-                Text(text = data.informOverall,
-                    fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
-                    modifier = Modifier.align(Alignment.Start)
-                )
 
-                Text(text = data.informCause,
-                    fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
-                    modifier = Modifier.align(Alignment.Start)
-                )
+                HorizontalPager(
+                    modifier = Modifier,
+                    state = pagerState,
+                    contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.PredictionModelCardViewPadding)),
+                    pageSpacing = dimensionResource(R.dimen.PredictionModelCardViewPadding) / 2
+                ) { page ->
+                    GlideImage(
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .graphicsLayer {
+                                val pageOffset =
+                                    (pagerState.currentPage - page + pagerState.currentPageOffsetFraction)
+                                val offsetFraction = pageOffset.absoluteValue.coerceIn(0f, 1f)
 
-                val actionKnacktNullCheck =when(data.actionKnack.isNullOrBlank()){
-                    true-> stringResource(R.string.nullString)
-                    else->data.actionKnack
+                                alpha = lerp(
+                                    start = 0.5f,
+                                    stop = 1.0f,
+                                    fraction = 1f - offsetFraction,
+                                )
+
+                                scaleX = lerp(
+                                    start = 1f,
+                                    stop = 0.8f,
+                                    fraction = offsetFraction,
+                                )
+
+                                scaleY = scaleX
+                                translationX =
+                                    size.width * (1 - scaleX) / 2 * (if (pagerState.currentPage > page) 1 else -1)
+                            },
+                        model = imageList[page],
+                        contentDescription = stringResource(R.string.loadingImage)
+                    )
                 }
-                Text(text = actionKnacktNullCheck.actionKnact(context),
-                    fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
-                    modifier = Modifier.align(Alignment.Start)
-                )
 
-                val informGrades = data.informGrade.airInformGrade().toMutableList()
-
-                logMessage(informGrades)
-                LazyHorizontalGrid(
-                    rows = GridCells.Fixed(3),
-                    modifier = Modifier.fillMaxWidth()
-                        .weight(1f)
-                        .padding(vertical = 8.dp)
-                ) {
-                    items(informGrades.size) { item ->
-                        Text(text = item.toString())
-                    }
-                }
+                Text(text = stringResource(R.string.airQualityDesc))
             }
         }
-
     }
+}
+
+@Preview
+@Composable
+fun PreviewPredictionModelColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: ApiResult<AirQualityResponse>) {
+    PredictionModelColumn(
+        modifier = Modifier.height(900.dp),
+        airQualityState = previewData
+    )
 }
