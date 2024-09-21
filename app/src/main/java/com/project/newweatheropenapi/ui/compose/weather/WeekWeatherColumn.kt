@@ -40,7 +40,6 @@ import com.project.newweatheropenapi.ui.previewParamProvider.WeekCardDataPreview
 import com.project.newweatheropenapi.ui.theme.Color_7192ad
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.dataPotalResultCode
-import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.utils.managers.TimeManager
 import com.project.newweatheropenapi.utils.rainPerConvert
 import com.project.newweatheropenapi.utils.sp
@@ -105,7 +104,6 @@ fun WeekWeatherItem(data: WeekWeatherData) {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            logMessage(data.weekDate.dayOfWeek)
             Text(
                 modifier = Modifier.weight(3f),
                 text = data.weekDate.weekDateConvert(context),

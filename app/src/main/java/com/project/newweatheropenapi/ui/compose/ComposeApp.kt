@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,18 +20,17 @@ import com.project.newweatheropenapi.ui.compose.bottomNavigationBar.BottomNaviga
 import com.project.newweatheropenapi.ui.compose.intro.IntroScreen
 import com.project.newweatheropenapi.ui.compose.navermap.NaverMapScreen
 import com.project.newweatheropenapi.ui.compose.weather.WeatherScreen
+import com.project.newweatheropenapi.utils.managers.LoadingStateManager
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
+import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
+import com.project.newweatheropenapi.viewmodel.WeatherViewModel
 
 @Composable
 fun InitScreen(
-    locationDataManager: LocationDataManager,
-    naverMapViewModel: NaverMapViewModel = hiltViewModel()
+    locationDataManager: LocationDataManager
 ) {
     val navController = rememberNavController()
-    LaunchedEffect(Unit) {
-        naverMapViewModel.getLocation()
-    }
 
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
@@ -42,7 +42,6 @@ fun InitScreen(
         ScreenNav(
             navController = navController,
             locationDataManager = locationDataManager,
-            naverMapViewModel = naverMapViewModel,
             paddingValues = paddingValues
         )
     }
@@ -52,11 +51,33 @@ fun InitScreen(
 fun ScreenNav(
     navController: NavHostController,
     locationDataManager: LocationDataManager,
-    naverMapViewModel: NaverMapViewModel,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    naverMapViewModel: NaverMapViewModel = hiltViewModel(),
+    weatherViewModel: WeatherViewModel = hiltViewModel(),
+    airQualityViewModel: AirQualityViewModel = hiltViewModel()
 ) {
     val locationData = locationDataManager.locationData.collectAsState()
-    val address = locationData.value.address
+    val locationValue = locationData.value
+    val address = locationValue.address
+
+    val context = LocalContext.current
+
+    LaunchedEffect(address) {
+        if (address.isNotEmpty()) {
+            with(locationValue) {
+                weatherViewModel.fetchAllWeatherData(
+                    nx = latLng.latitude.toString(),
+                    ny = latLng.longitude.toString(),
+                    address = address
+                )
+                airQualityViewModel.fetchAllAirQualityData(
+                    regionX = x,
+                    regionY = y,
+                    context
+                )
+            }
+        }
+    }
 
     NavHost(
         navController = navController,
@@ -67,6 +88,8 @@ fun ScreenNav(
             IntroScreen(
                 onNavigate = {
                     navigateTo(ScreenRoute.Intro, navController, true)
+                    LoadingStateManager.isShow(true)
+                    naverMapViewModel.getLocation()
                 })
         }
         composable(route = ScreenRoute.Weather.route) {
@@ -74,10 +97,7 @@ fun ScreenNav(
                 onClick = {navigateTo(ScreenRoute.Weather, navController)},
                 address = address
             ) {modifier ->
-                WeatherScreen(
-                    modifier = modifier,
-                    locationDataManager = locationDataManager
-                )
+                WeatherScreen(modifier = modifier, viewModel = weatherViewModel)
             }
         }
         composable(route = ScreenRoute.AirQuality.route) {
@@ -87,7 +107,7 @@ fun ScreenNav(
             ) {modifier ->
                 AirQualityScreen(
                     modifier = modifier,
-                    locationDataManager = locationDataManager
+                    viewModel = airQualityViewModel
                 )
             }
         }

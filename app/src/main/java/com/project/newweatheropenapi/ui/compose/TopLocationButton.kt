@@ -1,28 +1,29 @@
 package com.project.newweatheropenapi.ui.compose
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.ui.theme.icon.SearchImageVector
+import com.project.newweatheropenapi.utils.sp
 
 @Composable
 fun ScreenWithTopLocationButton(
@@ -30,50 +31,61 @@ fun ScreenWithTopLocationButton(
     address: String,
     content: @Composable (Modifier) -> Unit
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
+        content(
+            Modifier.fillMaxSize()
+        )
         TopLocationButton(
             onClick = onClick,
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+                .fillMaxWidth(),
             query = address
-        )
-        content(
-            Modifier
-                .fillMaxWidth()
-                .weight(14f)
         )
     }
 }
 
 @Composable
-fun TopLocationButton(modifier: Modifier, query : String = "", onClick:() -> Unit) {
-    val padding = dimensionResource(R.dimen.SearchButtonPadding)
-
-    Button(
-        onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-        shape = RectangleShape
+fun TopLocationButton(modifier: Modifier, query: String = "", onClick: () -> Unit) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color.Black, Color.Transparent),
+                    startY = 0f,
+                    endY = Float.POSITIVE_INFINITY
+                )
+            )
+            .padding(horizontal = 16.dp, vertical = 12.5.dp),
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Center)
+                .clickable { onClick() }
+                .background(
+                    color = Color(0x4DFFFFFF),
+                    shape = RoundedCornerShape(999.dp)
+                )
+                .align(Alignment.Center),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = SearchImageVector,
                 contentDescription = null,
-                tint = Color.Black,
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 12.dp, end = 8.dp),
+                tint = Color.White
             )
-            Spacer(modifier = Modifier.width(padding))
             Text(
-                color = Color.Black,
+                color = Color.White,
                 text = query,
-                fontSize = dimensionResource(id = R.dimen.MainText).value.sp,
-                modifier = Modifier.weight(1f),
+                fontSize = dimensionResource(id = R.dimen.MainText).sp(),
+                modifier = Modifier.fillMaxWidth().weight(1f),
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
@@ -83,6 +95,8 @@ fun TopLocationButton(modifier: Modifier, query : String = "", onClick:() -> Uni
 
 @Preview
 @Composable
-fun PreviewTopLocationButton(){
-    TopLocationButton(modifier = Modifier.fillMaxWidth().height(100.dp)){}
+fun PreviewTopLocationButton() {
+    TopLocationButton(modifier = Modifier
+        .fillMaxWidth()
+        .height(100.dp)) {}
 }

@@ -22,6 +22,7 @@ class LocationDataManager @Inject constructor(
 
     @SuppressLint("MissingPermission")
     fun getGps(onLocationFetched: (Double, Double) -> Unit) {
+        LoadingStateManager.isShow(true)
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
             .setMinUpdateIntervalMillis(5000)
             .build()

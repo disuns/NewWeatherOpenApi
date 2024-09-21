@@ -54,10 +54,13 @@ class AirQualityViewModel @Inject constructor(private val repository: AirQuality
 
             _stationFindStateFlow.collect { stationFindResult ->
                 if (stationFindResult is ApiResult.Success) {
-                    val rltmStationDeferred = async {
-                        fetchRltmStation(stationFindResult.value.response.body.items[0].stationName)
+                    val body = stationFindResult.value.response.body
+                    val items = body?.items
+
+                    if (!items.isNullOrEmpty()) {
+                        val rltmStationDeferred = async { fetchRltmStation(items[0].stationName) }
+                        rltmStationDeferred.await()
                     }
-                    rltmStationDeferred.await()
                 }
             }
         }

@@ -65,7 +65,7 @@ fun MeasuringStationColumn(
     val context = LocalContext.current
     var dropdownSelectedOption by remember { mutableStateOf("통합 대기") }
 
-    ApiResultHandler(modifier, stationFindState) { succesState->
+    ApiResultHandler(modifier, stationFindState) { succesState ->
         StationFindSuccess(
             modifier,
             succesState,
@@ -98,7 +98,11 @@ fun StationFindSuccess(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stationFindState.value.response.body.items[0].stationName.rltmTitle(context),
+                modifier = Modifier.padding(top = 8.dp),
+                text = stationFindState.value.response.body?.items?.firstOrNull()?.stationName?.rltmTitle(
+                    context
+                )
+                    ?: "정보없음",
                 style = defaultTitleTextStyle()
             )
             HandleRltmStationState(
@@ -157,7 +161,8 @@ fun CustomSpinner(selectOption: (String) -> Unit) {
         expanded = expandStatus,
         onExpandedChange = { expandStatus = !expandStatus },
         modifier = Modifier
-            .fillMaxWidth().clip(RoundedCornerShape(dimensionResource(R.dimen.ItemCornerShape)))
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(dimensionResource(R.dimen.ItemCornerShape)))
             .background(
                 color = Color_c5cae9,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.ItemCornerShape))
@@ -220,8 +225,6 @@ fun MeasuringStationCard(
 
     val stationData = dataMapping[dropdownSelectedOption] ?: MeasuringData("", "", null)
 
-
-
     Card(
         modifier = modifier.padding(dimensionResource(R.dimen.rltmStationCardPadding)),
         colors = cardColors(
@@ -234,15 +237,15 @@ fun MeasuringStationCard(
             modifier = Modifier.padding(dimensionResource(R.dimen.rltmStationCardPadding))
         ) {
             Text(
-                text = stationData.data1.rltmValueConvert(
-                    rltmData.indexOf(dropdownSelectedOption),
-                    context
-                ),
+                text = (stationData.data1?.takeIf { it.isNotBlank() }
+                    ?: stringResource(R.string.nullString))
+                    .rltmValueConvert(rltmData.indexOf(dropdownSelectedOption), context),
                 color = Color.White,
                 fontSize = 16.sp
             )
             Text(
-                text = stationData.data2.rltmGradeConvert(context),
+                text = (stationData.data2?.takeIf { it.isNotBlank() }
+                    ?: stringResource(R.string.nullString)).rltmGradeConvert(context),
                 color = Color.White,
                 fontSize = 16.sp
             )

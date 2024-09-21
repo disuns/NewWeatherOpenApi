@@ -18,7 +18,6 @@
     <dimen name="PaddingEnd">10dp</dimen>
     <dimen name="NowFcstIV">110dp</dimen>
     <dimen name="SearchViewPadding">10dp</dimen>
-    <dimen name="SearchButtonPadding">10dp</dimen>
     <dimen name="WeatherCardViewPadding">90dp</dimen>
     <dimen name="PredictionModelCardViewPadding">20dp</dimen>
     <dimen name="TimeItemElevation">3dp</dimen>

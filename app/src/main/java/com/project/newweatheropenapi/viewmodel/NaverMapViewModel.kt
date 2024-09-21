@@ -70,6 +70,7 @@ class NaverMapViewModel @Inject constructor(
                         if (response.status.code == 0) {
                             reverseGeocode(response)
                         }
+                        LoadingStateManager.isShow(false)
                     }
 
                     is ApiResult.Empty -> {}

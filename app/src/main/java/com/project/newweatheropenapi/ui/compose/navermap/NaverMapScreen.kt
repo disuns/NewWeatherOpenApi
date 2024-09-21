@@ -6,11 +6,11 @@ import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Icon
@@ -24,11 +24,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.unit.dp
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
@@ -47,13 +49,14 @@ import com.project.newweatheropenapi.ui.theme.icon.SearchImageVector
 import com.project.newweatheropenapi.utils.isNetworkCheck
 import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
+import com.project.newweatheropenapi.utils.sp
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 import java.io.IOException
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun NaverMapScreen(
-    viewModel: NaverMapViewModel = hiltViewModel(),
+    viewModel: NaverMapViewModel,
     locationDataManager: LocationDataManager
 ) {
     val context = LocalContext.current
@@ -135,26 +138,34 @@ fun MapSearchView(
 ) {
     var query by remember { mutableStateOf(initQuery) }
 
-    val searchViewPadding = dimensionResource(R.dimen.SearchViewPadding)
-
     Box(
         Modifier
-            .background(Color.Transparent)
-            .padding(start = searchViewPadding, end = searchViewPadding, top = searchViewPadding)
+            .fillMaxWidth()
+            .background(brush = Brush.verticalGradient(
+                colors = listOf(Color.Black, Color.Transparent),
+                startY = 0f,
+                endY = Float.POSITIVE_INFINITY
+            ))
+            .padding(horizontal = 16.dp, vertical = 12.5.dp)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Gray)
-                .padding(start = searchViewPadding),
+                .background(
+                    color = Color(0x4DFFFFFF),
+                    shape = RoundedCornerShape(999.dp)
+                )
+                .align(Alignment.Center),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = SearchImageVector,
                 contentDescription = null,
-                tint = Color.Black,
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 12.dp, end = 8.dp),
+                tint = Color.White
             )
-            Spacer(modifier = Modifier.width(searchViewPadding))
             BasicTextField(
                 value = query,
                 onValueChange = { newValue ->
@@ -162,12 +173,14 @@ fun MapSearchView(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.Gray)
+                    .background(Color.Transparent)
                     .weight(1f),
                 singleLine = true,
                 keyboardActions = KeyboardActions(
                     onDone = { onSearch(query) }
                 ),
+                textStyle = TextStyle(color = Color.White,
+                    fontSize = dimensionResource(id = R.dimen.MainText).sp())
             )
 
             IconButton(
