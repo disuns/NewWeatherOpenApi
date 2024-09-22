@@ -1,7 +1,6 @@
 package com.project.newweatheropenapi.app
 
 import android.app.Application
-import android.widget.Toast
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.FormatStrategy
 import com.orhanobut.logger.Logger
@@ -21,6 +20,4 @@ class WeatherApplication:Application() {
 
         Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
     }
-
-    fun toastMessage(text:String) = Toast.makeText(this,text, Toast.LENGTH_SHORT).show()
 }

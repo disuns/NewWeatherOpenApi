@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.ui.compose.common.DotLineColumn
-import com.project.newweatheropenapi.ui.theme.Color_bbdefb
+import com.project.newweatheropenapi.ui.theme.Default_BackGround
 import com.project.newweatheropenapi.utils.managers.LoadingStateManager
 import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
 
@@ -28,7 +28,7 @@ fun AirQualityScreen(
 
     LazyColumn (
         modifier = modifier
-            .background(Color_bbdefb)
+            .background(Default_BackGround)
             .padding(
                 start = dimensionResource(R.dimen.PaddingStart),
                 end = dimensionResource(R.dimen.PaddingEnd)

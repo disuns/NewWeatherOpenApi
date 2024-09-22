@@ -5,19 +5,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.ui.compose.common.DotLineColumn
-import com.project.newweatheropenapi.ui.theme.Color_bbdefb
-import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
+import com.project.newweatheropenapi.ui.theme.Default_BackGround
 import com.project.newweatheropenapi.utils.managers.LoadingStateManager
 import com.project.newweatheropenapi.viewmodel.WeatherViewModel
 
@@ -34,18 +30,13 @@ fun WeatherScreen(
 
     Column(
         modifier = modifier
-            .background(Color_bbdefb)
+            .background(Default_BackGround)
             .padding(
                 start = dimensionResource(R.dimen.PaddingStart),
                 end = dimensionResource(R.dimen.PaddingEnd)
             ),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(
-            modifier = Modifier.padding(top = 8.dp).align(Alignment.CenterHorizontally),
-            text = stringResource(R.string.nowWeather),
-            style = defaultTitleTextStyle()
-        )
         NowWeatherColumn(
             modifier = Modifier
                 .fillMaxWidth()

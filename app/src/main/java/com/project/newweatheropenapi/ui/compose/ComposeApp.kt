@@ -6,6 +6,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -20,7 +21,6 @@ import com.project.newweatheropenapi.ui.compose.bottomNavigationBar.BottomNaviga
 import com.project.newweatheropenapi.ui.compose.intro.IntroScreen
 import com.project.newweatheropenapi.ui.compose.navermap.NaverMapScreen
 import com.project.newweatheropenapi.ui.compose.weather.WeatherScreen
-import com.project.newweatheropenapi.utils.managers.LoadingStateManager
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
@@ -32,7 +32,8 @@ fun InitScreen(
 ) {
     val navController = rememberNavController()
 
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(bottomBar = {
         if (currentRoute in listOf(ScreenRoute.Weather.route, ScreenRoute.AirQuality.route)) {
@@ -88,7 +89,6 @@ fun ScreenNav(
             IntroScreen(
                 onNavigate = {
                     navigateTo(ScreenRoute.Intro, navController, true)
-                    LoadingStateManager.isShow(true)
                     naverMapViewModel.getLocation()
                 })
         }

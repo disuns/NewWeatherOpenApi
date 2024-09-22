@@ -3,6 +3,7 @@ package com.project.newweatheropenapi.ui.compose
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.project.newweatheropenapi.R
+import com.project.newweatheropenapi.ui.theme.Default_BackGround
 import com.project.newweatheropenapi.ui.theme.icon.SearchImageVector
 import com.project.newweatheropenapi.utils.sp
 
@@ -31,18 +33,18 @@ fun ScreenWithTopLocationButton(
     address: String,
     content: @Composable (Modifier) -> Unit
 ) {
-    Box(
+    Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        content(
-            Modifier.fillMaxSize()
-        )
         TopLocationButton(
             onClick = onClick,
             modifier = Modifier
                 .fillMaxWidth(),
             query = address
+        )
+        content(
+            Modifier.fillMaxSize()
         )
     }
 }
@@ -54,7 +56,7 @@ fun TopLocationButton(modifier: Modifier, query: String = "", onClick: () -> Uni
             .fillMaxWidth()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(Color.Black, Color.Transparent),
+                    colors = listOf(Color.Black, Default_BackGround),
                     startY = 0f,
                     endY = Float.POSITIVE_INFINITY
                 )
@@ -69,8 +71,7 @@ fun TopLocationButton(modifier: Modifier, query: String = "", onClick: () -> Uni
                 .background(
                     color = Color(0x4DFFFFFF),
                     shape = RoundedCornerShape(999.dp)
-                )
-                .align(Alignment.Center),
+                ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(

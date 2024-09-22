@@ -3,10 +3,12 @@ package com.project.newweatheropenapi.ui.compose.airQuality
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -35,13 +37,14 @@ import kotlin.math.absoluteValue
 fun PredictionModelColumn(modifier: Modifier, airQualityState: ApiResult<AirQualityResponse>) {
     val context = LocalContext.current
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.padding(top = 8.dp)) {
         ApiResultHandler(modifier, airQualityState) { successState ->
             if (successState.value.response.header.resultCode != NO_ERROR) {
                 DefaultError(modifier)
                 successState.value.response.header.resultCode.dataPotalResultCode(context)
             } else {
                 Text(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                     text = stringResource(R.string.predictionModel),
                     style = defaultTitleTextStyle()
                 )

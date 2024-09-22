@@ -3,6 +3,7 @@ package com.project.newweatheropenapi.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.widget.Toast
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.naver.maps.geometry.LatLng
@@ -265,6 +266,7 @@ fun String.rltmFlag(context: Context) = context.getString(R.string.flag, this)
 fun logMessage(message: Any?, tag: String = "MyApp") {
     Logger.t(tag).e(message.toString())
 }
+fun toastMessage(text:String, context: Context) = Toast.makeText(context,text, Toast.LENGTH_SHORT).show()
 
 fun String.airDateAndCode(date : String, context: Context) = context.getString(R.string.dateAndCode, date, this)
 

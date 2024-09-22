@@ -45,8 +45,8 @@ import com.project.newweatheropenapi.network.dataclass.response.datapotal.Statio
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DefaultError
 import com.project.newweatheropenapi.ui.previewParamProvider.StationPreviewDataProvider
-import com.project.newweatheropenapi.ui.theme.Color_7192ad
-import com.project.newweatheropenapi.ui.theme.Color_c5cae9
+import com.project.newweatheropenapi.ui.theme.Color_F0FFF0
+import com.project.newweatheropenapi.ui.theme.Color_ffd700
 import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.dataPotalResultCode
@@ -164,7 +164,7 @@ fun CustomSpinner(selectOption: (String) -> Unit) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(dimensionResource(R.dimen.ItemCornerShape)))
             .background(
-                color = Color_c5cae9,
+                color = Color_ffd700,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.ItemCornerShape))
             )
     ) {
@@ -186,7 +186,7 @@ fun CustomSpinner(selectOption: (String) -> Unit) {
 
         ExposedDropdownMenu(
             shape = RoundedCornerShape(dimensionResource(R.dimen.ItemCornerShape)),
-            containerColor = Color_c5cae9,
+            containerColor = Color_ffd700,
             expanded = expandStatus,
             onDismissRequest = { expandStatus = false }) {
             rltmData.forEachIndexed { _, data ->
@@ -228,7 +228,7 @@ fun MeasuringStationCard(
     Card(
         modifier = modifier.padding(dimensionResource(R.dimen.rltmStationCardPadding)),
         colors = cardColors(
-            containerColor = Color_7192ad
+            containerColor = Color_F0FFF0
         ),
         elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.TimeItemElevation)),
         shape = RoundedCornerShape(dimensionResource(R.dimen.ItemCornerShape))
@@ -240,19 +240,16 @@ fun MeasuringStationCard(
                 text = (stationData.data1?.takeIf { it.isNotBlank() }
                     ?: stringResource(R.string.nullString))
                     .rltmValueConvert(rltmData.indexOf(dropdownSelectedOption), context),
-                color = Color.White,
                 fontSize = 16.sp
             )
             Text(
                 text = (stationData.data2?.takeIf { it.isNotBlank() }
                     ?: stringResource(R.string.nullString)).rltmGradeConvert(context),
-                color = Color.White,
                 fontSize = 16.sp
             )
             Text(
                 text = (stationData.data3?.takeIf { it.isNotBlank() }
                     ?: stringResource(R.string.nullString)).rltmFlag(context),
-                color = Color.White,
                 fontSize = 16.sp
             )
         }

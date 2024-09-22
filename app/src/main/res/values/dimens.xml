@@ -2,8 +2,8 @@
 <resources>
     <!--text-->
     <dimen name="Loading">30sp</dimen>
-    <dimen name="NowTempText">64sp</dimen>
-    <dimen name="NowWeatherText">30sp</dimen>
+    <dimen name="NowTempText">55sp</dimen>
+    <dimen name="NowWeatherText">28sp</dimen>
     <dimen name="NowWetRainWindColumn">18sp</dimen>
     <dimen name="TimeItemTextDateTime">20sp</dimen>
     <dimen name="TimeItemText">18sp</dimen>
@@ -16,9 +16,8 @@
     <!--ui-->
     <dimen name="PaddingStart">14dp</dimen>
     <dimen name="PaddingEnd">10dp</dimen>
-    <dimen name="NowFcstIV">110dp</dimen>
     <dimen name="SearchViewPadding">10dp</dimen>
-    <dimen name="WeatherCardViewPadding">90dp</dimen>
+    <dimen name="WeatherCardViewPadding">60dp</dimen>
     <dimen name="PredictionModelCardViewPadding">20dp</dimen>
     <dimen name="TimeItemElevation">3dp</dimen>
     <dimen name="WeekItemElevation">1dp</dimen>

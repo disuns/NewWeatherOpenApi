@@ -20,9 +20,13 @@ object LoadingStateManager {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    fun isShow(isShow: Boolean) {
+    fun isShow(isShow: Boolean, isLoadingTimeCheck : Boolean = true) {
         if (isShow) {
-            startLoadingDelay()
+            if (isLoadingTimeCheck) {
+                startLoadingDelay()
+            } else {
+                _isLoading.value = true
+            }
         } else {
             stopLoading()
         }

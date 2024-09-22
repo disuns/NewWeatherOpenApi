@@ -37,7 +37,7 @@ import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRa
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DefaultError
 import com.project.newweatheropenapi.ui.previewParamProvider.WeekCardDataPreviewParamProvider
-import com.project.newweatheropenapi.ui.theme.Color_7192ad
+import com.project.newweatheropenapi.ui.theme.Color_eceff1
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.dataPotalResultCode
 import com.project.newweatheropenapi.utils.managers.TimeManager
@@ -94,7 +94,7 @@ fun WeekWeatherItem(data: WeekWeatherData) {
 
     Card(
         modifier = Modifier.fillMaxWidth().padding(1.dp),
-        colors = CardDefaults.cardColors(containerColor = Color_7192ad),
+        colors = CardDefaults.cardColors(containerColor = Color_eceff1),
         elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.WeekItemElevation)),
         shape = RoundedCornerShape(dimensionResource(R.dimen.ItemCornerShape))
     ) {
@@ -107,7 +107,6 @@ fun WeekWeatherItem(data: WeekWeatherData) {
             Text(
                 modifier = Modifier.weight(3f),
                 text = data.weekDate.weekDateConvert(context),
-                color = Color.White,
                 fontSize = textSize,
                 textAlign = TextAlign.Center
             )
@@ -115,7 +114,6 @@ fun WeekWeatherItem(data: WeekWeatherData) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(R.string.am),
-                        color = Color.White,
                         fontSize = textSize
                     )
                     Spacer(modifier = Modifier.width(13.dp))
@@ -123,25 +121,22 @@ fun WeekWeatherItem(data: WeekWeatherData) {
                         model = R.drawable.rainper,
                         contentDescription = loadingImageText,
                         modifier = Modifier.size(imageSize),
-                        colorFilter = ColorFilter.tint(Color.White)
+                        colorFilter = ColorFilter.tint(Color.Black)
                     )
                     Spacer(modifier = Modifier.width(3.dp))
                     Text(
                         text = data.rainAm.rainPerConvert(context),
-                        color = Color.White,
                         fontSize = textSize
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = data.skyAm,
-                        color = Color.White,
                         fontSize = textSize
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(R.string.pm),
-                        color = Color.White,
                         fontSize = textSize
                     )
                     Spacer(modifier = Modifier.width(13.dp))
@@ -149,18 +144,16 @@ fun WeekWeatherItem(data: WeekWeatherData) {
                         model = R.drawable.rainper,
                         contentDescription = loadingImageText,
                         modifier = Modifier.size(imageSize),
-                        colorFilter = ColorFilter.tint(Color.White)
+                        colorFilter = ColorFilter.tint(Color.Black)
                     )
                     Spacer(modifier = Modifier.width(3.dp))
                     Text(
                         text = data.rainPm.rainPerConvert(context),
-                        color = Color.White,
                         fontSize = textSize
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = data.skyPm,
-                        color = Color.White,
                         fontSize = textSize
                     )
                 }

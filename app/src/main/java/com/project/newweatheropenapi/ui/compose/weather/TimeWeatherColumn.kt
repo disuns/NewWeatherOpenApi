@@ -40,7 +40,7 @@ import com.project.newweatheropenapi.network.dataclass.response.datapotal.Weathe
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DefaultError
 import com.project.newweatheropenapi.ui.previewParamProvider.CardDataPreviewParamProvider
-import com.project.newweatheropenapi.ui.theme.Color_7192ad
+import com.project.newweatheropenapi.ui.theme.Color_eceff1
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.RAIN_MM
 import com.project.newweatheropenapi.utils.RAIN_PER
@@ -95,7 +95,7 @@ fun TimeWeatherColumn(modifier: Modifier, timeWeatherState: ApiResult<WeatherRes
                         .padding(vertical = 8.dp),
                     state = pagerState,
                     contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.WeatherCardViewPadding)),
-                    pageSpacing = dimensionResource(R.dimen.WeatherCardViewPadding)/2
+                    pageSpacing = dimensionResource(R.dimen.WeatherCardViewPadding) / 2
                 ) { page ->
                     WeatherTimeItem(
                         modifier = Modifier.graphicsLayer {
@@ -109,13 +109,13 @@ fun TimeWeatherColumn(modifier: Modifier, timeWeatherState: ApiResult<WeatherRes
                                 fraction = 1f - offsetFraction,
                             )
 
-                            scaleX = lerp(
+                            val scales = lerp(
                                 start = 1f,
-                                stop = 0.8f,
+                                stop = 0.7f,
                                 fraction = offsetFraction,
                             )
-
-                            scaleY = scaleX
+                            scaleY = scales
+                            scaleX = scales
                             translationX =
                                 size.width * (1 - scaleX) / 2 * (if (pagerState.currentPage > page) 1 else -1)
                         },
@@ -144,7 +144,7 @@ fun WeatherTimeItem(modifier: Modifier = Modifier, timeWeatherData: TimeWeatherD
     val loadingImageText = stringResource(R.string.loadingImage)
     Card(
         modifier = modifier.fillMaxSize(),
-        colors = CardDefaults.cardColors(containerColor = Color_7192ad),
+        colors = CardDefaults.cardColors(containerColor = Color_eceff1),
         elevation = CardDefaults.cardElevation(dimensionResource(R.dimen.TimeItemElevation)),
         shape = RoundedCornerShape(dimensionResource(R.dimen.ItemCornerShape))
     ) {
@@ -162,19 +162,17 @@ fun WeatherTimeItem(modifier: Modifier = Modifier, timeWeatherData: TimeWeatherD
             ) {
                 Text(
                     text = timeWeatherData.weatherDate.dateConvert(context),
-                    fontSize = cardTextDateTime,
-                    color = Color.White
+                    fontSize = cardTextDateTime
                 )
                 Text(
                     text = timeWeatherData.weatherTime.timeDataConvert(context),
-                    fontSize = cardTextDateTime,
-                    color = Color.White
+                    fontSize = cardTextDateTime
                 )
                 GlideImage(
                     model = imgDrawable,
                     contentDescription = loadingImageText,
                     modifier = Modifier.size(dimensionResource(R.dimen.TimeItemWeatherSize)),
-                    colorFilter = ColorFilter.tint(Color.White)
+                    colorFilter = ColorFilter.tint(Color.Black)
                 )
             }
 
@@ -184,21 +182,19 @@ fun WeatherTimeItem(modifier: Modifier = Modifier, timeWeatherData: TimeWeatherD
             ) {
                 Text(
                     text = timeWeatherData.temp.tempConvert(context),
-                    fontSize = cardText,
-                    color = Color.White
+                    fontSize = cardText
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     GlideImage(
                         model = R.drawable.rainper,
                         contentDescription = loadingImageText,
                         modifier = Modifier.size(dimensionResource(R.dimen.TimeItemImageSmallSize)),
-                        colorFilter = ColorFilter.tint(Color.White),
+                        colorFilter = ColorFilter.tint(Color.Black),
                     )
                     Spacer(modifier = Modifier.width(imgTextSpacer))
                     Text(
                         text = timeWeatherData.rainPer.rainPerConvert(context),
-                        fontSize = cardText,
-                        color = Color.White,
+                        fontSize = cardText
                     )
                 }
 
@@ -207,13 +203,12 @@ fun WeatherTimeItem(modifier: Modifier = Modifier, timeWeatherData: TimeWeatherD
                         model = R.drawable.waterper,
                         contentDescription = loadingImageText,
                         modifier = Modifier.size(cardTimeWeatherImageSmall),
-                        colorFilter = ColorFilter.tint(Color.White)
+                        colorFilter = ColorFilter.tint(Color.Black)
                     )
                     Spacer(modifier = Modifier.width(imgTextSpacer))
                     Text(
                         text = timeWeatherData.wet.wetConvert(context),
-                        fontSize = cardText,
-                        color = Color.White,
+                        fontSize = cardText
                     )
                 }
 
@@ -222,19 +217,17 @@ fun WeatherTimeItem(modifier: Modifier = Modifier, timeWeatherData: TimeWeatherD
                         model = R.drawable.wind,
                         contentDescription = loadingImageText,
                         modifier = Modifier.size(cardTimeWeatherImageSmall),
-                        colorFilter = ColorFilter.tint(Color.White)
+                        colorFilter = ColorFilter.tint(Color.Black)
                     )
                     Spacer(Modifier.width(imgTextSpacer))
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = timeWeatherData.windDir.windDir(context),
-                            fontSize = cardText,
-                            color = Color.White,
+                            fontSize = cardText
                         )
                         Text(
                             text = timeWeatherData.windPower.windPower(context),
-                            fontSize = dimensionResource(R.dimen.TimeItemWindText).sp(),
-                            color = Color.White,
+                            fontSize = dimensionResource(R.dimen.TimeItemWindText).sp()
                         )
                     }
                 }
@@ -242,8 +235,7 @@ fun WeatherTimeItem(modifier: Modifier = Modifier, timeWeatherData: TimeWeatherD
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     text = timeWeatherData.rainMm.rainConvert(context),
-                    fontSize = cardText,
-                    color = Color.White
+                    fontSize = cardText
                 )
             }
         }

@@ -4,11 +4,12 @@ import android.graphics.drawable.Drawable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -34,6 +37,7 @@ import com.project.newweatheropenapi.network.dataclass.response.datapotal.Weathe
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DefaultError
 import com.project.newweatheropenapi.ui.previewParamProvider.WeatherResponsePreviewParamProvider
+import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.RAIN_MM_NOW
 import com.project.newweatheropenapi.utils.RAIN_TYPE
@@ -92,6 +96,12 @@ fun NowWeatherColumn(modifier: Modifier, weatherState: ApiResult<WeatherResponse
             }
 
             Column(modifier = modifier) {
+                Text(
+                    modifier = Modifier.padding(bottom = 8.dp).align(Alignment.CenterHorizontally),
+                    text = stringResource(R.string.nowWeather),
+                    style = defaultTitleTextStyle()
+                )
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -102,13 +112,13 @@ fun NowWeatherColumn(modifier: Modifier, weatherState: ApiResult<WeatherResponse
                     NowWeatherImageColumn(
                         Modifier
                             .fillMaxHeight()
-                            .weight(2f),
+                            .weight(1f),
                         weatherImgDrawable
                     )
                     NowWeatherTextColumn(
                         Modifier
                             .fillMaxHeight()
-                            .weight(3f),
+                            .weight(1f),
                         nowTemp, weatherText
                     )
                 }
@@ -135,7 +145,9 @@ private fun NowWeatherImageColumn(modifier: Modifier, weatherImg: Drawable?) {
             model = weatherImg,
             contentDescription = stringResource(R.string.loadingImage),
             modifier = Modifier
-                .size(dimensionResource(R.dimen.NowFcstIV))
+                .fillMaxSize()
+                .aspectRatio(1f),
+            colorFilter = ColorFilter.tint(Color.Black)
         )
     }
 }
