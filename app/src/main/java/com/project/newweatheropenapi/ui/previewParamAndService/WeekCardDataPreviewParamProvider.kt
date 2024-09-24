@@ -1,4 +1,4 @@
-package com.project.newweatheropenapi.ui.previewParamProvider
+package com.project.newweatheropenapi.ui.previewParamAndService
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.project.newweatheropenapi.dataclass.WeekDate

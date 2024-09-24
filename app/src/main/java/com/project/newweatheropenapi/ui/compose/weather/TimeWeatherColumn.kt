@@ -38,8 +38,8 @@ import com.project.newweatheropenapi.enum.imgConvert
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
-import com.project.newweatheropenapi.ui.compose.common.DefaultError
-import com.project.newweatheropenapi.ui.previewParamProvider.CardDataPreviewParamProvider
+import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
+import com.project.newweatheropenapi.ui.previewParamAndService.CardDataPreviewParamProvider
 import com.project.newweatheropenapi.ui.theme.Color_eceff1
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.RAIN_MM
@@ -65,13 +65,16 @@ import com.project.newweatheropenapi.utils.windPower
 import kotlin.math.absoluteValue
 
 @Composable
-fun TimeWeatherColumn(modifier: Modifier, timeWeatherState: ApiResult<WeatherResponse>) {
+fun TimeWeatherColumn(
+    modifier: Modifier,
+    timeWeatherState: ApiResult<WeatherResponse>,
+    errorFunc: () -> Unit
+) {
     val context = LocalContext.current
 
-    ApiResultHandler(modifier, timeWeatherState) { successState ->
+    ApiResultHandler(modifier, timeWeatherState, errorFunc = {errorFunc()}) { successState ->
         if (successState.value.response.header.resultCode != NO_ERROR) {
-            DefaultError(modifier)
-            successState.value.response.header.resultCode.dataPotalResultCode(context)
+            DataPotalSuccesError(modifier, successState.value.response.header.resultCode.dataPotalResultCode(context))
         } else {
             val list = timeDataList(successState.value)
             val pagerState = rememberPagerState(

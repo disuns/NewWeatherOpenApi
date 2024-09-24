@@ -25,8 +25,8 @@ import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.AirQualityResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
-import com.project.newweatheropenapi.ui.compose.common.DefaultError
-import com.project.newweatheropenapi.ui.previewParamProvider.AirQualityPreviewParamProvider
+import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
+import com.project.newweatheropenapi.ui.previewParamAndService.AirQualityPreviewParamProvider
 import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.dataPotalResultCode
@@ -34,14 +34,17 @@ import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun PredictionModelColumn(modifier: Modifier, airQualityState: ApiResult<AirQualityResponse>) {
+fun PredictionModelColumn(
+    modifier: Modifier,
+    airQualityState: ApiResult<AirQualityResponse>,
+    errorFunc: () -> Unit
+) {
     val context = LocalContext.current
 
     Column(modifier = modifier.padding(top = 8.dp)) {
-        ApiResultHandler(modifier, airQualityState) { successState ->
+        ApiResultHandler(modifier, airQualityState, errorFunc = { errorFunc() }) { successState ->
             if (successState.value.response.header.resultCode != NO_ERROR) {
-                DefaultError(modifier)
-                successState.value.response.header.resultCode.dataPotalResultCode(context)
+                DataPotalSuccesError(modifier, successState.value.response.header.resultCode.dataPotalResultCode(context))
             } else {
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -107,6 +110,7 @@ fun PredictionModelColumn(modifier: Modifier, airQualityState: ApiResult<AirQual
 fun PreviewPredictionModelColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: ApiResult<AirQualityResponse>) {
     PredictionModelColumn(
         modifier = Modifier.height(900.dp),
-        airQualityState = previewData
+        airQualityState = previewData,
+        errorFunc = {}
     )
 }

@@ -20,7 +20,6 @@ import com.project.newweatheropenapi.utils.landCodeGu
 import com.project.newweatheropenapi.utils.managers.TimeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -34,14 +33,14 @@ class WeatherViewModel @Inject constructor(
     @ApplicationContext val context: Context
 ) :
     BaseViewModel() {
-    private val _weatherStateFlow = MutableStateFlow<ApiResult<WeatherResponse>>(ApiResult.Empty)
+    private val _weatherStateFlow = MutableStateFlow<ApiResult<WeatherResponse>>(ApiResult.Loading)
     val weatherStateFlow: StateFlow<ApiResult<WeatherResponse>> = _weatherStateFlow
 
-    private val _timeWeatherState = MutableStateFlow<ApiResult<WeatherResponse>>(ApiResult.Empty)
+    private val _timeWeatherState = MutableStateFlow<ApiResult<WeatherResponse>>(ApiResult.Loading)
     val timeWeatherState: StateFlow<ApiResult<WeatherResponse>> get() = _timeWeatherState
 
     private val _weekRainSkyState =
-        MutableStateFlow<ApiResult<WeekRainSkyResponse>>(ApiResult.Empty)
+        MutableStateFlow<ApiResult<WeekRainSkyResponse>>(ApiResult.Loading)
     val weekRainSkyState: StateFlow<ApiResult<WeekRainSkyResponse>> get() = _weekRainSkyState
 
     fun fetchAllWeatherData(
@@ -49,26 +48,20 @@ class WeatherViewModel @Inject constructor(
         ny: String,
         address: String
     ) {
-        val convertLatLng = LatLng(nx.toDouble(), ny.toDouble()).convertGRIDGPS(0)
-        val latitude = convertLatLng.latitude.toInt()
-        val longitude = convertLatLng.longitude.toInt()
-        val landCode = address.landCodeGu(context = context)
-
         viewModelScope.launch {
-            val weatherDeferred = async { fetchWeather(latitude.toString(), longitude.toString()) }
-            weatherDeferred.await()
-            val nowWeatherDeferred =
-                async { fetchTimeWeather(latitude.toString(), longitude.toString()) }
-            nowWeatherDeferred.await()
-            val weekRainSkyDeferred = async { fetchWeekRainSky(landCode) }
-            weekRainSkyDeferred.await()
+            fetchWeather(nx, ny)
+            fetchTimeWeather(nx, ny)
+            fetchWeekRainSky(address)
         }
     }
 
-    private fun fetchWeather(
+    fun fetchWeather(
         nx: String,
         ny: String
     ) {
+        val convertLatLng = LatLng(nx.toDouble(), ny.toDouble()).convertGRIDGPS(0)
+        val latitude = convertLatLng.latitude.toInt().toString()
+        val longitude = convertLatLng.longitude.toInt().toString()
         val request = WeatherRequest(
             DATA_POTAL_SERVICE_KEY,
             PAGE_NO_DEFAULT,
@@ -76,16 +69,19 @@ class WeatherViewModel @Inject constructor(
             DATA_TYPE_UPPER,
             timeManager.urlNowDate(),
             timeManager.urlNowTime(),
-            nx,
-            ny
+            latitude,
+            longitude
         )
         fetchData({ repository.getWeather(request.toMap()) }, _weatherStateFlow)
     }
 
-    private fun fetchTimeWeather(
+    fun fetchTimeWeather(
         nx: String,
         ny: String
     ) {
+        val convertLatLng = LatLng(nx.toDouble(), ny.toDouble()).convertGRIDGPS(0)
+        val latitude = convertLatLng.latitude.toInt().toString()
+        val longitude = convertLatLng.longitude.toInt().toString()
         val request = WeatherRequest(
             DATA_POTAL_SERVICE_KEY,
             PAGE_NO_DEFAULT,
@@ -93,21 +89,22 @@ class WeatherViewModel @Inject constructor(
             DATA_TYPE_UPPER,
             timeManager.urlTimeWeatherDate(),
             timeManager.urlTimeWeatherTime(),
-            nx,
-            ny
+            latitude,
+            longitude
         )
         fetchData({ repository.getTimeWeather(request.toMap()) }, _timeWeatherState)
     }
 
-    private fun fetchWeekRainSky(
+    fun fetchWeekRainSky(
         @Query("regId") regId: String
     ) {
+        val landCode = regId.landCodeGu(context = context)
         val request = WeekRainSkyRequest(
             DATA_POTAL_SERVICE_KEY,
             PAGE_NO_DEFAULT,
             NUM_OF_ROWS_WEEK,
             DATA_TYPE_UPPER,
-            regId,
+            landCode,
             timeManager.urlWeekWeatherTime()
         )
         fetchData({ repository.getWeekRainSky(request.toMap()) }, _weekRainSkyState)

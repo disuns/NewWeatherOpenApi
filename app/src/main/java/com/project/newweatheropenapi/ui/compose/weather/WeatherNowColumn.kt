@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,8 +34,9 @@ import com.project.newweatheropenapi.enum.imgConvert
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
-import com.project.newweatheropenapi.ui.compose.common.DefaultError
-import com.project.newweatheropenapi.ui.previewParamProvider.WeatherResponsePreviewParamProvider
+import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
+import com.project.newweatheropenapi.ui.compose.loading.skeleton.SkeletonWeatherNow
+import com.project.newweatheropenapi.ui.previewParamAndService.WeatherResponsePreviewParamProvider
 import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.RAIN_MM_NOW
@@ -58,66 +58,68 @@ import com.project.newweatheropenapi.utils.windDir
 import com.project.newweatheropenapi.utils.windPower
 
 @Composable
-fun NowWeatherColumn(modifier: Modifier, weatherState: ApiResult<WeatherResponse>) {
+fun NowWeatherColumn(
+    modifier: Modifier,
+    weatherState: ApiResult<WeatherResponse>,
+    errorFunc: () -> Unit
+) {
     val context = LocalContext.current
 
-    ApiResultHandler(modifier, weatherState) { successState ->
-        if (successState.value.response.header.resultCode != NO_ERROR) {
-            DefaultError(modifier)
-            successState.value.response.header.resultCode.dataPotalResultCode(context)
-        } else {
-            var nowTemp by remember { mutableStateOf("") }
-            var nowRain by remember { mutableStateOf("") }
-            var nowWet by remember { mutableStateOf("") }
-            var nowWind by remember { mutableStateOf("") }
-            var weatherImg by remember { mutableStateOf(WeatherImgEnum.None) }
-            var weatherImgDrawable by remember { mutableStateOf<Drawable?>(null) }
-            var weatherText by remember { mutableStateOf("") }
-            var windDir by remember { mutableStateOf("") }
+    Column(modifier = modifier) {
+        Text(
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .align(Alignment.CenterHorizontally),
+            text = stringResource(R.string.nowWeather),
+            style = defaultTitleTextStyle()
+        )
+        ApiResultHandler(modifier, weatherState, errorFunc = {errorFunc()}, skeleton = { SkeletonWeatherNow(modifier) }) { successState ->
+            if (successState.value.response.header.resultCode != NO_ERROR) {
+                DataPotalSuccesError(modifier, successState.value.response.header.resultCode.dataPotalResultCode(context))
+            } else {
+                var nowTemp by remember { mutableStateOf("") }
+                var nowRain by remember { mutableStateOf("") }
+                var nowWet by remember { mutableStateOf("") }
+                var nowWind by remember { mutableStateOf("") }
+                var weatherImg by remember { mutableStateOf(WeatherImgEnum.None) }
+                var weatherImgDrawable by remember { mutableStateOf<Drawable?>(null) }
+                var weatherText by remember { mutableStateOf("") }
+                var windDir by remember { mutableStateOf("") }
 
-            val weatherItem = successState.value.response.body.items.item
+                val weatherItem = successState.value.response.body.items.item
 
-            weatherItem.forEach { item ->
-                if (item.fcstTime.toInt() - item.baseTime.toInt() < 100) {
-                    when (item.category) {
-                        TMP_NOW -> nowTemp = item.fcstValue.tempConvert(context)
-                        RAIN_MM_NOW -> nowRain = item.fcstValue.nowRainConvert(context)
-                        WET -> nowWet = item.fcstValue.nowWetConvert(context)
-                        WIND_DIR -> windDir = item.fcstValue.windDir(context)
-                        WIND_POWER -> nowWind = item.fcstValue.windPower(context, windDir)
-                        RAIN_TYPE -> weatherImg = item.fcstValue.weatherRainImgConvert()
-                        SKY -> {
-                            weatherImgDrawable =
-                                item.fcstValue.skyImgEnum(weatherImg).imgConvert(context)
-                            weatherText = item.fcstValue.skyConvert(context)
+                weatherItem.forEach { item ->
+                    if (item.fcstTime.toInt() - item.baseTime.toInt() < 100) {
+                        when (item.category) {
+                            TMP_NOW -> nowTemp = item.fcstValue.tempConvert(context)
+                            RAIN_MM_NOW -> nowRain = item.fcstValue.nowRainConvert(context)
+                            WET -> nowWet = item.fcstValue.nowWetConvert(context)
+                            WIND_DIR -> windDir = item.fcstValue.windDir(context)
+                            WIND_POWER -> nowWind = item.fcstValue.windPower(context, windDir)
+                            RAIN_TYPE -> weatherImg = item.fcstValue.weatherRainImgConvert()
+                            SKY -> {
+                                weatherImgDrawable =
+                                    item.fcstValue.skyImgEnum(weatherImg).imgConvert(context)
+                                weatherText = item.fcstValue.skyConvert(context)
+                            }
                         }
                     }
                 }
-            }
-
-            Column(modifier = modifier) {
-                Text(
-                    modifier = Modifier.padding(bottom = 8.dp).align(Alignment.CenterHorizontally),
-                    text = stringResource(R.string.nowWeather),
-                    style = defaultTitleTextStyle()
-                )
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(4f)
-                        .padding(vertical = 8.dp),
+                        .weight(3.5f)
+                        .padding(top = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     NowWeatherImageColumn(
                         Modifier
-                            .fillMaxHeight()
-                            .weight(1f),
+                            .weight(1.5f),
                         weatherImgDrawable
                     )
                     NowWeatherTextColumn(
                         Modifier
-                            .fillMaxHeight()
                             .weight(1f),
                         nowTemp, weatherText
                     )
@@ -125,7 +127,7 @@ fun NowWeatherColumn(modifier: Modifier, weatherState: ApiResult<WeatherResponse
                 WeatherDetailsColumn(
                     Modifier
                         .fillMaxWidth()
-                        .weight(3f),
+                        .weight(2f),
                     nowRain, nowWet, nowWind
                 )
             }
@@ -145,12 +147,13 @@ private fun NowWeatherImageColumn(modifier: Modifier, weatherImg: Drawable?) {
             model = weatherImg,
             contentDescription = stringResource(R.string.loadingImage),
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxHeight()
                 .aspectRatio(1f),
             colorFilter = ColorFilter.tint(Color.Black)
         )
     }
 }
+
 @Composable
 fun NowWeatherTextColumn(modifier: Modifier, nowTemp: String, weatherText: String) {
     Column(
@@ -220,6 +223,6 @@ fun PreviewNowColumn(
     NowWeatherColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .height(400.dp), weatherState = weatherState
+            .height(400.dp), weatherState = weatherState, errorFunc = {}
     )
 }

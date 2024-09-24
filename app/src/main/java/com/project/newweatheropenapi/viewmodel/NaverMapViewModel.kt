@@ -25,7 +25,7 @@ class NaverMapViewModel @Inject constructor(
     private val locationDataManager: LocationDataManager,
     @ApplicationContext val context: Context
 ) : BaseViewModel() {
-    private val _naverMapStateFlow = MutableStateFlow<ApiResult<NaverMapResponse>>(ApiResult.Empty)
+    private val _naverMapStateFlow = MutableStateFlow<ApiResult<NaverMapResponse>>(ApiResult.Loading)
     val naverMapStateFlow: StateFlow<ApiResult<NaverMapResponse>> = _naverMapStateFlow
 
     init {

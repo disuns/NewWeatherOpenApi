@@ -3,29 +3,31 @@ package com.project.newweatheropenapi.ui.compose.intro
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import com.project.newweatheropenapi.R
+import com.project.newweatheropenapi.ui.theme.Color_c3cdd3
 import com.project.newweatheropenapi.utils.isNetworkCheck
 import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.utils.managers.LoadingStateManager
-import com.project.newweatheropenapi.utils.sp
 import com.project.newweatheropenapi.utils.toastMessage
-import android.net.Uri
-import android.provider.Settings
 
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun IntroScreen(onNavigate: () -> Unit = {}) {
     val context = LocalContext.current
@@ -38,12 +40,14 @@ fun IntroScreen(onNavigate: () -> Unit = {}) {
     }
 
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .background(color = Color_c3cdd3),
         contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = stringResource(R.string.loading),
-            fontSize = dimensionResource(R.dimen.Loading).sp(),
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(R.drawable.intro),
+            contentDescription = "null"
         )
     }
 }

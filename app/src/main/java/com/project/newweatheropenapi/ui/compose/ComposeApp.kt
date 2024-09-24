@@ -94,20 +94,38 @@ fun ScreenNav(
         }
         composable(route = ScreenRoute.Weather.route) {
             ScreenWithTopLocationButton(
-                onClick = {navigateTo(ScreenRoute.Weather, navController)},
+                onClick = { navigateTo(ScreenRoute.Weather, navController) },
                 address = address
-            ) {modifier ->
-                WeatherScreen(modifier = modifier, viewModel = weatherViewModel)
+            ) { modifier ->
+                WeatherScreen(modifier = modifier, viewModel = weatherViewModel,
+                    nowErrorFunc = {
+                        weatherViewModel.fetchWeather(
+                            locationValue.latLng.latitude.toString(),
+                            locationValue.latLng.longitude.toString()
+                        )
+                    },
+                    timeErrorFunc = {
+                        weatherViewModel.fetchTimeWeather(
+                            locationValue.latLng.latitude.toString(),
+                            locationValue.latLng.longitude.toString()
+                        )
+                    },
+                    weekErrorFunc = {
+                        weatherViewModel.fetchWeekRainSky(address)
+                    }
+                )
             }
         }
         composable(route = ScreenRoute.AirQuality.route) {
             ScreenWithTopLocationButton(
-                onClick = {navigateTo(ScreenRoute.AirQuality, navController)},
+                onClick = { navigateTo(ScreenRoute.AirQuality, navController) },
                 address = address
-            ) {modifier ->
+            ) { modifier ->
                 AirQualityScreen(
                     modifier = modifier,
-                    viewModel = airQualityViewModel
+                    viewModel = airQualityViewModel,
+                    stationFindErrorFunc ={airQualityViewModel.fetchStationFind(locationValue.x,locationValue.y)},
+                    airQualityErrorFunc ={airQualityViewModel.fetchAirQuality(context)}
                 )
             }
         }
@@ -127,7 +145,7 @@ private fun navigateTo(
 ) {
     destination.destination?.let { route ->
         navController.navigate(route.route) {
-            if(isPopUpTo) {
+            if (isPopUpTo) {
                 popUpTo(destination.route) { inclusive = true }
             }
             launchSingleTop = true

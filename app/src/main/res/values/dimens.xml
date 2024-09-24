@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--text-->
-    <dimen name="Loading">30sp</dimen>
     <dimen name="NowTempText">55sp</dimen>
     <dimen name="NowWeatherText">28sp</dimen>
     <dimen name="NowWetRainWindColumn">18sp</dimen>
-    <dimen name="TimeItemTextDateTime">20sp</dimen>
-    <dimen name="TimeItemText">18sp</dimen>
+    <dimen name="TimeItemTextDateTime">30sp</dimen>
+    <dimen name="TimeItemText">22sp</dimen>
     <dimen name="TimeItemWindText">14sp</dimen>
     <dimen name="WeatherViewTitle">24dp</dimen>
     <dimen name="AirQualityDateCode">14sp</dimen>
@@ -24,7 +23,7 @@
     <dimen name="WeekItemPadding">4dp</dimen>
     <dimen name="ItemCornerShape">12dp</dimen>
     <dimen name="TimeItemInPadding">4dp</dimen>
-    <dimen name="TimeItemWeatherSize">50dp</dimen>
+    <dimen name="TimeItemWeatherSize">80dp</dimen>
     <dimen name="TimeItemSpaceByPadding">25dp</dimen>
     <dimen name="TimeItemImageSmallSize">28dp</dimen>
     <dimen name="ItemPadding">8dp</dimen>

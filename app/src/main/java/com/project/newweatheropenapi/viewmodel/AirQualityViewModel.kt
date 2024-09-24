@@ -21,7 +21,6 @@ import com.project.newweatheropenapi.utils.RLTM_DATA_VERSION
 import com.project.newweatheropenapi.utils.STATION_VERSION
 import com.project.newweatheropenapi.utils.managers.TimeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -31,13 +30,13 @@ import javax.inject.Inject
 @HiltViewModel
 class AirQualityViewModel @Inject constructor(private val repository: AirQualityRepository) :
     BaseViewModel() {
-    private val _airQualityStateFlow = MutableStateFlow<ApiResult<AirQualityResponse>>(ApiResult.Empty)
+    private val _airQualityStateFlow = MutableStateFlow<ApiResult<AirQualityResponse>>(ApiResult.Loading)
     val airQualityStateFlow: StateFlow<ApiResult<AirQualityResponse>> = _airQualityStateFlow
 
-    private val _rltmStationStateFlow = MutableStateFlow<ApiResult<RltmStationResponse>>(ApiResult.Empty)
+    private val _rltmStationStateFlow = MutableStateFlow<ApiResult<RltmStationResponse>>(ApiResult.Loading)
     val rltmStationStateFlow: StateFlow<ApiResult<RltmStationResponse>> = _rltmStationStateFlow
 
-    private val _stationFindStateFlow = MutableStateFlow<ApiResult<StationFindResponse>>(ApiResult.Empty)
+    private val _stationFindStateFlow = MutableStateFlow<ApiResult<StationFindResponse>>(ApiResult.Loading)
     val stationFindStateFlow: StateFlow<ApiResult<StationFindResponse>> = _stationFindStateFlow
 
 
@@ -47,19 +46,15 @@ class AirQualityViewModel @Inject constructor(private val repository: AirQuality
         context : Context
     ) {
         viewModelScope.launch {
-            val airQualityDeferred = async { fetchAirQuality(context) }
-            airQualityDeferred.await()
-            val stationFindDeferred = async { fetchStationFind(regionX, regionY) }
-            stationFindDeferred.await()
+            fetchAirQuality(context)
+            fetchStationFind(regionX, regionY)
 
             _stationFindStateFlow.collect { stationFindResult ->
                 if (stationFindResult is ApiResult.Success) {
                     val body = stationFindResult.value.response.body
                     val items = body?.items
-
                     if (!items.isNullOrEmpty()) {
-                        val rltmStationDeferred = async { fetchRltmStation(items[0].stationName) }
-                        rltmStationDeferred.await()
+                        fetchRltmStation(items[0].stationName)
                     }
                 }
             }

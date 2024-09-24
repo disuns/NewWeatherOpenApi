@@ -20,7 +20,10 @@ import com.project.newweatheropenapi.viewmodel.WeatherViewModel
 @Composable
 fun WeatherScreen(
     modifier: Modifier,
-    viewModel: WeatherViewModel
+    viewModel: WeatherViewModel,
+    nowErrorFunc: () -> Unit,
+    timeErrorFunc: () -> Unit,
+    weekErrorFunc: () -> Unit
 ) {
     val weatherState by viewModel.weatherStateFlow.collectAsState()
     val timeWeatherState by viewModel.timeWeatherState.collectAsState()
@@ -42,20 +45,20 @@ fun WeatherScreen(
                 .fillMaxWidth()
                 .weight(5f),
             weatherState
-        )
+        ) { nowErrorFunc() }
         DotLineColumn()
         TimeWeatherColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(5f),
             timeWeatherState
-        )
+        ) { timeErrorFunc() }
         DotLineColumn()
         WeekWeatherColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(4f),
             weekRainSkyState
-        )
+        ) { weekErrorFunc() }
     }
 }

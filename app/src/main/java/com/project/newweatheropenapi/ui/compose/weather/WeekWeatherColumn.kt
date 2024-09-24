@@ -35,8 +35,8 @@ import com.project.newweatheropenapi.dataclass.WeekWeatherData
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRainSkyResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
-import com.project.newweatheropenapi.ui.compose.common.DefaultError
-import com.project.newweatheropenapi.ui.previewParamProvider.WeekCardDataPreviewParamProvider
+import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
+import com.project.newweatheropenapi.ui.previewParamAndService.WeekCardDataPreviewParamProvider
 import com.project.newweatheropenapi.ui.theme.Color_eceff1
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.dataPotalResultCode
@@ -46,13 +46,16 @@ import com.project.newweatheropenapi.utils.sp
 import com.project.newweatheropenapi.utils.weekDateConvert
 
 @Composable
-fun WeekWeatherColumn(modifier: Modifier, weekRainSkyState: ApiResult<WeekRainSkyResponse>) {
+fun WeekWeatherColumn(
+    modifier: Modifier,
+    weekRainSkyState: ApiResult<WeekRainSkyResponse>,
+    errorFunc: () -> Unit
+) {
     val context = LocalContext.current
 
-    ApiResultHandler(modifier, weekRainSkyState) { successState ->
+    ApiResultHandler(modifier, weekRainSkyState, errorFunc = {errorFunc()}) { successState ->
         if (successState.value.response.header.resultCode != NO_ERROR) {
-            DefaultError(modifier)
-            successState.value.response.header.resultCode.dataPotalResultCode(context)
+            DataPotalSuccesError(modifier, successState.value.response.header.resultCode.dataPotalResultCode(context))
         } else {
             val list = weekDataList(successState.value)
             Column(

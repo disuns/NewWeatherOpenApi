@@ -4,6 +4,18 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.widget.Toast
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import com.naver.maps.geometry.LatLng
@@ -91,7 +103,7 @@ fun String.landCodeGu(context: Context): String {
     }?.second ?: codeArray[8]
 }
 
-fun String.dataPotalResultCode(context: Context) {
+fun String.dataPotalResultCode(context: Context): String {
     val codeToString = when (this) {
         APPLICATION_ERROR -> R.string.APPLICATION_ERROR
         DB_ERROR -> R.string.DB_ERROR
@@ -111,6 +123,7 @@ fun String.dataPotalResultCode(context: Context) {
         else -> R.string.UNKNOWN_ERROR
     }
     logMessage(context.getString(codeToString))
+    return context.getString(codeToString)
 }
 
 fun String.tempConvert(context: Context) = context.getString(R.string.tempUnit, this)
@@ -248,6 +261,10 @@ fun String.rltmStationDate(context: Context) = context.getString(R.string.statio
 
 
 fun String.rltmValueConvert(rltm: Int, context: Context): String {
+    if (this == "-") {
+        return context.getString(R.string.concentration, this)
+    }
+
     val rltmChange = when (rltm) {
         0 -> this
         1, 2 -> context.getString(R.string.rltmUnit1, this)
@@ -257,6 +274,9 @@ fun String.rltmValueConvert(rltm: Int, context: Context): String {
 }
 
 fun String.rltmGradeConvert(context: Context): String {
+    if (this == "-") {
+        return context.getString(R.string.grade, this)
+    }
     val gradeArray = context.resources.getStringArray(R.array.grade)
     return context.getString(R.string.grade, gradeArray[this.toInt()-1])
 }
@@ -273,3 +293,33 @@ fun String.airDateAndCode(date : String, context: Context) = context.getString(R
 fun String.airInformGrade() = this.split(",")
 
 fun String.actionKnact(context: Context) = context.getString(R.string.actionKnack, this)
+
+@Composable
+fun Modifier.splashShimmerEffect() : Modifier{
+    val shimmerColors = listOf(
+        Color.LightGray.copy(alpha = 0.6f),
+        Color.LightGray.copy(alpha = 0.2f),
+        Color.LightGray.copy(alpha = 0.6f),
+    )
+
+    val transition = rememberInfiniteTransition(label = "")
+    val translateAnim = transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 1000,
+                easing = FastOutSlowInEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        ), label = ""
+    )
+
+    val brush = Brush.linearGradient(
+        colors = shimmerColors,
+        start = Offset.Zero,
+        end = Offset(x = translateAnim.value, y = translateAnim.value)
+    )
+
+    return this.background(brush)
+}

@@ -42,9 +42,11 @@ import com.project.newweatheropenapi.dataclass.MeasuringData
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.RltmStationResponse
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.StationFindResponse
+import com.project.newweatheropenapi.network.repository.AirQualityRepository
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
-import com.project.newweatheropenapi.ui.compose.common.DefaultError
-import com.project.newweatheropenapi.ui.previewParamProvider.StationPreviewDataProvider
+import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
+import com.project.newweatheropenapi.ui.previewParamAndService.FakeAirQualityService
+import com.project.newweatheropenapi.ui.previewParamAndService.StationPreviewDataProvider
 import com.project.newweatheropenapi.ui.theme.Color_F0FFF0
 import com.project.newweatheropenapi.ui.theme.Color_ffd700
 import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
@@ -55,23 +57,27 @@ import com.project.newweatheropenapi.utils.rltmGradeConvert
 import com.project.newweatheropenapi.utils.rltmStationDate
 import com.project.newweatheropenapi.utils.rltmTitle
 import com.project.newweatheropenapi.utils.rltmValueConvert
+import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
 
 @Composable
 fun MeasuringStationColumn(
     modifier: Modifier,
     stationFindState: ApiResult<StationFindResponse>,
-    rltmStationState: ApiResult<RltmStationResponse>
+    rltmStationState: ApiResult<RltmStationResponse>,
+    viewModel: AirQualityViewModel,
+    errorFunc: () -> Unit
 ) {
     val context = LocalContext.current
     var dropdownSelectedOption by remember { mutableStateOf("통합 대기") }
 
-    ApiResultHandler(modifier, stationFindState) { succesState ->
+    ApiResultHandler(modifier, stationFindState, errorFunc = { errorFunc() }) { succesState ->
         StationFindSuccess(
             modifier,
             succesState,
             rltmStationState,
             context,
             dropdownSelectedOption,
+            viewModel,
             onOptionSelected = {
                 dropdownSelectedOption = it
             }
@@ -87,27 +93,36 @@ fun StationFindSuccess(
     rltmStationState: ApiResult<RltmStationResponse>,
     context: Context,
     dropdownSelectedOption: String,
+    viewModel: AirQualityViewModel,
     onOptionSelected: (String) -> Unit
 ) {
     if (stationFindState.value.response.header.resultCode != NO_ERROR) {
-        DefaultError(modifier)
-        stationFindState.value.response.header.resultCode.dataPotalResultCode(context)
+        DataPotalSuccesError(
+            modifier,
+            stationFindState.value.response.header.resultCode.dataPotalResultCode(context)
+        )
     } else {
+        val stationItems = stationFindState.value.response.body?.items
+        val stationName = stationItems?.firstOrNull()?.stationName
+        val displayText = stationName?.rltmTitle(context) ?: "정보없음"
+
         Column(
             modifier = modifier,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 modifier = Modifier.padding(top = 8.dp),
-                text = stationFindState.value.response.body?.items?.firstOrNull()?.stationName?.rltmTitle(
-                    context
-                )
-                    ?: "정보없음",
+                text = displayText,
                 style = defaultTitleTextStyle()
             )
+
             HandleRltmStationState(
                 rltmStationState, modifier, context, dropdownSelectedOption, onOptionSelected
-            )
+            ) {
+                stationItems?.firstOrNull()?.let { station ->
+                    viewModel.fetchRltmStation(station.stationName)
+                }
+            }
         }
     }
 }
@@ -118,15 +133,18 @@ fun HandleRltmStationState(
     modifier: Modifier,
     context: Context,
     dropdownSelectedOption: String,
-    onOptionSelected: (String) -> Unit
+    onOptionSelected: (String) -> Unit,
+    errorFunc: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        ApiResultHandler(modifier, rltmStationState) { successState ->
+        ApiResultHandler(modifier, rltmStationState, errorFunc = { errorFunc() }) { successState ->
             if (successState.value.response.header.resultCode != NO_ERROR) {
-                DefaultError(modifier)
-                successState.value.response.header.resultCode.dataPotalResultCode(context)
+                DataPotalSuccesError(
+                    modifier,
+                    successState.value.response.header.resultCode.dataPotalResultCode(context)
+                )
             } else {
                 Column(modifier = Modifier.weight(1f)) {
                     CustomSpinner(onOptionSelected)
@@ -264,9 +282,15 @@ data class StationPreviewData(
 @Preview
 @Composable
 fun PreviewMeasuringStationColumn(@PreviewParameter(StationPreviewDataProvider::class) previewData: StationPreviewData) {
+    val airQualityService = FakeAirQualityService()
+    val airQualityRepository = AirQualityRepository(airQualityService)
+    val airQualityViewModel = AirQualityViewModel(repository = airQualityRepository)
+
     MeasuringStationColumn(
         modifier = Modifier.height(200.dp),
         stationFindState = previewData.stationFindState,
-        rltmStationState = previewData.rltmStationState
+        rltmStationState = previewData.rltmStationState,
+        viewModel = airQualityViewModel,
+        errorFunc = {}
     )
 }

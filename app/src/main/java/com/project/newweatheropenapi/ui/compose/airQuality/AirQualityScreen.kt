@@ -19,6 +19,8 @@ import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
 fun AirQualityScreen(
     modifier: Modifier,
     viewModel: AirQualityViewModel,
+    stationFindErrorFunc : () -> Unit,
+    airQualityErrorFunc : () -> Unit
 ) {
     val rltmStationState by viewModel.rltmStationStateFlow.collectAsState()
     val stationFindState by viewModel.stationFindStateFlow.collectAsState()
@@ -39,21 +41,22 @@ fun AirQualityScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 stationFindState,
-                rltmStationState)
+                rltmStationState,
+                viewModel){stationFindErrorFunc()}
         }
         item { DotLineColumn() }
         item {
             AirQualityColumn(
                 modifier = Modifier
                     .fillMaxWidth(),
-                airQualityState)
+                airQualityState){airQualityErrorFunc()}
         }
         item { DotLineColumn() }
         item {
             PredictionModelColumn(
                 modifier = Modifier
                     .fillMaxWidth(),
-                airQualityState)
+                airQualityState){airQualityErrorFunc()}
         }
     }
 }
