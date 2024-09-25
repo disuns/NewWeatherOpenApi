@@ -35,7 +35,6 @@ import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
-import com.project.newweatheropenapi.ui.compose.loading.skeleton.SkeletonWeatherNow
 import com.project.newweatheropenapi.ui.previewParamAndService.WeatherResponsePreviewParamProvider
 import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
 import com.project.newweatheropenapi.utils.NO_ERROR
@@ -73,7 +72,7 @@ fun NowWeatherColumn(
             text = stringResource(R.string.nowWeather),
             style = defaultTitleTextStyle()
         )
-        ApiResultHandler(modifier, weatherState, errorFunc = {errorFunc()}, skeleton = { SkeletonWeatherNow(modifier) }) { successState ->
+        ApiResultHandler(modifier, weatherState, errorFunc = {errorFunc()}) { successState ->
             if (successState.value.response.header.resultCode != NO_ERROR) {
                 DataPotalSuccesError(modifier, successState.value.response.header.resultCode.dataPotalResultCode(context))
             } else {

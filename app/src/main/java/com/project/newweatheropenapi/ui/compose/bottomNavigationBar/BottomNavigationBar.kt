@@ -47,10 +47,13 @@ fun BottomNavigationBar(navController: NavController) {
                     unselectedTextColor = Color_747483,
                 ),
                 onClick = {
-                    navController.navigate(screen.route) {
-                        popUpTo(navController.graph.startDestinationId) {
-                            inclusive = true
-                            saveState = true
+                    if (currentRoute != screen.route){
+                        navController.navigate(screen.route) {
+                            popUpTo(screen.route) {
+                                inclusive = true
+                                saveState = true
+                            }
+                            launchSingleTop = true
                         }
                     }
                 },

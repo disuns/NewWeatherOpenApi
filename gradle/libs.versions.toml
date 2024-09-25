@@ -18,6 +18,7 @@ naver_map_compose = "1.7.2"
 naver_map_location = "21.0.2"
 google-service = "4.4.2"
 firebase-bom = "33.3.0"
+firebase-crashlytics-plugin = "3.0.2"
 ted-permission = "3.3.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
@@ -55,7 +56,9 @@ hilt_navigation_compose = {module = "androidx.hilt:hilt-navigation-compose", ver
 naver-map-compose = {module = "io.github.fornewid:naver-map-compose", version.ref = "naver_map_compose" }
 naver-map-location = {module = "io.github.fornewid:naver-map-location", version.ref = "naver_map_location" }
 #firebase
-firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref ="firebase-bom"}
+firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref ="firebase-bom" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 #tedpermission
 ted-permission = {module = "io.github.ParkSangGwon:tedpermission-normal", version.ref = "ted-permission"}
 #retrofit
@@ -85,4 +88,5 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 google-service = {id = "com.google.gms.google-services", version.ref = "google-service"}
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt = {id = "com.google.dagger.hilt.android", version.ref = "hilt"}
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 

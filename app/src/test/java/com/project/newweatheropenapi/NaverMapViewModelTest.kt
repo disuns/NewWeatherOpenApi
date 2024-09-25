@@ -2,16 +2,21 @@ package com.project.newweatheropenapi
 
 import android.content.Context
 import app.cash.turbine.test
+import com.naver.maps.geometry.LatLng
+import com.project.newweatheropenapi.dataclass.LocationData
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
+import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -38,6 +43,12 @@ class NaverMapViewModelTest {
         Dispatchers.setMain(StandardTestDispatcher())
         context = Mockito.mock(Context::class.java)
         viewModel = NaverMapViewModel(repository, locationDataManager, context)
+
+        // updateLocationData 모킹 설정 추가
+        coEvery { locationDataManager.updateLocationData(any(), any(), any(), any()) } just Runs
+
+        val mockLocationData = LocationData(LatLng(37.5206017, 126.8825833))
+        coEvery { locationDataManager.locationData } returns MutableStateFlow(mockLocationData)
     }
 
     // 테스트 후 디스패처 리셋
@@ -67,6 +78,9 @@ class NaverMapViewModelTest {
                         mappingId = "09560124"
                     ),
                     land = NaverMapResponse.Result.Land(
+                        type = "1",
+                        number1 = "45",
+                        number2 = "",
                         addition0 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
                         addition1 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
                         addition2 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
@@ -78,11 +92,7 @@ class NaverMapViewModelTest {
                                 x = 0.0,
                                 y = 0.0
                             )
-                        ),
-                        name = "",
-                        number1 = "46",
-                        number2 = "",
-                        type = "1"
+                        )
                     ),
                     region = NaverMapResponse.Result.Region(
                         area0 = NaverMapResponse.Result.Region.Area(
@@ -97,14 +107,14 @@ class NaverMapViewModelTest {
                         ),
                         area1 = NaverMapResponse.Result.Region.Area(
                             name = "서울특별시",
+                            alias = "서울",
                             coords = NaverMapResponse.Coords(
                                 center = NaverMapResponse.Coords.Center(
                                     crs = "NHN:2048",
                                     x = 953935.4983318285,
                                     y = 1952044.0947760872
                                 )
-                            ),
-                            alias = "서울"
+                            )
                         ),
                         area2 = NaverMapResponse.Result.Region.Area(
                             name = "영등포구",
@@ -146,6 +156,9 @@ class NaverMapViewModelTest {
                         mappingId = "09560124"
                     ),
                     land = NaverMapResponse.Result.Land(
+                        type = "",
+                        number1 = "6",
+                        number2 = "",
                         addition0 = NaverMapResponse.Result.Land.Addition(type = "building", value = "현대아파트"),
                         addition1 = NaverMapResponse.Result.Land.Addition(type = "zipcode", value = "07283"),
                         addition2 = NaverMapResponse.Result.Land.Addition(type = "roadGroupCode", value = "115604154406"),
@@ -158,10 +171,7 @@ class NaverMapViewModelTest {
                                 y = 0.0
                             )
                         ),
-                        name = "문래로4길",
-                        number1 = "14",
-                        number2 = "",
-                        type = ""
+                        name = "문래로4길"
                     ),
                     region = NaverMapResponse.Result.Region(
                         area0 = NaverMapResponse.Result.Region.Area(
@@ -176,14 +186,14 @@ class NaverMapViewModelTest {
                         ),
                         area1 = NaverMapResponse.Result.Region.Area(
                             name = "서울특별시",
+                            alias = "서울",
                             coords = NaverMapResponse.Coords(
                                 center = NaverMapResponse.Coords.Center(
                                     crs = "NHN:2048",
                                     x = 953935.4983318285,
                                     y = 1952044.0947760872
                                 )
-                            ),
-                            alias = "서울"
+                            )
                         ),
                         area2 = NaverMapResponse.Result.Region.Area(
                             name = "영등포구",
@@ -226,7 +236,7 @@ class NaverMapViewModelTest {
         // StateFlow 테스트
         viewModel.naverMapStateFlow.test {
             // 메서드 호출
-            viewModel.fetchNaverMap(126.88237267230349,37.51982548626224)
+            viewModel.fetchNaverMap(126.8825833,37.5206017)
 
             // 처음 상태는 Loading인지 확인
             assertTrue(awaitItem() is ApiResult.Loading)
@@ -248,8 +258,7 @@ class NaverMapViewModelTest {
         // StateFlow 테스트
         viewModel.naverMapStateFlow.test {
             // 메서드 호출
-            viewModel.fetchNaverMap(126.88237267230349,37.51982548626224)
-
+            viewModel.fetchNaverMap(126.8825833,37.5206017)
             // 처음 상태는 Loading인지 확인
             assertTrue(awaitItem() is ApiResult.Loading)
 

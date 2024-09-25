@@ -5,6 +5,7 @@ plugins {
     kotlin("kapt")
 //    alias(libs.plugins.google.service)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -91,6 +92,8 @@ dependencies {
     implementation(libs.naver.map.location)
 
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 
     implementation(libs.ted.permission)
     implementation(libs.hilt)

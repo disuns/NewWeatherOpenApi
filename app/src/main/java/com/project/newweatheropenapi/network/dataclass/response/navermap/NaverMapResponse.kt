@@ -43,7 +43,7 @@ data class NaverMapResponse(
             val addition3: Addition,
             val addition4: Addition,
             val coords: Coords,
-            val name: String,
+            val name: String="",
             val number1: String,
             val number2: String,
             val type: String
