@@ -59,3 +59,24 @@
 - BasicTextField, Box, IconButton: 사용자가 직접 주소를 입력할 수 있는 검색 UI 구현
 
 ## **작업 중 주요 이슈**
+
+### 테스트 코드, Hilt, Compose 등 미사용 기능 활용 이슈
++ **이슈**: 그동안 이론적으로만 공부하고 실무에서 사용해보지 않은 기능들(Hilt, Compose, 테스트 코드 등)을 실제 프로젝트에서 처음 사용하면서 여러 문제가 발생  
+    + **테스트 코드**: 이해도가 부족하여 구현에 어려움을 겪음  
+        + **해결**: ChatGPT와 Google에서 타 이용자들의 테스트 코드 사례를 참고하여 기능 구현 및 수정  
+    + **Hilt**: Module 등 일부 Hilt 기능에 대한 이해 부족으로 처음에는 제대로 활용하지 못함  
+        + **해결**: ApiModule 등을 사용하여 Hilt의 기본적인 의존성 주입 기능을 활용  
+    + **Compose**: 기존 XML 기반 뷰에는 있지만 Compose에서는 제공되지 않던 일부 UI 요소를 구현하는 데 어려움이 있었음  
+        + **해결**: 기존 Compose 컴포넌트를 활용하여 유사한 기능을 구현  
+
+### Kotlin DSL + Version Catalog로 인해 달라진 Gradle 사용법
++ **이슈**: 기존의 Gradle 스크립트와 달리 Kotlin DSL + Version Catalog 방식의 새로운 Gradle 사용법에 적응해야 했음  
+    + **해결**: Google의 공식 프로젝트인 SunFlower 프로젝트를 참고하여 Gradle 스크립트 작성
+
+### StateFlow의 활용
++ **이슈**: 기존 LiveData와 달라진 StateFlow의 상태 관리 방식에 대한 이해 부족  
+    + **해결**: 별도의 클래스를 만들어 StateFlow 상태를 관리하고, 그 상태에 맞춰 UI를 동적으로 변경
+
+### 외부 파라미터를 받아오는 Compose Preview의 미작동 문제
++ **이슈**: 외부에서 파라미터를 받아야 하는 컴포넌트의 경우 Compose Preview가 작동하지 않음  
+    + **해결**: PreviewParameterProvider를 이용해 외부 파라미터를 가상으로 생성하여 Preview에서 사용할 수 있도록 구현
