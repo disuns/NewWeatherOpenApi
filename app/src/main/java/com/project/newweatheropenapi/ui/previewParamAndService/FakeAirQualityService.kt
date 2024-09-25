@@ -9,7 +9,6 @@ import retrofit2.Response
 
 class FakeAirQualityService : AirQualityService {
     override suspend fun getAirQuality(params: Map<String, String>): Response<AirQualityResponse> {
-        // 더미 데이터 반환
         val fakeResponse = AirQualityResponse(
             response = AirQualityResponse.Response(
                 body = AirQualityResponse.Response.Body(
@@ -47,7 +46,6 @@ class FakeAirQualityService : AirQualityService {
     }
 
     override suspend fun getRltmStation(params: Map<String, String>): Response<RltmStationResponse> {
-        // 더미 데이터 반환
         val fakeResponse = RltmStationResponse(
             response = RltmStationResponse.Response(
                 body = RltmStationResponse.Response.Body(
@@ -92,7 +90,6 @@ class FakeAirQualityService : AirQualityService {
     }
 
     override suspend fun getStationFind(params: Map<String, String>): Response<StationFindResponse> {
-        // 더미 데이터 반환
         val fakeResponse = StationFindResponse(
             response = StationFindResponse.Response(
                 body = StationFindResponse.Response.Body(
