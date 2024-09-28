@@ -1,7 +1,7 @@
 [versions]
 #apps
 #libs
-agp = "8.5.2"
+agp = "8.6.0"
 kotlin = "2.0.20"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -30,6 +30,7 @@ logger= "2.2.0"
 gson = "2.11.0"
 google-location = "21.3.0"
 compose-ui-util = "1.7.2"
+accompanist-permissions = "0.36.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -80,6 +81,9 @@ gson = { module = "com.google.code.gson:gson", version.ref = "gson"}
 #google-location
 google-location = {module = "com.google.android.gms:play-services-location",version.ref = "google-location"}
 compose-ui-util = {module = "androidx.compose.ui:ui-util",version.ref = "compose-ui-util"}
+#accompanist-permissions
+accompanist-permissions = {module = "com.google.accompanist:accompanist-permissions",version.ref = "accompanist-permissions"}
+
 
 
 [plugins]

@@ -1,7 +1,9 @@
 package com.project.newweatheropenapi.utils.managers
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Looper
+import android.support.annotation.RequiresPermission
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -21,6 +23,9 @@ class LocationDataManager @Inject constructor(
     val locationData : StateFlow<LocationData> = _locationData.asStateFlow()
 
     @SuppressLint("MissingPermission")
+    @RequiresPermission(
+        anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]
+    )
     fun getGps(onLocationFetched: (Double, Double) -> Unit) {
         LoadingStateManager.isShow(true)
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)

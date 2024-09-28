@@ -111,4 +111,6 @@ dependencies {
     implementation(libs.google.location)
     implementation(libs.compose.ui.util)
 
+    implementation(libs.accompanist.permissions)
+
 }

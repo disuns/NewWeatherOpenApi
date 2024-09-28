@@ -10,6 +10,7 @@
     <string name="predictionModel">시간대별 예측 모델</string>
 
     <string name="loadingImage">이미지 로딩중</string>
+    <string name="noInternet">인터넷 안됨</string>
 
     <string name="error">error</string>
     <string name="empty">Empty Data</string>
