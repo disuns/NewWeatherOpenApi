@@ -23,6 +23,7 @@ import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.ui.theme.Color_c3cdd3
 import com.project.newweatheropenapi.utils.isNetworkCheck
 import com.project.newweatheropenapi.utils.logMessage
+import com.project.newweatheropenapi.utils.toastMessage
 
 
 @Composable
@@ -62,14 +63,12 @@ private fun PermissionCheck(onNavigate: () -> Unit = {}) {
                     onNavigate()
                 } else {
                     logMessage(context.getString(R.string.noInternet))
-                    Toast.makeText(context, context.getString(R.string.noInternet), Toast.LENGTH_LONG)
-                        .show()
+                    toastMessage(context.getString(R.string.noInternet),context)
                 }
             }
 
             multiplePermissionsState.shouldShowRationale -> {
-                Toast.makeText(context, context.getString(R.string.gpsNeed), Toast.LENGTH_LONG)
-                    .show()
+                toastMessage(context.getString(R.string.gpsNeed), context)
                 logMessage(context.getString(R.string.gpsNeed))
                 openAppSettings(context)
             }

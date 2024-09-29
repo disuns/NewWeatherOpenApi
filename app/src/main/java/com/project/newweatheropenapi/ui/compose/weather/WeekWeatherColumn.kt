@@ -32,7 +32,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.dataclass.WeekDate
 import com.project.newweatheropenapi.dataclass.WeekWeatherData
-import com.project.newweatheropenapi.network.ApiResult
+import com.project.newweatheropenapi.dataclass.state.WeatherViewState
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRainSkyResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
@@ -48,12 +48,12 @@ import com.project.newweatheropenapi.utils.weekDateConvert
 @Composable
 fun WeekWeatherColumn(
     modifier: Modifier,
-    weekRainSkyState: ApiResult<WeekRainSkyResponse>,
+    weatherState: WeatherViewState,
     errorFunc: () -> Unit
 ) {
     val context = LocalContext.current
 
-    ApiResultHandler(modifier, weekRainSkyState, errorFunc = {errorFunc()}) { successState ->
+    ApiResultHandler(modifier, weatherState.weekRainSkyState, errorFunc = {errorFunc()}) { successState ->
         if (successState.value.response.header.resultCode != NO_ERROR) {
             DataPotalSuccesError(modifier, successState.value.response.header.resultCode.dataPotalResultCode(context))
         } else {

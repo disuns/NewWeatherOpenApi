@@ -39,14 +39,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.dataclass.MeasuringData
+import com.project.newweatheropenapi.dataclass.state.AirQualityViewState
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.RltmStationResponse
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.StationFindResponse
 import com.project.newweatheropenapi.network.repository.AirQualityRepository
+import com.project.newweatheropenapi.sealed.intent.AirQualityIntent
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
+import com.project.newweatheropenapi.ui.previewParamAndService.AirQualityPreviewParamProvider
 import com.project.newweatheropenapi.ui.previewParamAndService.FakeAirQualityService
-import com.project.newweatheropenapi.ui.previewParamAndService.StationPreviewDataProvider
 import com.project.newweatheropenapi.ui.theme.Color_F0FFF0
 import com.project.newweatheropenapi.ui.theme.Color_ffd700
 import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
@@ -62,19 +64,18 @@ import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
 @Composable
 fun MeasuringStationColumn(
     modifier: Modifier,
-    stationFindState: ApiResult<StationFindResponse>,
-    rltmStationState: ApiResult<RltmStationResponse>,
+    airQualityState: AirQualityViewState,
     viewModel: AirQualityViewModel,
     errorFunc: () -> Unit
 ) {
     val context = LocalContext.current
     var dropdownSelectedOption by remember { mutableStateOf("통합 대기") }
 
-    ApiResultHandler(modifier, stationFindState, errorFunc = { errorFunc() }) { succesState ->
+    ApiResultHandler(modifier, airQualityState.stationFindState, errorFunc = { errorFunc() }) { succesState ->
         StationFindSuccess(
             modifier,
             succesState,
-            rltmStationState,
+            airQualityState,
             context,
             dropdownSelectedOption,
             viewModel,
@@ -90,7 +91,7 @@ fun MeasuringStationColumn(
 fun StationFindSuccess(
     modifier: Modifier,
     stationFindState: ApiResult.Success<StationFindResponse>,
-    rltmStationState: ApiResult<RltmStationResponse>,
+    airQualityState: AirQualityViewState,
     context: Context,
     dropdownSelectedOption: String,
     viewModel: AirQualityViewModel,
@@ -117,10 +118,10 @@ fun StationFindSuccess(
             )
 
             HandleRltmStationState(
-                rltmStationState, modifier, context, dropdownSelectedOption, onOptionSelected
+                airQualityState.rltmStationState, modifier, context, dropdownSelectedOption, onOptionSelected
             ) {
                 stationItems?.firstOrNull()?.let { station ->
-                    viewModel.fetchRltmStation(station.stationName)
+                    viewModel.handleIntent(AirQualityIntent.LoadRltmStation(station.stationName))
                 }
             }
         }
@@ -274,22 +275,16 @@ fun MeasuringStationCard(
     }
 }
 
-data class StationPreviewData(
-    val stationFindState: ApiResult<StationFindResponse>,
-    val rltmStationState: ApiResult<RltmStationResponse>
-)
-
 @Preview
 @Composable
-fun PreviewMeasuringStationColumn(@PreviewParameter(StationPreviewDataProvider::class) previewData: StationPreviewData) {
+fun PreviewMeasuringStationColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: AirQualityViewState) {
     val airQualityService = FakeAirQualityService()
     val airQualityRepository = AirQualityRepository(airQualityService)
     val airQualityViewModel = AirQualityViewModel(repository = airQualityRepository)
 
     MeasuringStationColumn(
         modifier = Modifier.height(200.dp),
-        stationFindState = previewData.stationFindState,
-        rltmStationState = previewData.rltmStationState,
+        airQualityState = previewData,
         viewModel = airQualityViewModel,
         errorFunc = {}
     )

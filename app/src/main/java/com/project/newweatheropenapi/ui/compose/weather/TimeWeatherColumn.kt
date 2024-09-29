@@ -34,8 +34,8 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.dataclass.TimeWeatherData
+import com.project.newweatheropenapi.dataclass.state.WeatherViewState
 import com.project.newweatheropenapi.enum.imgConvert
-import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
@@ -67,12 +67,12 @@ import kotlin.math.absoluteValue
 @Composable
 fun TimeWeatherColumn(
     modifier: Modifier,
-    timeWeatherState: ApiResult<WeatherResponse>,
+    weatherState: WeatherViewState,
     errorFunc: () -> Unit
 ) {
     val context = LocalContext.current
 
-    ApiResultHandler(modifier, timeWeatherState, errorFunc = {errorFunc()}) { successState ->
+    ApiResultHandler(modifier, weatherState.timeWeatherState, errorFunc = {errorFunc()}) { successState ->
         if (successState.value.response.header.resultCode != NO_ERROR) {
             DataPotalSuccesError(modifier, successState.value.response.header.resultCode.dataPotalResultCode(context))
         } else {

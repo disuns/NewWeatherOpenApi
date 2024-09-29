@@ -29,13 +29,12 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.project.newweatheropenapi.R
+import com.project.newweatheropenapi.dataclass.state.WeatherViewState
 import com.project.newweatheropenapi.enum.WeatherImgEnum
 import com.project.newweatheropenapi.enum.imgConvert
-import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
-import com.project.newweatheropenapi.ui.previewParamAndService.WeatherResponsePreviewParamProvider
+import com.project.newweatheropenapi.ui.previewParamAndService.WeatherViewStatePreviewParamProvider
 import com.project.newweatheropenapi.ui.theme.defaultTitleTextStyle
 import com.project.newweatheropenapi.utils.NO_ERROR
 import com.project.newweatheropenapi.utils.RAIN_MM_NOW
@@ -59,7 +58,7 @@ import com.project.newweatheropenapi.utils.windPower
 @Composable
 fun NowWeatherColumn(
     modifier: Modifier,
-    weatherState: ApiResult<WeatherResponse>,
+    weatherState: WeatherViewState,
     errorFunc: () -> Unit
 ) {
     val context = LocalContext.current
@@ -72,7 +71,7 @@ fun NowWeatherColumn(
             text = stringResource(R.string.nowWeather),
             style = defaultTitleTextStyle()
         )
-        ApiResultHandler(modifier, weatherState, errorFunc = {errorFunc()}) { successState ->
+        ApiResultHandler(modifier, weatherState.weatherState, errorFunc = {errorFunc()}) { successState ->
             if (successState.value.response.header.resultCode != NO_ERROR) {
                 DataPotalSuccesError(modifier, successState.value.response.header.resultCode.dataPotalResultCode(context))
             } else {
@@ -217,7 +216,7 @@ fun WeatherDetailsColumn(
 @Preview
 @Composable
 fun PreviewNowColumn(
-    @PreviewParameter(WeatherResponsePreviewParamProvider::class) weatherState: ApiResult<WeatherResponse>
+    @PreviewParameter(WeatherViewStatePreviewParamProvider::class) weatherState: WeatherViewState
 ) {
     NowWeatherColumn(
         modifier = Modifier

@@ -22,6 +22,7 @@ import androidx.compose.ui.util.lerp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.project.newweatheropenapi.R
+import com.project.newweatheropenapi.dataclass.state.AirQualityViewState
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.AirQualityResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
@@ -36,13 +37,13 @@ import kotlin.math.absoluteValue
 @Composable
 fun PredictionModelColumn(
     modifier: Modifier,
-    airQualityState: ApiResult<AirQualityResponse>,
+    airQualityState: AirQualityViewState,
     errorFunc: () -> Unit
 ) {
     val context = LocalContext.current
 
     Column(modifier = modifier.padding(top = 8.dp)) {
-        ApiResultHandler(modifier, airQualityState, errorFunc = { errorFunc() }) { successState ->
+        ApiResultHandler(modifier, airQualityState.airQualityState, errorFunc = { errorFunc() }) { successState ->
             if (successState.value.response.header.resultCode != NO_ERROR) {
                 DataPotalSuccesError(modifier, successState.value.response.header.resultCode.dataPotalResultCode(context))
             } else {
@@ -107,7 +108,7 @@ fun PredictionModelColumn(
 
 @Preview
 @Composable
-fun PreviewPredictionModelColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: ApiResult<AirQualityResponse>) {
+fun PreviewPredictionModelColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: AirQualityViewState) {
     PredictionModelColumn(
         modifier = Modifier.height(900.dp),
         airQualityState = previewData,

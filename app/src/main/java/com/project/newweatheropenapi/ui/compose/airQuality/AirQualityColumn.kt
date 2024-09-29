@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.project.newweatheropenapi.R
+import com.project.newweatheropenapi.dataclass.state.AirQualityViewState
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.AirQualityResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
@@ -39,12 +40,12 @@ import com.project.newweatheropenapi.utils.sp
 @Composable
 fun AirQualityColumn(
     modifier: Modifier,
-    airQualityState: ApiResult<AirQualityResponse>,
+    airQualityState: AirQualityViewState,
     errorFunc: () -> Unit
 ) {
     val context = LocalContext.current
 
-    ApiResultHandler(modifier, airQualityState, errorFunc = errorFunc) { successState ->
+    ApiResultHandler(modifier, airQualityState.airQualityState, errorFunc = errorFunc) { successState ->
         if (successState.value.response.header.resultCode != NO_ERROR) {
             DataPotalSuccesError(
                 modifier,
@@ -124,7 +125,7 @@ fun AirQualityColumn(
 
 @Preview
 @Composable
-fun PreviewAirQualityColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: ApiResult<AirQualityResponse>) {
+fun PreviewAirQualityColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: AirQualityViewState) {
     AirQualityColumn(
         modifier = Modifier.background(Color.White),
         airQualityState = previewData,

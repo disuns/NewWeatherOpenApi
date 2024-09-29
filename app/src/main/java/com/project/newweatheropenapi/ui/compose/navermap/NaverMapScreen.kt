@@ -44,6 +44,7 @@ import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.project.newweatheropenapi.R
+import com.project.newweatheropenapi.sealed.intent.NaverMapIntent
 import com.project.newweatheropenapi.ui.theme.icon.CancelImageVector
 import com.project.newweatheropenapi.ui.theme.icon.SearchImageVector
 import com.project.newweatheropenapi.utils.isNetworkCheck
@@ -79,9 +80,11 @@ fun NaverMapScreen(
 
     LaunchedEffect(cameraPositionState.isMoving) {
         if (!isInitialLoad && !cameraPositionState.isMoving && context.isNetworkCheck()) {
-            viewModel.fetchNaverMap(
-                cameraPositionState.position.target.longitude,
-                cameraPositionState.position.target.latitude
+            viewModel.handleIntent(
+                NaverMapIntent.LoadNaverMapGeo(
+                    cameraPositionState.position.target.longitude,
+                    cameraPositionState.position.target.latitude
+                )
             )
         }
         isInitialLoad = false
@@ -103,7 +106,11 @@ fun NaverMapScreen(
     }
 }
 
-private fun addressAndMoveCamera(query: String, cameraPositionState: CameraPositionState, context: Context) {
+private fun addressAndMoveCamera(
+    query: String,
+    cameraPositionState: CameraPositionState,
+    context: Context
+) {
     val geocoder = Geocoder(context)
 
     try {
@@ -141,11 +148,13 @@ fun MapSearchView(
     Box(
         Modifier
             .fillMaxWidth()
-            .background(brush = Brush.verticalGradient(
-                colors = listOf(Color.Black, Color.Transparent),
-                startY = 0f,
-                endY = Float.POSITIVE_INFINITY
-            ))
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(Color.Black, Color.Transparent),
+                    startY = 0f,
+                    endY = Float.POSITIVE_INFINITY
+                )
+            )
             .padding(horizontal = 16.dp, vertical = 12.5.dp)
     ) {
         Row(
@@ -179,8 +188,10 @@ fun MapSearchView(
                 keyboardActions = KeyboardActions(
                     onDone = { onSearch(query) }
                 ),
-                textStyle = TextStyle(color = Color.White,
-                    fontSize = dimensionResource(id = R.dimen.MainText).sp())
+                textStyle = TextStyle(
+                    color = Color.White,
+                    fontSize = dimensionResource(id = R.dimen.MainText).sp()
+                )
             )
 
             IconButton(

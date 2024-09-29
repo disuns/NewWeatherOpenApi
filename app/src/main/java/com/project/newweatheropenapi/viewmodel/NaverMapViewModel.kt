@@ -1,21 +1,22 @@
 package com.project.newweatheropenapi.viewmodel
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.naver.maps.geometry.LatLng
+import com.project.newweatheropenapi.dataclass.state.NaverMapViewState
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.request.navermap.NaverMapRequest
 import com.project.newweatheropenapi.network.dataclass.request.navermap.toMap
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
+import com.project.newweatheropenapi.sealed.intent.NaverMapIntent
 import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.utils.managers.LoadingStateManager
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.utils.mapAddressConvert
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,26 +25,33 @@ class NaverMapViewModel @Inject constructor(
     private val repository: NaverMapRepository,
     private val locationDataManager: LocationDataManager,
     @ApplicationContext val context: Context
-) : BaseViewModel() {
-    private val _naverMapStateFlow = MutableStateFlow<ApiResult<NaverMapResponse>>(ApiResult.Loading)
-    val naverMapStateFlow: StateFlow<ApiResult<NaverMapResponse>> = _naverMapStateFlow
-
+) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
     init {
         onHandledFlow()
     }
 
+    fun handleIntent(intent: NaverMapIntent) {
+        super.handleIntent(intent)
+        when(intent){
+            is NaverMapIntent.LoadNaverMapGeo -> fetchNaverMap(intent.lon, intent.lat)
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     fun getLocation() {
+
         locationDataManager.getGps { lat, lon ->
             fetchNaverMap(lon, lat)
         }
     }
 
-    fun fetchNaverMap(lon: Double, lat: Double) {
+    private fun fetchNaverMap(lon: Double, lat: Double) {
         val latLng = "$lon,$lat"
         locationDataManager.updateLocationData(LatLng(lat, lon))
 
         val request = NaverMapRequest(coords = latLng)
-        fetchData({ repository.getReverseGeoCo(request.toMap()) }, _naverMapStateFlow)
+        fetchData({ repository.getReverseGeoCo(request.toMap()) },
+            { currentState, result -> currentState.copy(naverMapState = result) })
     }
 
     private fun reverseGeocode(result: NaverMapResponse) {
@@ -61,21 +69,19 @@ class NaverMapViewModel @Inject constructor(
 
     private fun onHandledFlow() {
         viewModelScope.launch {
-            naverMapStateFlow.collect { naverMapState ->
-                LoadingStateManager.isAnyLoadingCheck(naverMapState)
-                when (naverMapState) {
+            state.collect { mapState ->
+                state.value.isAllLoading()
+
+                when (mapState.naverMapState) {
                     is ApiResult.Success -> {
-                        val response = (_naverMapStateFlow.value as ApiResult.Success).value
+                        val response = mapState.naverMapState.value
 
                         if (response.status.code == 0) {
                             reverseGeocode(response)
                         }
-                        LoadingStateManager.isShow(false)
                     }
-
-                    is ApiResult.Empty -> {}
-                    is ApiResult.Error -> logMessage("Error: ${naverMapState.exception}")
-                    is ApiResult.Loading -> {}
+                    is ApiResult.Error -> logMessage("Error: ${mapState.naverMapState.exception}")
+                    else -> {}
                 }
             }
         }

@@ -1,8 +1,8 @@
 package com.project.newweatheropenapi.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.naver.maps.geometry.LatLng
+import com.project.newweatheropenapi.dataclass.state.WeatherViewState
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.request.datapotal.WeatherRequest
 import com.project.newweatheropenapi.network.dataclass.request.datapotal.WeekRainSkyRequest
@@ -10,6 +10,7 @@ import com.project.newweatheropenapi.network.dataclass.request.datapotal.toMap
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
 import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRainSkyResponse
 import com.project.newweatheropenapi.network.repository.WeatherRepository
+import com.project.newweatheropenapi.sealed.intent.WeatherIntent
 import com.project.newweatheropenapi.utils.DATA_POTAL_SERVICE_KEY
 import com.project.newweatheropenapi.utils.DATA_TYPE_UPPER
 import com.project.newweatheropenapi.utils.NUM_OF_ROWS_DEFAULT
@@ -22,7 +23,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import retrofit2.http.Query
 import javax.inject.Inject
 
@@ -32,30 +32,36 @@ class WeatherViewModel @Inject constructor(
     private val timeManager: TimeManager,
     @ApplicationContext val context: Context
 ) :
-    BaseViewModel() {
-    private val _weatherStateFlow = MutableStateFlow<ApiResult<WeatherResponse>>(ApiResult.Loading)
-    val weatherStateFlow: StateFlow<ApiResult<WeatherResponse>> = _weatherStateFlow
+    BaseViewModel<WeatherViewState>(WeatherViewState()) {
 
-    private val _timeWeatherState = MutableStateFlow<ApiResult<WeatherResponse>>(ApiResult.Loading)
-    val timeWeatherState: StateFlow<ApiResult<WeatherResponse>> get() = _timeWeatherState
+    fun handleIntent(intent: WeatherIntent) {
+        super.handleIntent(intent)
+        when (intent) {
+            is WeatherIntent.LoadAllWeather -> fetchAllWeatherData(
+                intent.nx,
+                intent.ny,
+                intent.address
+            )
 
-    private val _weekRainSkyState =
-        MutableStateFlow<ApiResult<WeekRainSkyResponse>>(ApiResult.Loading)
-    val weekRainSkyState: StateFlow<ApiResult<WeekRainSkyResponse>> get() = _weekRainSkyState
+            is WeatherIntent.LoadWeather -> fetchWeather(intent.nx, intent.ny)
+            is WeatherIntent.LoadTimeWeather -> fetchTimeWeather(intent.nx, intent.ny)
+            is WeatherIntent.LoadWeekRainSky -> fetchWeekRainSky(intent.address)
+        }
+    }
 
-    fun fetchAllWeatherData(
+    private fun fetchAllWeatherData(
         nx: String,
         ny: String,
         address: String
     ) {
-        viewModelScope.launch {
-            fetchWeather(nx, ny)
-            fetchTimeWeather(nx, ny)
-            fetchWeekRainSky(address)
-        }
+        fetchAllData(
+            { fetchWeather(nx, ny) },
+            { fetchTimeWeather(nx, ny) },
+            { fetchWeekRainSky(address) }
+        )
     }
 
-    fun fetchWeather(
+    private fun fetchWeather(
         nx: String,
         ny: String
     ) {
@@ -72,10 +78,11 @@ class WeatherViewModel @Inject constructor(
             latitude,
             longitude
         )
-        fetchData({ repository.getWeather(request.toMap()) }, _weatherStateFlow)
+        fetchData({ repository.getWeather(request.toMap()) },
+            { currentState, result -> currentState.copy(weatherState = result) })
     }
 
-    fun fetchTimeWeather(
+    private fun fetchTimeWeather(
         nx: String,
         ny: String
     ) {
@@ -92,10 +99,11 @@ class WeatherViewModel @Inject constructor(
             latitude,
             longitude
         )
-        fetchData({ repository.getTimeWeather(request.toMap()) }, _timeWeatherState)
+        fetchData({ repository.getTimeWeather(request.toMap()) },
+            { currentState, result -> currentState.copy(timeWeatherState = result) })
     }
 
-    fun fetchWeekRainSky(
+    private fun fetchWeekRainSky(
         @Query("regId") regId: String
     ) {
         val landCode = regId.landCodeGu(context = context)
@@ -107,6 +115,7 @@ class WeatherViewModel @Inject constructor(
             landCode,
             timeManager.urlWeekWeatherTime()
         )
-        fetchData({ repository.getWeekRainSky(request.toMap()) }, _weekRainSkyState)
+        fetchData({ repository.getWeekRainSky(request.toMap()) },
+            { currentState, result -> currentState.copy(weekRainSkyState = result) })
     }
 }

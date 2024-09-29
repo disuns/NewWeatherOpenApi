@@ -7,6 +7,7 @@ import com.project.newweatheropenapi.dataclass.LocationData
 import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
 import com.project.newweatheropenapi.network.repository.NaverMapRepository
+import com.project.newweatheropenapi.sealed.intent.NaverMapIntent
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
 import io.mockk.Runs
@@ -32,7 +33,7 @@ import org.mockito.Mockito
 class NaverMapViewModelTest {
 
     private val repository: NaverMapRepository = mockk()
-    private val locationDataManager : LocationDataManager = mockk()
+    private val locationDataManager: LocationDataManager = mockk()
     private lateinit var viewModel: NaverMapViewModel
     private lateinit var context: Context
 
@@ -159,9 +160,18 @@ class NaverMapViewModelTest {
                         type = "",
                         number1 = "6",
                         number2 = "",
-                        addition0 = NaverMapResponse.Result.Land.Addition(type = "building", value = "현대아파트"),
-                        addition1 = NaverMapResponse.Result.Land.Addition(type = "zipcode", value = "07283"),
-                        addition2 = NaverMapResponse.Result.Land.Addition(type = "roadGroupCode", value = "115604154406"),
+                        addition0 = NaverMapResponse.Result.Land.Addition(
+                            type = "building",
+                            value = "현대아파트"
+                        ),
+                        addition1 = NaverMapResponse.Result.Land.Addition(
+                            type = "zipcode",
+                            value = "07283"
+                        ),
+                        addition2 = NaverMapResponse.Result.Land.Addition(
+                            type = "roadGroupCode",
+                            value = "115604154406"
+                        ),
                         addition3 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
                         addition4 = NaverMapResponse.Result.Land.Addition(type = "", value = ""),
                         coords = NaverMapResponse.Coords(
@@ -234,15 +244,17 @@ class NaverMapViewModelTest {
         coEvery { repository.getReverseGeoCo(any()) } returns flowOf(ApiResult.Success(mockResponse))
 
         // StateFlow 테스트
-        viewModel.naverMapStateFlow.test {
+        viewModel.state.test {
             // 메서드 호출
-            viewModel.fetchNaverMap(126.8825833,37.5206017)
+            viewModel.handleIntent(
+                NaverMapIntent.LoadNaverMapGeo(126.8825833, 37.5206017)
+            )
 
             // 처음 상태는 Loading인지 확인
-            assertTrue(awaitItem() is ApiResult.Loading)
+            assertTrue(awaitItem().naverMapState is ApiResult.Loading)
 
             // 성공 상태 확인
-            val successResult = awaitItem() as ApiResult.Success
+            val successResult = awaitItem().naverMapState as ApiResult.Success
             assertEquals(mockResponse, successResult.value)
 
             cancelAndIgnoreRemainingEvents()
@@ -253,14 +265,21 @@ class NaverMapViewModelTest {
     fun `fetchNaverMap 실패 시 에러가 반환된다`() = runTest {
         // Mock 응답 객체 생성
         val errorMessage = "Error occurred"
-        coEvery { repository.getReverseGeoCo(any()) } returns flowOf(ApiResult.Error(code = null, exception = Exception(errorMessage)))
+        coEvery { repository.getReverseGeoCo(any()) } returns flowOf(
+            ApiResult.Error(
+                code = null,
+                exception = Exception(errorMessage)
+            )
+        )
 
         // StateFlow 테스트
-        viewModel.naverMapStateFlow.test {
+        viewModel.state.test {
             // 메서드 호출
-            viewModel.fetchNaverMap(126.8825833,37.5206017)
+            viewModel.handleIntent(
+                NaverMapIntent.LoadNaverMapGeo(126.8825833, 37.5206017)
+            )
             // 처음 상태는 Loading인지 확인
-            assertTrue(awaitItem() is ApiResult.Loading)
+            assertTrue(awaitItem().naverMapState is ApiResult.Loading)
 
             // 에러 상태 확인
             val errorResult = awaitItem() as ApiResult.Error

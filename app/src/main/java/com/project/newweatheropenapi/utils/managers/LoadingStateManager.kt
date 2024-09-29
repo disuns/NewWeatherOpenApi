@@ -1,5 +1,6 @@
 package com.project.newweatheropenapi.utils.managers
 
+import com.project.newweatheropenapi.dataclass.state.AirQualityViewState
 import com.project.newweatheropenapi.network.ApiResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -9,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlin.reflect.KProperty
 
 object LoadingStateManager {
     private val _isLoading = MutableStateFlow(false)
@@ -49,10 +51,5 @@ object LoadingStateManager {
         pendingJob?.cancel()
 
         _isLoading.value = false
-    }
-
-
-    fun isAnyLoadingCheck(vararg stateFlow: ApiResult<*>){
-        isShow(stateFlow.any{it is ApiResult.Loading})
     }
 }

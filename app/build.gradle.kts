@@ -112,5 +112,6 @@ dependencies {
     implementation(libs.compose.ui.util)
 
     implementation(libs.accompanist.permissions)
+    implementation(kotlin("reflect"))
 
 }

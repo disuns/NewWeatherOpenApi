@@ -25,11 +25,9 @@ fun WeatherScreen(
     timeErrorFunc: () -> Unit,
     weekErrorFunc: () -> Unit
 ) {
-    val weatherState by viewModel.weatherStateFlow.collectAsState()
-    val timeWeatherState by viewModel.timeWeatherState.collectAsState()
-    val weekRainSkyState by viewModel.weekRainSkyState.collectAsState()
+    val weatherState by viewModel.state.collectAsState()
 
-    LoadingStateManager.isAnyLoadingCheck(weatherState, timeWeatherState, weekRainSkyState)
+    weatherState.isAllLoading()
 
     Column(
         modifier = modifier
@@ -51,14 +49,14 @@ fun WeatherScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(5f),
-            timeWeatherState
+            weatherState
         ) { timeErrorFunc() }
         DotLineColumn()
         WeekWeatherColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(4f),
-            weekRainSkyState
+            weatherState
         ) { weekErrorFunc() }
     }
 }

@@ -16,6 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.project.newweatheropenapi.sealed.ScreenRoute
+import com.project.newweatheropenapi.sealed.intent.AirQualityIntent
+import com.project.newweatheropenapi.sealed.intent.WeatherIntent
 import com.project.newweatheropenapi.ui.compose.airQuality.AirQualityScreen
 import com.project.newweatheropenapi.ui.compose.bottomNavigationBar.BottomNavigationBar
 import com.project.newweatheropenapi.ui.compose.intro.IntroScreen
@@ -66,15 +68,19 @@ fun ScreenNav(
     LaunchedEffect(address) {
         if (address.isNotEmpty()) {
             with(locationValue) {
-                weatherViewModel.fetchAllWeatherData(
-                    nx = latLng.latitude.toString(),
-                    ny = latLng.longitude.toString(),
-                    address = address
+                weatherViewModel.handleIntent(
+                    WeatherIntent.LoadAllWeather(
+                        nx = latLng.latitude.toString(),
+                        ny = latLng.longitude.toString(),
+                        address = address
+                    )
                 )
-                airQualityViewModel.fetchAllAirQualityData(
-                    regionX = x,
-                    regionY = y,
-                    context
+                airQualityViewModel.handleIntent(
+                    AirQualityIntent.LoadAllAirQuality(
+                        regionX = x,
+                        regionY = y,
+                        context
+                    )
                 )
             }
         }
@@ -99,19 +105,23 @@ fun ScreenNav(
             ) { modifier ->
                 WeatherScreen(modifier = modifier, viewModel = weatherViewModel,
                     nowErrorFunc = {
-                        weatherViewModel.fetchWeather(
-                            locationValue.latLng.latitude.toString(),
-                            locationValue.latLng.longitude.toString()
+                        weatherViewModel.handleIntent(
+                            WeatherIntent.LoadWeather(
+                                locationValue.latLng.latitude.toString(),
+                                locationValue.latLng.longitude.toString()
+                            )
                         )
                     },
                     timeErrorFunc = {
-                        weatherViewModel.fetchTimeWeather(
-                            locationValue.latLng.latitude.toString(),
-                            locationValue.latLng.longitude.toString()
+                        weatherViewModel.handleIntent(
+                            WeatherIntent.LoadTimeWeather(
+                                locationValue.latLng.latitude.toString(),
+                                locationValue.latLng.longitude.toString()
+                            )
                         )
                     },
                     weekErrorFunc = {
-                        weatherViewModel.fetchWeekRainSky(address)
+                        weatherViewModel.handleIntent(WeatherIntent.LoadWeekRainSky(address))
                     }
                 )
             }
@@ -124,8 +134,21 @@ fun ScreenNav(
                 AirQualityScreen(
                     modifier = modifier,
                     viewModel = airQualityViewModel,
-                    stationFindErrorFunc ={airQualityViewModel.fetchStationFind(locationValue.x,locationValue.y)},
-                    airQualityErrorFunc ={airQualityViewModel.fetchAirQuality(context)}
+                    stationFindErrorFunc = {
+                        airQualityViewModel.handleIntent(
+                            AirQualityIntent.LoadStationFind(
+                                locationValue.x,
+                                locationValue.y
+                            )
+                        )
+                    },
+                    airQualityErrorFunc = {
+                        airQualityViewModel.handleIntent(
+                            AirQualityIntent.LoadAirQuality(
+                                context
+                            )
+                        )
+                    }
                 )
             }
         }

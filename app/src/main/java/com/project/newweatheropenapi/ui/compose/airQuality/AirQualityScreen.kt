@@ -22,11 +22,9 @@ fun AirQualityScreen(
     stationFindErrorFunc : () -> Unit,
     airQualityErrorFunc : () -> Unit
 ) {
-    val rltmStationState by viewModel.rltmStationStateFlow.collectAsState()
-    val stationFindState by viewModel.stationFindStateFlow.collectAsState()
-    val airQualityState by viewModel.airQualityStateFlow.collectAsState()
+    val airQualityViewState by viewModel.state.collectAsState()
 
-    LoadingStateManager.isAnyLoadingCheck(rltmStationState, airQualityState, stationFindState)
+    airQualityViewState.isAllLoading()
 
     LazyColumn (
         modifier = modifier
@@ -40,8 +38,7 @@ fun AirQualityScreen(
             MeasuringStationColumn(
                 modifier = Modifier
                     .fillMaxWidth(),
-                stationFindState,
-                rltmStationState,
+                airQualityViewState,
                 viewModel){stationFindErrorFunc()}
         }
         item { DotLineColumn() }
@@ -49,14 +46,14 @@ fun AirQualityScreen(
             AirQualityColumn(
                 modifier = Modifier
                     .fillMaxWidth(),
-                airQualityState){airQualityErrorFunc()}
+                airQualityViewState){airQualityErrorFunc()}
         }
         item { DotLineColumn() }
         item {
             PredictionModelColumn(
                 modifier = Modifier
                     .fillMaxWidth(),
-                airQualityState){airQualityErrorFunc()}
+                airQualityViewState){airQualityErrorFunc()}
         }
     }
 }
