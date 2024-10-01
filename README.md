@@ -13,9 +13,10 @@
 
 ## **사용 기술**
 - OkHttp3 + Retrofit2: OpenAPI 요청 및 응답 처리
-- GPS Permission 체크: 위치 권한 요청 및 관리
+- accompanist-permissions: 위치 권한 요청 및 관리 (GPS Permission 체크)
 - Compose: UI/UX 구현
 - MVVM: ViewModel과 Repository를 기반으로 한 데이터 관리
+- MVI: Intent를 이용한 상태 관리
 - Glide: 이미지 로딩 및 캐싱
 - Hilt: 의존성 주입
 - StateFlow: 통신 및 UI 상태 관리
