@@ -19,6 +19,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.sealed.ScreenRoute
 import com.project.newweatheropenapi.ui.theme.Color_747483
+import com.project.newweatheropenapi.utils.logMessage
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
