@@ -19,7 +19,7 @@ import com.project.newweatheropenapi.viewmodel.WeatherViewModel
 
 @Composable
 fun WeatherScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     viewModel: WeatherViewModel,
     nowErrorFunc: () -> Unit,
     timeErrorFunc: () -> Unit,
