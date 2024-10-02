@@ -3,12 +3,9 @@ package com.project.newweatheropenapi.viewmodel
 import android.content.Context
 import com.naver.maps.geometry.LatLng
 import com.project.newweatheropenapi.dataclass.state.WeatherViewState
-import com.project.newweatheropenapi.network.ApiResult
 import com.project.newweatheropenapi.network.dataclass.request.datapotal.WeatherRequest
 import com.project.newweatheropenapi.network.dataclass.request.datapotal.WeekRainSkyRequest
 import com.project.newweatheropenapi.network.dataclass.request.datapotal.toMap
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRainSkyResponse
 import com.project.newweatheropenapi.network.repository.WeatherRepository
 import com.project.newweatheropenapi.sealed.intent.WeatherIntent
 import com.project.newweatheropenapi.utils.DATA_POTAL_SERVICE_KEY
@@ -21,8 +18,6 @@ import com.project.newweatheropenapi.utils.landCodeGu
 import com.project.newweatheropenapi.utils.managers.TimeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import retrofit2.http.Query
 import javax.inject.Inject
 
