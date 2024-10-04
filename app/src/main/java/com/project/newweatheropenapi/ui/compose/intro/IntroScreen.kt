@@ -56,9 +56,9 @@ private fun PermissionCheck(onNavigate: () -> Unit = {}) {
         )
     )
 
-    LaunchedEffect(multiplePermissionsState) {
-        when {
-            multiplePermissionsState.allPermissionsGranted -> {
+    when {
+        multiplePermissionsState.allPermissionsGranted -> {
+            LaunchedEffect(Unit) {
                 if (context.isNetworkCheck()) {
                     onNavigate()
                 } else {
@@ -66,14 +66,14 @@ private fun PermissionCheck(onNavigate: () -> Unit = {}) {
                     toastMessage(context.getString(R.string.noInternet),context)
                 }
             }
-
-            multiplePermissionsState.shouldShowRationale -> {
-                toastMessage(context.getString(R.string.gpsNeed), context)
-                logMessage(context.getString(R.string.gpsNeed))
-                openAppSettings(context)
-            }
-
-            else -> {
+        }
+        multiplePermissionsState.shouldShowRationale -> {
+            toastMessage(context.getString(R.string.gpsNeed), context)
+            logMessage(context.getString(R.string.gpsNeed))
+            openAppSettings(context)
+        }
+        else -> {
+            LaunchedEffect(Unit) {
                 multiplePermissionsState.launchMultiplePermissionRequest()
             }
         }

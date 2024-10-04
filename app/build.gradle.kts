@@ -24,7 +24,14 @@ android {
             useSupportLibrary = true
         }
     }
-
+    signingConfigs {
+        create("release") {
+            storeFile = file("${project.rootDir}/WeatherKey.jks")
+            storePassword = "weatherkeypassword"
+            keyAlias = "weatherKey"
+            keyPassword = "weatherkeypassword"
+        }
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -32,6 +39,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -58,60 +66,33 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.bundles.androidx.ui)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
 
-    testImplementation(libs.mockk)
-    // Kotlin Coroutines Test
-    testImplementation(libs.coroutines.test)
-    //turbine
-    testImplementation(libs.turbine)
-
-    // AndroidX Test
-    testImplementation(libs.core.testing)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.bundles.androidx.ui.test)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    debugImplementation(libs.bundles.debug.test)
+    testImplementation(libs.bundles.testing)
 
     implementation(libs.glide)
 
-    implementation(libs.hilt.navigation.compose)
-
-    implementation(libs.naver.map.compose)
-    implementation(libs.naver.map.location)
-
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.analytics)
 
-    implementation(libs.ted.permission)
-    implementation(libs.hilt)
     kapt(libs.hilt.compiler)
-
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
 
     implementation(libs.logger)
 
     implementation(libs.gson)
 
     implementation(libs.google.location)
-    implementation(libs.compose.ui.util)
 
     implementation(libs.accompanist.permissions)
     implementation(kotlin("reflect"))
 
+    implementation(libs.bundles.androidx.core.lifecycle)
+    implementation(libs.bundles.hilt)
+    implementation(libs.bundles.naver.map)
+    implementation(libs.bundles.firebase)
+    implementation(libs.bundles.networking)
 }

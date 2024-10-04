@@ -1,25 +1,24 @@
 [versions]
 #apps
 #libs
-agp = "8.6.0"
+agp = "8.6.1"
 kotlin = "2.0.20"
 coreKtx = "1.13.1"
 junit = "4.13.2"
-material3 = "1.3.0"
+#material3 = "1.3.0"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
-composeBom = "2024.09.02"
+composeBom = "2024.09.03"
 glide = "1.0.0-beta01"
 hilt_navigation_compose = "1.2.0"
 hilt = "2.51.1"
 naver_map_compose = "1.7.2"
 naver_map_location = "21.0.2"
 google-service = "4.4.2"
-firebase-bom = "33.3.0"
+firebase-bom = "33.4.0"
 firebase-crashlytics-plugin = "3.0.2"
-ted-permission = "3.3.0"
 retrofit = "2.11.0"
 okhttp = "4.12.0"
 mockk = "1.13.12"
@@ -29,7 +28,7 @@ turbine = "0.7.0"
 logger= "2.2.0"
 gson = "2.11.0"
 google-location = "21.3.0"
-compose-ui-util = "1.7.2"
+compose-ui-util = "1.7.3"
 accompanist-permissions = "0.36.0"
 
 [libraries]
@@ -60,8 +59,6 @@ naver-map-location = {module = "io.github.fornewid:naver-map-location", version.
 firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref ="firebase-bom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-#tedpermission
-ted-permission = {module = "io.github.ParkSangGwon:tedpermission-normal", version.ref = "ted-permission"}
 #retrofit
 retrofit = {module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit"}
 converter-gson = {module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit"}
@@ -85,7 +82,6 @@ compose-ui-util = {module = "androidx.compose.ui:ui-util",version.ref = "compose
 accompanist-permissions = {module = "com.google.accompanist:accompanist-permissions",version.ref = "accompanist-permissions"}
 
 
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -94,3 +90,49 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 hilt = {id = "com.google.dagger.hilt.android", version.ref = "hilt"}
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 
+[bundles]
+androidx-core-lifecycle = [
+    "androidx-core-ktx",
+    "androidx-lifecycle-runtime-ktx"
+]
+androidx-ui = [
+    "androidx-ui",
+    "androidx-ui-graphics",
+    "androidx-ui-tooling-preview",
+    "androidx-material3",
+    "compose-ui-util"
+]
+hilt = [
+    "hilt",
+    "hilt_navigation_compose"
+]
+naver-map = [
+    "naver-map-compose",
+    "naver-map-location"
+]
+firebase = [
+    "firebase-crashlytics",
+    "firebase-analytics"
+]
+networking = [
+    "retrofit",
+    "converter-gson",
+    "okhttp",
+    "logging-interceptor"
+]
+testing = [
+    "junit",
+    "mockk",
+    "coroutines-test",
+    "core-testing",
+    "turbine"
+]
+androidx-ui-test = [
+    "androidx-ui-test-junit4",
+    "androidx-espresso-core",
+    "androidx-junit"
+]
+debug-test = [
+    "androidx-ui-tooling",
+    "androidx-ui-test-manifest"
+]

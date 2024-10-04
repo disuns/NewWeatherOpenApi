@@ -2,7 +2,6 @@ package com.project.newweatheropenapi.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.project.newweatheropenapi.dataclass.state.AirQualityViewState
 import com.project.newweatheropenapi.dataclass.state.BaseViewState
 import com.project.newweatheropenapi.network.ApiResult
 import kotlinx.coroutines.flow.Flow
