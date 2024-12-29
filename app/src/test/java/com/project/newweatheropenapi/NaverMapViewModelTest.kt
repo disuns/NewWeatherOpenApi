@@ -5,11 +5,10 @@ import app.cash.turbine.test
 import com.naver.maps.geometry.LatLng
 import com.project.newweatheropenapi.dataclass.LocationData
 import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
-import com.project.newweatheropenapi.network.repository.NaverMapRepository
-import com.project.newweatheropenapi.sealed.intent.NaverMapIntent
+import com.android.sj.data.remote.response.navermap.NaverMapResponse
+import com.android.sj.presentation.intent.NaverMapIntent
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
-import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
+import com.android.sj.presentation.viewmodels.NaverMapViewModel
 import io.mockk.Runs
 import io.mockk.clearAllMocks
 import io.mockk.coEvery

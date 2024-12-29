@@ -1,8 +1,8 @@
 package com.project.newweatheropenapi.dataclass.state
 
 import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRainSkyResponse
+import com.android.sj.data.remote.response.datapotal.WeatherResponse
+import com.android.sj.data.remote.response.datapotal.WeekRainSkyResponse
 
 data class WeatherViewState(
     val weatherState : ApiResult<WeatherResponse> = ApiResult.Loading,

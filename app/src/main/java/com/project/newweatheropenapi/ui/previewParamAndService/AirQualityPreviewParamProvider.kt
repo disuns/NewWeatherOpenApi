@@ -3,10 +3,10 @@ package com.project.newweatheropenapi.ui.previewParamAndService
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.project.newweatheropenapi.dataclass.state.AirQualityViewState
 import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.AirQualityResponse
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.RltmStationResponse
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.StationFindResponse
-import com.project.newweatheropenapi.sealed.intent.AirQualityIntent
+import com.android.sj.data.remote.response.datapotal.AirQualityResponse
+import com.android.sj.data.remote.response.datapotal.RltmStationResponse
+import com.android.sj.data.remote.response.datapotal.StationFindResponse
+import com.android.sj.presentation.intent.AirQualityIntent
 
 class AirQualityPreviewParamProvider : PreviewParameterProvider<AirQualityViewState> {
     override val values = sequenceOf(

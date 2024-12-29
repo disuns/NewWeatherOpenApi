@@ -16,17 +16,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.project.newweatheropenapi.sealed.ScreenRoute
-import com.project.newweatheropenapi.sealed.intent.AirQualityIntent
-import com.project.newweatheropenapi.sealed.intent.WeatherIntent
+import com.android.sj.presentation.intent.AirQualityIntent
+import com.android.sj.presentation.intent.WeatherIntent
 import com.project.newweatheropenapi.ui.compose.airQuality.AirQualityScreen
 import com.project.newweatheropenapi.ui.compose.bottomNavigationBar.BottomNavigationBar
 import com.project.newweatheropenapi.ui.compose.intro.IntroScreen
 import com.project.newweatheropenapi.ui.compose.navermap.NaverMapScreen
 import com.project.newweatheropenapi.ui.compose.weather.WeatherScreen
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
-import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
-import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
-import com.project.newweatheropenapi.viewmodel.WeatherViewModel
+import com.android.sj.presentation.viewmodels.AirQualityViewModel
+import com.android.sj.presentation.viewmodels.NaverMapViewModel
+import com.android.sj.presentation.viewmodels.WeatherViewModel
 
 @Composable
 fun InitScreen(

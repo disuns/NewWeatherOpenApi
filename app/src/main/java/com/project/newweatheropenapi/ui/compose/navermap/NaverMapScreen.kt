@@ -44,14 +44,14 @@ import com.naver.maps.map.compose.MarkerState
 import com.naver.maps.map.compose.NaverMap
 import com.naver.maps.map.compose.rememberCameraPositionState
 import com.project.newweatheropenapi.R
-import com.project.newweatheropenapi.sealed.intent.NaverMapIntent
+import com.android.sj.presentation.intent.NaverMapIntent
 import com.project.newweatheropenapi.ui.theme.icon.CancelImageVector
 import com.project.newweatheropenapi.ui.theme.icon.SearchImageVector
 import com.project.newweatheropenapi.utils.isNetworkCheck
 import com.project.newweatheropenapi.utils.logMessage
 import com.project.newweatheropenapi.utils.managers.LocationDataManager
 import com.project.newweatheropenapi.utils.sp
-import com.project.newweatheropenapi.viewmodel.NaverMapViewModel
+import com.android.sj.presentation.viewmodels.NaverMapViewModel
 import java.io.IOException
 
 @OptIn(ExperimentalNaverMapApi::class)

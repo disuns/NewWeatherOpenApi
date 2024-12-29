@@ -12,8 +12,7 @@ import androidx.compose.ui.res.dimensionResource
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.ui.compose.common.DotLineColumn
 import com.project.newweatheropenapi.ui.theme.Default_BackGround
-import com.project.newweatheropenapi.utils.managers.LoadingStateManager
-import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
+import com.android.sj.presentation.viewmodels.AirQualityViewModel
 
 @Composable
 fun AirQualityScreen(

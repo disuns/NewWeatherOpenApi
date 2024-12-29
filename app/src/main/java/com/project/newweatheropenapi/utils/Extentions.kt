@@ -23,7 +23,7 @@ import com.orhanobut.logger.Logger
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.dataclass.WeekDate
 import com.project.newweatheropenapi.enum.WeatherImgEnum
-import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
+import com.android.sj.data.remote.response.navermap.NaverMapResponse
 import kotlin.math.abs
 import kotlin.math.atan
 import kotlin.math.atan2

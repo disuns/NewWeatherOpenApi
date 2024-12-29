@@ -1,9 +1,9 @@
 package com.project.newweatheropenapi.dataclass.state
 
 import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.AirQualityResponse
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.RltmStationResponse
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.StationFindResponse
+import com.android.sj.data.remote.response.datapotal.AirQualityResponse
+import com.android.sj.data.remote.response.datapotal.RltmStationResponse
+import com.android.sj.data.remote.response.datapotal.StationFindResponse
 
 data class AirQualityViewState(
     val airQualityState: ApiResult<AirQualityResponse> = ApiResult.Loading,

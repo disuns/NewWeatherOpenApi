@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.dataclass.state.AirQualityViewState
 import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.AirQualityResponse
+import com.android.sj.data.remote.response.datapotal.AirQualityResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
 import com.project.newweatheropenapi.ui.previewParamAndService.AirQualityPreviewParamProvider

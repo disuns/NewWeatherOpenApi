@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
 //    alias(libs.plugins.google.service)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.firebase.crashlytics)
@@ -60,12 +60,14 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
-    kapt {
-        correctErrorTypes = true
-    }
 }
 
 dependencies {
+    implementation(project(":domain"))
+    implementation(project(":common"))
+    implementation(project(":data"))
+    implementation(project(":presentation"))
+
     implementation(libs.bundles.androidx.ui)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -79,7 +81,7 @@ dependencies {
 
     implementation(platform(libs.firebase.bom))
 
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(libs.logger)
 

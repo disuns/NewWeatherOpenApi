@@ -3,7 +3,7 @@ package com.project.newweatheropenapi.ui.previewParamAndService
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.project.newweatheropenapi.dataclass.state.WeatherViewState
 import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
+import com.android.sj.data.remote.response.datapotal.WeatherResponse
 
 class WeatherViewStatePreviewParamProvider : PreviewParameterProvider<WeatherViewState> {
     override val values = sequenceOf(

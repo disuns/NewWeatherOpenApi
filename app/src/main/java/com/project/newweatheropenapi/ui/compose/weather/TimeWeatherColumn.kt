@@ -36,7 +36,7 @@ import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.dataclass.TimeWeatherData
 import com.project.newweatheropenapi.dataclass.state.WeatherViewState
 import com.project.newweatheropenapi.enum.imgConvert
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeatherResponse
+import com.android.sj.data.remote.response.datapotal.WeatherResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
 import com.project.newweatheropenapi.ui.previewParamAndService.CardDataPreviewParamProvider

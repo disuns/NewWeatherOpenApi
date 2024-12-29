@@ -41,10 +41,9 @@ import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.dataclass.MeasuringData
 import com.project.newweatheropenapi.dataclass.state.AirQualityViewState
 import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.RltmStationResponse
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.StationFindResponse
-import com.project.newweatheropenapi.network.repository.AirQualityRepository
-import com.project.newweatheropenapi.sealed.intent.AirQualityIntent
+import com.android.sj.data.remote.response.datapotal.RltmStationResponse
+import com.android.sj.data.remote.response.datapotal.StationFindResponse
+import com.android.sj.presentation.intent.AirQualityIntent
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
 import com.project.newweatheropenapi.ui.previewParamAndService.AirQualityPreviewParamProvider
@@ -59,7 +58,7 @@ import com.project.newweatheropenapi.utils.rltmGradeConvert
 import com.project.newweatheropenapi.utils.rltmStationDate
 import com.project.newweatheropenapi.utils.rltmTitle
 import com.project.newweatheropenapi.utils.rltmValueConvert
-import com.project.newweatheropenapi.viewmodel.AirQualityViewModel
+import com.android.sj.presentation.viewmodels.AirQualityViewModel
 
 @Composable
 fun MeasuringStationColumn(

@@ -1,14 +1,14 @@
 package com.project.newweatheropenapi.ui.previewParamAndService
 
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.AirQualityResponse
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.RltmStationResponse
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.StationFindResponse
-import com.project.newweatheropenapi.network.service.AirQualityService
+import com.android.sj.data.remote.response.datapotal.AirQualityResponse
+import com.android.sj.data.remote.response.datapotal.RltmStationResponse
+import com.android.sj.data.remote.response.datapotal.StationFindResponse
+import com.android.sj.data.remote.service.AirQualityService
 import retrofit2.Response
 
 
 class FakeAirQualityService : AirQualityService {
-    override suspend fun getAirQuality(params: Map<String, String>): Response<AirQualityResponse> {
+    override suspend fun fetchAirQuality(params: Map<String, String>): Response<AirQualityResponse> {
         val fakeResponse = AirQualityResponse(
             response = AirQualityResponse.Response(
                 body = AirQualityResponse.Response.Body(
@@ -45,7 +45,7 @@ class FakeAirQualityService : AirQualityService {
         return Response.success(fakeResponse)
     }
 
-    override suspend fun getRltmStation(params: Map<String, String>): Response<RltmStationResponse> {
+    override suspend fun fetchRltmStation(params: Map<String, String>): Response<RltmStationResponse> {
         val fakeResponse = RltmStationResponse(
             response = RltmStationResponse.Response(
                 body = RltmStationResponse.Response.Body(
@@ -89,7 +89,7 @@ class FakeAirQualityService : AirQualityService {
         return Response.success(fakeResponse)
     }
 
-    override suspend fun getStationFind(params: Map<String, String>): Response<StationFindResponse> {
+    override suspend fun fetchStationFind(params: Map<String, String>): Response<StationFindResponse> {
         val fakeResponse = StationFindResponse(
             response = StationFindResponse.Response(
                 body = StationFindResponse.Response.Body(

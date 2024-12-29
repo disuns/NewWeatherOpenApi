@@ -33,7 +33,7 @@ import com.project.newweatheropenapi.R
 import com.project.newweatheropenapi.dataclass.WeekDate
 import com.project.newweatheropenapi.dataclass.WeekWeatherData
 import com.project.newweatheropenapi.dataclass.state.WeatherViewState
-import com.project.newweatheropenapi.network.dataclass.response.datapotal.WeekRainSkyResponse
+import com.android.sj.data.remote.response.datapotal.WeekRainSkyResponse
 import com.project.newweatheropenapi.ui.compose.common.ApiResultHandler
 import com.project.newweatheropenapi.ui.compose.common.DataPotalSuccesError
 import com.project.newweatheropenapi.ui.previewParamAndService.WeekCardDataPreviewParamProvider
