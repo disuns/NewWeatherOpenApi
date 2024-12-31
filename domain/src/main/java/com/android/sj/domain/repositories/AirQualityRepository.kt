@@ -3,7 +3,7 @@ package com.android.sj.domain.repositories
 import com.android.sj.domain.models.AirQualityData
 import com.android.sj.domain.models.RltmStationData
 import com.android.sj.domain.models.StationFindData
-import com.test.domain.ApiResult
+import com.android.sj.domain.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 interface AirQualityRepository {

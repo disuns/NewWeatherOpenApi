@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -25,6 +26,12 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -45,8 +52,23 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(libs.hilt)
+    androidTestImplementation(libs.bundles.androidx.ui.test)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.bundles.androidx.ui)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.compiler)
 
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.bundles.naver.map)
+
+    implementation(libs.glide)
+
+    implementation(libs.accompanist.permissions)
+    implementation(kotlin("reflect"))
+
+    implementation(libs.bundles.androidx.core.lifecycle)
 }

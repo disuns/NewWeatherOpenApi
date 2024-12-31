@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
 //    alias(libs.plugins.google.service)
-    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.firebase.crashlytics)
 }
 
@@ -49,12 +48,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.15"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -68,33 +61,17 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":presentation"))
 
-    implementation(libs.bundles.androidx.ui)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
-
-    androidTestImplementation(libs.bundles.androidx.ui.test)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.bundles.debug.test)
     testImplementation(libs.bundles.testing)
-
-    implementation(libs.glide)
 
     implementation(platform(libs.firebase.bom))
 
     ksp(libs.hilt.compiler)
 
-    implementation(libs.logger)
-
     implementation(libs.gson)
 
-    implementation(libs.google.location)
-
-    implementation(libs.accompanist.permissions)
-    implementation(kotlin("reflect"))
-
-    implementation(libs.bundles.androidx.core.lifecycle)
     implementation(libs.bundles.hilt)
-    implementation(libs.bundles.naver.map)
     implementation(libs.bundles.firebase)
     implementation(libs.bundles.networking)
+    implementation(libs.google.location)
 }

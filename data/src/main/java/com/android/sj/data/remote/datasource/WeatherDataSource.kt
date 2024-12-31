@@ -2,7 +2,7 @@ package com.android.sj.data.remote.datasource
 
 import com.android.sj.data.remote.response.datapotal.WeatherResponse
 import com.android.sj.data.remote.response.datapotal.WeekRainSkyResponse
-import com.test.domain.ApiResult
+import com.android.sj.domain.ApiResult
 import kotlinx.coroutines.flow.Flow
 import retrofit2.http.QueryMap
 

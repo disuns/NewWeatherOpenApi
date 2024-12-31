@@ -1,13 +1,13 @@
 package com.project.newweatheropenapi.di
 
-import com.project.newweatheropenapi.utils.DATA_POTAL_URL
-import com.project.newweatheropenapi.utils.MAPS_URL
+import com.android.sj.common.utils.DATA_POTAL_URL
+import com.android.sj.common.utils.MAPS_URL
 import com.android.sj.data.remote.service.AirQualityService
 import com.android.sj.data.remote.service.NaverMapService
 import com.android.sj.data.remote.service.WeatherService
-import com.project.newweatheropenapi.utils.AirQualityServiceRetrofit
-import com.project.newweatheropenapi.utils.NaverMapServiceRetrofit
-import com.project.newweatheropenapi.utils.WeatherServiceRetrofit
+import com.android.sj.common.utils.AirQualityServiceRetrofit
+import com.android.sj.common.utils.NaverMapServiceRetrofit
+import com.android.sj.common.utils.WeatherServiceRetrofit
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

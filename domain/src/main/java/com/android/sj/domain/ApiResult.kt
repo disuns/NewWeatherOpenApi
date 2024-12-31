@@ -1,6 +1,4 @@
-package com.test.domain
-
-import java.io.IOException
+package com.android.sj.domain
 
 sealed class ApiResult<out T> {
     data class Success<out T>(val value: T): ApiResult<T>()

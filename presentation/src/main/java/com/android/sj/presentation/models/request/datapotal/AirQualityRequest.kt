@@ -1,0 +1,21 @@
+package com.android.sj.presentation.models.request.datapotal
+
+data class AirQualityRequest(
+    val serviceKey: String,
+    val returnType: String,
+    val pageNo: String,
+    val numOfRows: String,
+    val searchDate: String,
+    val informCode: String
+)
+
+fun AirQualityRequest.toMap(): Map<String, String> {
+    return mapOf(
+        "serviceKey" to serviceKey,
+        "returnType" to returnType,
+        "pageNo" to pageNo,
+        "numOfRows" to numOfRows,
+        "searchDate" to searchDate,
+        "InformCode" to informCode
+    )
+}

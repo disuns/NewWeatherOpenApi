@@ -1,4 +1,10 @@
 package com.android.sj.domain.models
 
-class WeatherData {
+data class WeatherData (
+    val items : MutableList<Item>
+){
+    data class Item(
+        val category : String,
+        val value : String
+    )
 }

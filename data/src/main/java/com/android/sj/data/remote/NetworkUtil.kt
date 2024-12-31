@@ -1,7 +1,7 @@
 package com.android.sj.data.remote
 
 import com.android.sj.common.utils.logMessage
-import com.test.domain.ApiResult
+import com.android.sj.domain.ApiResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

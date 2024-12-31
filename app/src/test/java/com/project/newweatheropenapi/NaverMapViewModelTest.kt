@@ -3,11 +3,11 @@ package com.project.newweatheropenapi
 import android.content.Context
 import app.cash.turbine.test
 import com.naver.maps.geometry.LatLng
-import com.project.newweatheropenapi.dataclass.LocationData
+import com.android.sj.common.LocationData
 import com.project.newweatheropenapi.network.ApiResult
 import com.android.sj.data.remote.response.navermap.NaverMapResponse
 import com.android.sj.presentation.intent.NaverMapIntent
-import com.project.newweatheropenapi.utils.managers.LocationDataManager
+import com.android.sj.common.utils.managers.LocationDataManager
 import com.android.sj.presentation.viewmodels.NaverMapViewModel
 import io.mockk.Runs
 import io.mockk.clearAllMocks

@@ -2,7 +2,7 @@ package com.android.sj.data.implementations
 
 import com.android.sj.data.remote.datasource.NaverMapDataSource
 import com.android.sj.domain.repositories.NaverMapRepository
-import com.test.data.mapper.DataMapper
+import com.android.sj.data.mapper.DataMapper
 import javax.inject.Inject
 
 class NaverMapRepositoryImpl @Inject constructor(

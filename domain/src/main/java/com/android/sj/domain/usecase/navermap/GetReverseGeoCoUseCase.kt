@@ -1,7 +1,7 @@
 package com.android.sj.domain.usecase.navermap
 
 import com.android.sj.domain.models.NaverMapData
-import com.test.domain.ApiResult
+import com.android.sj.domain.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 interface GetReverseGeoCoUseCase {

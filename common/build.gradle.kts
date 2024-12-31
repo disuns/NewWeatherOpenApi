@@ -48,4 +48,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.hilt)
     implementation(libs.bundles.networking)
+
+    implementation(libs.bundles.naver.map)
+    implementation(libs.google.location)
 }

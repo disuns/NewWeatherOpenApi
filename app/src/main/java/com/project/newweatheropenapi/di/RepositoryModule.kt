@@ -9,7 +9,7 @@ import com.android.sj.data.remote.datasource.WeatherDataSource
 import com.android.sj.domain.repositories.AirQualityRepository
 import com.android.sj.domain.repositories.NaverMapRepository
 import com.android.sj.domain.repositories.WeatherRepository
-import com.test.data.mapper.DataMapper
+import com.android.sj.data.mapper.DataMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -3,17 +3,16 @@ package com.android.sj.presentation.viewmodels
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.android.sj.common.utils.logMessage
+import com.android.sj.common.utils.managers.LocationDataManager
+import com.android.sj.domain.ApiResult
+import com.android.sj.domain.usecase.navermap.GetReverseGeoCoUseCase
+import com.android.sj.presentation.intent.NaverMapIntent
+import com.android.sj.presentation.mappers.PresentationMapper
+import com.android.sj.presentation.models.request.navermap.NaverMapRequest
+import com.android.sj.presentation.models.request.navermap.toMap
+import com.android.sj.presentation.state.NaverMapViewState
 import com.naver.maps.geometry.LatLng
-import com.project.newweatheropenapi.dataclass.state.NaverMapViewState
-import com.project.newweatheropenapi.network.ApiResult
-import com.project.newweatheropenapi.network.dataclass.request.navermap.NaverMapRequest
-import com.project.newweatheropenapi.network.dataclass.request.navermap.toMap
-import com.project.newweatheropenapi.network.dataclass.response.navermap.NaverMapResponse
-import com.project.newweatheropenapi.network.repository.NaverMapRepository
-import com.project.newweatheropenapi.sealed.intent.NaverMapIntent
-import com.project.newweatheropenapi.utils.logMessage
-import com.project.newweatheropenapi.utils.managers.LocationDataManager
-import com.project.newweatheropenapi.utils.mapAddressConvert
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
@@ -21,8 +20,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NaverMapViewModel @Inject constructor(
-    private val repository: NaverMapRepository,
+    private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase,
     private val locationDataManager: LocationDataManager,
+    private val mapper : PresentationMapper,
     @ApplicationContext val context: Context
 ) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
     init {
@@ -38,7 +38,6 @@ class NaverMapViewModel @Inject constructor(
 
     @SuppressLint("MissingPermission")
     fun getLocation() {
-
         locationDataManager.getGps { lat, lon ->
             fetchNaverMap(lon, lat)
         }
@@ -48,22 +47,13 @@ class NaverMapViewModel @Inject constructor(
         val latLng = "$lon,$lat"
         locationDataManager.updateLocationData(LatLng(lat, lon))
 
-        val request = NaverMapRequest(coords = latLng)
-        fetchData({ repository.getReverseGeoCo(request.toMap()) },
-            { currentState, result -> currentState.copy(naverMapState = result) })
-    }
+        viewModelScope.launch {
+            val request = NaverMapRequest(coords = latLng)
 
-    private fun reverseGeocode(result: NaverMapResponse) {
-        val address = result.mapAddressConvert(context)
-
-        val lastRegion = result.results.last().region.area3.coords.center
-
-        locationDataManager.updateLocationData(
-            locationDataManager.locationData.value.latLng,
-            address,
-            lastRegion.x.toString(),
-            lastRegion.y.toString()
-        )
+            mapper.domainToUIReverseGeoCo(getReverseGeoCoUseCase(request.toMap())).collect { result ->
+                _state.value = _state.value.copy(naverMapState = result)
+            }
+        }
     }
 
     private fun onHandledFlow() {
@@ -73,11 +63,13 @@ class NaverMapViewModel @Inject constructor(
 
                 when (mapState.naverMapState) {
                     is ApiResult.Success -> {
-                        val response = mapState.naverMapState.value
-
-                        if (response.status.code == 0) {
-                            reverseGeocode(response)
-                        }
+                        val data = mapState.naverMapState.value
+                        locationDataManager.updateLocationData(
+                            locationDataManager.locationData.value.latLng,
+                            data.mapAddress,
+                            data.centerX,
+                            data.centerY
+                        )
                     }
                     is ApiResult.Error -> logMessage("Error: ${mapState.naverMapState.exception}")
                     else -> {}
