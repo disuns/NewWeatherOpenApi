@@ -7,7 +7,7 @@ data class WeekRainSkyUIData(
         var weekDate: String = "",
         var rainAm:String = "",
         var rainPm:String = "",
-        var skyAm:String = "",
-        var skyPm:String = ""
+        var skyAm:String? = null,
+        var skyPm:String? = null
     )
 }

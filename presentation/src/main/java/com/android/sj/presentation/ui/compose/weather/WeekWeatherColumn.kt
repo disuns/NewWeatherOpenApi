@@ -112,7 +112,7 @@ fun WeekWeatherItem(data: WeekRainSkyUIData.Item) {
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = data.skyAm,
+                        text = data.skyAm.toString(),
                         fontSize = textSize
                     )
                 }
@@ -135,7 +135,7 @@ fun WeekWeatherItem(data: WeekRainSkyUIData.Item) {
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = data.skyPm,
+                        text = data.skyPm.toString(),
                         fontSize = textSize
                     )
                 }
