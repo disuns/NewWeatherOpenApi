@@ -27,7 +27,6 @@ class LocationDataManager @Inject constructor(
         anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]
     )
     fun getGps(onLocationFetched: (Double, Double) -> Unit) {
-        LoadingStateManager.isShow(true)
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
             .setMinUpdateIntervalMillis(5000)
             .build()

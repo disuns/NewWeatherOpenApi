@@ -2,7 +2,7 @@ package com.android.sj.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.sj.presentation.state.BaseViewState
+import com.android.sj.presentation.models.state.BaseViewState
 import com.android.sj.domain.ApiResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

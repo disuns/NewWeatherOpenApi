@@ -2,27 +2,14 @@ package com.android.sj.presentation.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.ApiResult
-import com.android.sj.domain.usecase.airquality.GetAirQualityUseCase
-import com.android.sj.domain.usecase.airquality.GetRltmStationUseCase
-import com.android.sj.domain.usecase.airquality.GetStationFindUseCase
-import com.android.sj.presentation.RequestConstants.AIR_CODE
-import com.android.sj.presentation.RequestConstants.DATA_POTAL_SERVICE_KEY
-import com.android.sj.presentation.RequestConstants.DATA_TYPE_LOWER
-import com.android.sj.presentation.RequestConstants.DATE_TERM
-import com.android.sj.presentation.RequestConstants.NUM_OF_ROWS_AIR
-import com.android.sj.presentation.RequestConstants.PAGE_NO_DEFAULT
-import com.android.sj.presentation.RequestConstants.RLTM_DATA_VERSION
-import com.android.sj.presentation.RequestConstants.STATION_VERSION
+import com.android.sj.domain.usecase.usecaseinterface.airquality.GetAirQualityUseCase
+import com.android.sj.domain.usecase.usecaseinterface.airquality.GetRltmStationUseCase
+import com.android.sj.domain.usecase.usecaseinterface.airquality.GetStationFindUseCase
 import com.android.sj.presentation.intent.AirQualityIntent
-import com.android.sj.presentation.mappers.PresentationMapper
-import com.android.sj.presentation.models.request.datapotal.AirQualityRequest
-import com.android.sj.presentation.models.request.datapotal.RltmStationRequest
-import com.android.sj.presentation.models.request.datapotal.StationFindRequest
-import com.android.sj.presentation.models.request.datapotal.toMap
-import com.android.sj.presentation.state.AirQualityViewState
-import com.android.sj.presentation.managers.TimeManager
+import com.android.sj.presentation.mappers.AirQualityPresentationMapper
+import com.android.sj.presentation.models.state.AirQualityViewState
+import com.android.sj.presentation.utils.managers.TimeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -32,7 +19,7 @@ class AirQualityViewModel @Inject constructor(
     private val getAirQualityUseCase : GetAirQualityUseCase,
     private val getRltmStationUseCase : GetRltmStationUseCase,
     private val getStationFindUseCase : GetStationFindUseCase,
-    private val mapper : PresentationMapper
+    private val mapper : AirQualityPresentationMapper
 ) : BaseViewModel<AirQualityViewState>(AirQualityViewState()) {
 
 //    val airQualityState: StateFlow<ApiResult<AirQualityUiData>> = PresentationMapper
@@ -84,11 +71,7 @@ class AirQualityViewModel @Inject constructor(
 
     private fun fetchStationFindAndThenRltmStation(regionX: String, regionY: String) {
         viewModelScope.launch {
-            val request = StationFindRequest(
-                DATA_POTAL_SERVICE_KEY, DATA_TYPE_LOWER, regionX, regionY, STATION_VERSION
-            )
-
-            mapper.domainToUIStationFind(getStationFindUseCase(request.toMap())).collect { result ->
+            mapper.domainToUIStationFind(getStationFindUseCase(regionX, regionY)).collect { result ->
                 _state.value = _state.value.copy(stationFindState = result)
 
                 if (result is ApiResult.Success && result.value.stationName != "정보없음") {
@@ -100,15 +83,7 @@ class AirQualityViewModel @Inject constructor(
 
     private fun fetchAirQuality(context: Context) {
         viewModelScope.launch {
-            val request = AirQualityRequest(
-                DATA_POTAL_SERVICE_KEY,
-                DATA_TYPE_LOWER,
-                PAGE_NO_DEFAULT,
-                NUM_OF_ROWS_AIR,
-                TimeManager(context).urlAirQualityDate(),
-                AIR_CODE
-            )
-            mapper.domainToUIAirQuality(getAirQualityUseCase(request.toMap())).collect{ result ->
+            mapper.domainToUIAirQuality(getAirQualityUseCase(TimeManager(context).urlAirQualityDate())).collect{ result ->
                 _state.value = _state.value.copy(airQualityState = result)
             }
         }
@@ -116,16 +91,7 @@ class AirQualityViewModel @Inject constructor(
 
     private fun fetchRltmStation(stationName: String) {
         viewModelScope.launch {
-            val request = RltmStationRequest(
-                DATA_POTAL_SERVICE_KEY,
-                DATA_TYPE_LOWER,
-                PAGE_NO_DEFAULT,
-                NUM_OF_ROWS_AIR,
-                stationName,
-                DATE_TERM,
-                RLTM_DATA_VERSION
-            )
-            mapper.domainToUIRltmStation(getRltmStationUseCase(request.toMap())).collect{ result ->
+            mapper.domainToUIRltmStation(getRltmStationUseCase(stationName)).collect{ result ->
                 _state.value = _state.value.copy(rltmStationState = result)
             }
         }

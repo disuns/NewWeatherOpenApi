@@ -1,7 +1,7 @@
 package com.android.sj.presentation.ui.previewParamAndService
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.android.sj.presentation.models.weather.WeekRainSkyUIData
+import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIData
 
 //class CardDataPreviewParamProvider : PreviewParameterProvider<WeekRainSkyUIData.Item> {
 //    override val values = sequenceOf(

@@ -1,7 +1,7 @@
 package com.android.sj.presentation.ui.previewParamAndService
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.android.sj.presentation.state.WeatherViewState
+import com.android.sj.presentation.models.state.WeatherViewState
 
 //class WeatherViewStatePreviewParamProvider : PreviewParameterProvider<WeatherViewState> {
 //    override val values = sequenceOf(

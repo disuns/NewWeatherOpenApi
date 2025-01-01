@@ -1,15 +1,17 @@
 package com.project.newweatheropenapi.di
 
-import com.android.sj.data.implementations.AirQualityRepositoryImpl
-import com.android.sj.data.implementations.NaverMapRepositoryImpl
-import com.android.sj.data.implementations.WeatherRepositoryImpl
-import com.android.sj.data.remote.datasource.AirQualityDataSource
-import com.android.sj.data.remote.datasource.NaverMapDataSource
-import com.android.sj.data.remote.datasource.WeatherDataSource
+import com.android.sj.data.impl.AirQualityRepositoryImpl
+import com.android.sj.data.impl.NaverMapRepositoryImpl
+import com.android.sj.data.impl.WeatherRepositoryImpl
+import com.android.sj.data.mapper.AirQualityDataMapper
+import com.android.sj.data.mapper.NaverMapDataMapper
+import com.android.sj.data.network.datasource.AirQualityDataSource
+import com.android.sj.data.network.datasource.NaverMapDataSource
+import com.android.sj.data.network.datasource.WeatherDataSource
 import com.android.sj.domain.repositories.AirQualityRepository
 import com.android.sj.domain.repositories.NaverMapRepository
 import com.android.sj.domain.repositories.WeatherRepository
-import com.android.sj.data.mapper.DataMapper
+import com.android.sj.data.mapper.WeatherDataMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,7 +25,7 @@ object RepositoryModule {
     @Singleton
     fun provideAirQualityRepository(
         airQualityDataSource: AirQualityDataSource,
-        mapper: DataMapper
+        mapper: AirQualityDataMapper
     ): AirQualityRepository {
         return AirQualityRepositoryImpl(
             airQualityDataSource = airQualityDataSource,
@@ -34,7 +36,7 @@ object RepositoryModule {
     @Singleton
     fun provideNaverMapRepository(
         naverMapDataSource: NaverMapDataSource,
-        mapper: DataMapper
+        mapper: NaverMapDataMapper
     ): NaverMapRepository {
         return NaverMapRepositoryImpl(
             naverMapDataSource = naverMapDataSource,
@@ -45,7 +47,7 @@ object RepositoryModule {
     @Singleton
     fun provideWeatherRepository(
         weatherDataSource: WeatherDataSource,
-        mapper: DataMapper
+        mapper: WeatherDataMapper
     ): WeatherRepository {
         return WeatherRepositoryImpl(
             weatherDataSource = weatherDataSource,

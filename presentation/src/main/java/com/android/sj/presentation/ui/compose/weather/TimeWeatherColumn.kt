@@ -29,8 +29,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.weather.TimeWeatherUIData
-import com.android.sj.presentation.state.WeatherViewState
+import com.android.sj.presentation.models.uimodels.weather.TimeWeatherUIData
+import com.android.sj.presentation.models.state.WeatherViewState
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
 import com.android.sj.presentation.ui.theme.Color_eceff1
 import com.android.sj.presentation.utils.sp

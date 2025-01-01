@@ -1,11 +1,11 @@
 package com.project.newweatheropenapi.di
 
-import com.android.sj.data.remote.datasource.AirQualityDataSource
-import com.android.sj.data.remote.datasource.NaverMapDataSource
-import com.android.sj.data.remote.datasource.WeatherDataSource
-import com.android.sj.data.remote.datasource.impl.AirQualityDataSourceImpl
-import com.android.sj.data.remote.datasource.impl.NaverMapDataSourceImpl
-import com.android.sj.data.remote.datasource.impl.WeatherDataSourceImpl
+import com.android.sj.data.network.datasource.AirQualityDataSource
+import com.android.sj.data.network.datasource.NaverMapDataSource
+import com.android.sj.data.network.datasource.WeatherDataSource
+import com.android.sj.data.network.datasource.impl.AirQualityDataSourceImpl
+import com.android.sj.data.network.datasource.impl.NaverMapDataSourceImpl
+import com.android.sj.data.network.datasource.impl.WeatherDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

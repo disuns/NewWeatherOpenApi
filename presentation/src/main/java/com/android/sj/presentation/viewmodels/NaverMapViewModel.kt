@@ -6,12 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.android.sj.common.utils.logMessage
 import com.android.sj.common.utils.managers.LocationDataManager
 import com.android.sj.domain.ApiResult
-import com.android.sj.domain.usecase.navermap.GetReverseGeoCoUseCase
+import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
 import com.android.sj.presentation.intent.NaverMapIntent
-import com.android.sj.presentation.mappers.PresentationMapper
-import com.android.sj.presentation.models.request.navermap.NaverMapRequest
-import com.android.sj.presentation.models.request.navermap.toMap
-import com.android.sj.presentation.state.NaverMapViewState
+import com.android.sj.presentation.mappers.NaverMapPresentationMapper
+import com.android.sj.presentation.models.state.NaverMapViewState
+import com.android.sj.presentation.utils.managers.LoadingStateManager
 import com.naver.maps.geometry.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -22,7 +21,7 @@ import javax.inject.Inject
 class NaverMapViewModel @Inject constructor(
     private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase,
     private val locationDataManager: LocationDataManager,
-    private val mapper : PresentationMapper,
+    private val mapper : NaverMapPresentationMapper,
     @ApplicationContext val context: Context
 ) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
     init {
@@ -38,6 +37,7 @@ class NaverMapViewModel @Inject constructor(
 
     @SuppressLint("MissingPermission")
     fun getLocation() {
+        LoadingStateManager.isShow(true)
         locationDataManager.getGps { lat, lon ->
             fetchNaverMap(lon, lat)
         }
@@ -48,9 +48,8 @@ class NaverMapViewModel @Inject constructor(
         locationDataManager.updateLocationData(LatLng(lat, lon))
 
         viewModelScope.launch {
-            val request = NaverMapRequest(coords = latLng)
 
-            mapper.domainToUIReverseGeoCo(getReverseGeoCoUseCase(request.toMap())).collect { result ->
+            mapper.domainToUIReverseGeoCo(getReverseGeoCoUseCase(latLng)).collect { result ->
                 _state.value = _state.value.copy(naverMapState = result)
             }
         }

@@ -2,9 +2,9 @@ package com.project.newweatheropenapi.di
 
 import com.android.sj.common.utils.DATA_POTAL_URL
 import com.android.sj.common.utils.MAPS_URL
-import com.android.sj.data.remote.service.AirQualityService
-import com.android.sj.data.remote.service.NaverMapService
-import com.android.sj.data.remote.service.WeatherService
+import com.android.sj.data.network.service.AirQualityService
+import com.android.sj.data.network.service.NaverMapService
+import com.android.sj.data.network.service.WeatherService
 import com.android.sj.common.utils.AirQualityServiceRetrofit
 import com.android.sj.common.utils.NaverMapServiceRetrofit
 import com.android.sj.common.utils.WeatherServiceRetrofit

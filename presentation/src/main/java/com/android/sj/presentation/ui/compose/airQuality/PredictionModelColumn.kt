@@ -2,7 +2,6 @@ package com.android.sj.presentation.ui.compose.airQuality
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -14,12 +13,10 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.state.AirQualityViewState
+import com.android.sj.presentation.models.state.AirQualityViewState
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
 import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi

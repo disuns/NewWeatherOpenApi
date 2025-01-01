@@ -36,10 +36,10 @@ import androidx.compose.ui.unit.sp
 import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.R
 import com.android.sj.presentation.intent.AirQualityIntent
-import com.android.sj.presentation.models.airquality.RltmStationUIData
-import com.android.sj.presentation.models.airquality.RltmStationUIData.MeasuringData
-import com.android.sj.presentation.models.airquality.StationFindUIData
-import com.android.sj.presentation.state.AirQualityViewState
+import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIData
+import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIData.MeasuringData
+import com.android.sj.presentation.models.uimodels.airquality.StationFindUIData
+import com.android.sj.presentation.models.state.AirQualityViewState
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
 import com.android.sj.presentation.ui.theme.Color_F0FFF0
 import com.android.sj.presentation.ui.theme.Color_ffd700
@@ -90,7 +90,7 @@ fun StationFindSuccess(
     ) {
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stationFindState.value.stationName,
+            text = stationFindState.value.stationName.rltmTitle(context),
             style = defaultTitleTextStyle()
         )
 
@@ -98,7 +98,7 @@ fun StationFindSuccess(
             airQualityState.rltmStationState, modifier, dropdownSelectedOption, onOptionSelected
         ) {
             if(stationFindState.value.stationName != "정보없음"){
-                viewModel.handleIntent(AirQualityIntent.LoadRltmStation(stationFindState.value.stationName.rltmTitle(context)))
+                viewModel.handleIntent(AirQualityIntent.LoadRltmStation(stationFindState.value.stationName))
             }
         }
     }

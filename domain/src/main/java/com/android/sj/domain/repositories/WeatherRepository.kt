@@ -7,7 +7,7 @@ import com.android.sj.domain.models.TimeWeatherData
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherRepository {
-    fun fetchWeather(params: Map<String, String>) : Flow<ApiResult<WeatherData>>
-    fun fetchTimeWeather(params: Map<String, String>) : Flow<ApiResult<TimeWeatherData>>
-    fun fetchWeekRainSky(params: Map<String, String>) : Flow<ApiResult<WeekRainSkyData>>
+    fun fetchWeather(date: String, time: String, lat: String, lon: String) : Flow<ApiResult<WeatherData>>
+    fun fetchTimeWeather(date: String, time: String, lat: String, lon: String) : Flow<ApiResult<TimeWeatherData>>
+    fun fetchWeekRainSky(landCode: String, time: String) : Flow<ApiResult<WeekRainSkyData>>
 }

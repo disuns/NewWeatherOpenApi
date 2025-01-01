@@ -1,7 +1,7 @@
 package com.android.sj.presentation.ui.previewParamAndService
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.android.sj.presentation.state.AirQualityViewState
+import com.android.sj.presentation.models.state.AirQualityViewState
 import com.android.sj.domain.ApiResult
 
 //class AirQualityPreviewParamProvider : PreviewParameterProvider<AirQualityViewState> {
