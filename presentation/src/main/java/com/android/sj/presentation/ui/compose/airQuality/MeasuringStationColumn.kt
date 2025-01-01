@@ -46,6 +46,7 @@ import com.android.sj.presentation.ui.theme.Color_ffd700
 import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
 import com.android.sj.presentation.utils.rltmFlag
 import com.android.sj.presentation.utils.rltmGradeConvert
+import com.android.sj.presentation.utils.rltmTitle
 import com.android.sj.presentation.utils.rltmValueConvert
 import com.android.sj.presentation.viewmodels.AirQualityViewModel
 
@@ -82,6 +83,7 @@ fun StationFindSuccess(
     viewModel: AirQualityViewModel,
     onOptionSelected: (String) -> Unit
 ) {
+    val context = LocalContext.current
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -96,7 +98,7 @@ fun StationFindSuccess(
             airQualityState.rltmStationState, modifier, dropdownSelectedOption, onOptionSelected
         ) {
             if(stationFindState.value.stationName != "정보없음"){
-                viewModel.handleIntent(AirQualityIntent.LoadRltmStation(stationFindState.value.stationName))
+                viewModel.handleIntent(AirQualityIntent.LoadRltmStation(stationFindState.value.stationName.rltmTitle(context)))
             }
         }
     }

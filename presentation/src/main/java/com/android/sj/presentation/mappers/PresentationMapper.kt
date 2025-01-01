@@ -94,7 +94,7 @@ class PresentationMapper @Inject constructor(
         return apiResultMapper(flow) {
             ApiResult.Success(
                 StationFindUIData(
-                    stationName = it.stationName?.rltmTitle(context) ?: "정보없음"
+                    stationName = it.stationName ?: "정보없음"
                 )
             )
         }

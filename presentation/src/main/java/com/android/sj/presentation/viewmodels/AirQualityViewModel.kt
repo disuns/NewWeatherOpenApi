@@ -125,7 +125,6 @@ class AirQualityViewModel @Inject constructor(
                 DATE_TERM,
                 RLTM_DATA_VERSION
             )
-            logMessage("request : $request")
             mapper.domainToUIRltmStation(getRltmStationUseCase(request.toMap())).collect{ result ->
                 _state.value = _state.value.copy(rltmStationState = result)
             }

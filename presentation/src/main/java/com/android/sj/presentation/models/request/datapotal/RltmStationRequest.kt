@@ -1,5 +1,7 @@
 package com.android.sj.presentation.models.request.datapotal
 
+import java.net.URLEncoder
+
 data class RltmStationRequest(
     val serviceKey: String,
     val returnType: String,
