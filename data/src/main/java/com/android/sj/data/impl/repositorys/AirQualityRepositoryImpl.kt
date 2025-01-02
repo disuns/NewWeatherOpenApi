@@ -1,4 +1,4 @@
-package com.android.sj.data.impl
+package com.android.sj.data.impl.repositorys
 
 import com.android.sj.data.mapper.AirQualityDataMapper
 import com.android.sj.data.network.datasource.AirQualityDataSource

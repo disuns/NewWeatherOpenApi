@@ -15,8 +15,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.android.sj.common.utils.managers.LocationDataManager
+import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.presentation.intent.AirQualityIntent
+import com.android.sj.presentation.intent.NaverMapIntent
 import com.android.sj.presentation.intent.WeatherIntent
 import com.android.sj.presentation.sealed.ScreenRoute
 import com.android.sj.presentation.ui.compose.airQuality.AirQualityScreen
@@ -70,8 +71,8 @@ fun ScreenNav(
             with(locationValue) {
                 weatherViewModel.handleIntent(
                     WeatherIntent.LoadAllWeather(
-                        nx = latLng.latitude.toString(),
-                        ny = latLng.longitude.toString(),
+                        nx = lat.toString(),
+                        ny = lng.toString(),
                         address = address
                     )
                 )
@@ -95,7 +96,7 @@ fun ScreenNav(
             IntroScreen(
                 onNavigate = {
                     navigateTo(ScreenRoute.Intro, navController, true)
-                    naverMapViewModel.getLocation()
+                    naverMapViewModel.handleIntent(NaverMapIntent.GetLocation)
                 })
         }
         composable(route = ScreenRoute.Weather.route) {
@@ -107,16 +108,16 @@ fun ScreenNav(
                     nowErrorFunc = {
                         weatherViewModel.handleIntent(
                             WeatherIntent.LoadWeather(
-                                locationValue.latLng.latitude.toString(),
-                                locationValue.latLng.longitude.toString()
+                                locationValue.lat.toString(),
+                                locationValue.lng.toString()
                             )
                         )
                     },
                     timeErrorFunc = {
                         weatherViewModel.handleIntent(
                             WeatherIntent.LoadTimeWeather(
-                                locationValue.latLng.latitude.toString(),
-                                locationValue.latLng.longitude.toString()
+                                locationValue.lat.toString(),
+                                locationValue.lng.toString()
                             )
                         )
                     },

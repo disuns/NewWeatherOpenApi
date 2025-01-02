@@ -1,6 +1,6 @@
 package com.android.sj.presentation.models.uimodels.airquality
 
-data class AirQualityUiData(
+data class AirQualityUiModel(
     val dataTimeAndCode: String,
     val overall: String,
     val cause: String,

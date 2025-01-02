@@ -1,6 +1,6 @@
 package com.android.sj.presentation.models.uimodels.airquality
 
-data class RltmStationUIData(
+data class RltmStationUIModel(
     val dataTime : String,
     val measuringData : MutableList<MeasuringData>
 ){

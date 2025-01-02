@@ -1,32 +1,32 @@
-package com.android.sj.common.utils.managers
+package com.android.sj.data.impl.managers
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Looper
 import androidx.annotation.RequiresPermission
-import com.android.sj.common.LocationData
+import com.android.sj.domain.models.info.LocationInfo
+import com.android.sj.domain.managers.LocationDataManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.Priority
-import com.naver.maps.geometry.LatLng
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-class LocationDataManager @Inject constructor(
+class LocationDataManagerImpl @Inject constructor(
     private val fusedLocationClient : FusedLocationProviderClient
-) {
-    private val _locationData = MutableStateFlow(LocationData(LatLng(0.0,0.0)))
-    val locationData : StateFlow<LocationData> = _locationData.asStateFlow()
+) : LocationDataManager {
+    private val _locationData = MutableStateFlow(LocationInfo())
+    override val locationData : StateFlow<LocationInfo> = _locationData.asStateFlow()
 
     @SuppressLint("MissingPermission")
     @RequiresPermission(
         anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]
     )
-    fun getGps(onLocationFetched: (Double, Double) -> Unit) {
+    override fun getGps(onLocationFetched: (Double, Double) -> Unit) {
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
             .setMinUpdateIntervalMillis(5000)
             .build()
@@ -44,7 +44,7 @@ class LocationDataManager @Inject constructor(
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
-    fun updateLocationData(latLng: LatLng, address: String = "", x : String = "", y : String = "") {
-        _locationData.value = LocationData(latLng, address, x, y)
+    override fun updateLocationData(lat : Double, lon : Double, address: String, x : String, y : String) {
+        _locationData.value = LocationInfo(lat, lon, address, x, y)
     }
 }

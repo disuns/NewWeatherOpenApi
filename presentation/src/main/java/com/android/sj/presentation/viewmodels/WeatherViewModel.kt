@@ -61,10 +61,8 @@ class WeatherViewModel @Inject constructor(
         val lat = convertLatLng.latitude.toInt().toString()
         val lon = convertLatLng.longitude.toInt().toString()
 
-        viewModelScope.launch {
-            mapper.domainToUIWeather(getWeatherUseCase(timeManager.urlNowDate(), timeManager.urlNowTime(), lat, lon)).collect { result ->
-                _state.value = _state.value.copy(weatherState = result)
-            }
+        fetchData(mapper.domainToUIWeather(getWeatherUseCase(timeManager.urlNowDate(), timeManager.urlNowTime(), lat, lon))) { currentState, result->
+            currentState.copy(weatherState = result)
         }
     }
 
@@ -75,20 +73,17 @@ class WeatherViewModel @Inject constructor(
         val convertLatLng = LatLng(nx.toDouble(), ny.toDouble()).convertGRIDGPS(0)
         val lat = convertLatLng.latitude.toInt().toString()
         val lon = convertLatLng.longitude.toInt().toString()
-        viewModelScope.launch {
-            mapper.domainToUITimeWeather(getTimeWeatherUseCase(timeManager.urlTimeWeatherDate(), timeManager.urlTimeWeatherTime(), lat, lon)).collect { result ->
-                _state.value = _state.value.copy(timeWeatherState = result)
-            }
+
+        fetchData(mapper.domainToUITimeWeather(getTimeWeatherUseCase(timeManager.urlTimeWeatherDate(), timeManager.urlTimeWeatherTime(), lat, lon))) { currentState, result->
+            currentState.copy(timeWeatherState = result)
         }
     }
 
     private fun fetchWeekRainSky(regId: String) {
         val landCode = regId.landCodeGu(context = context)
 
-        viewModelScope.launch {
-            mapper.domainToUIWeekRainSky(getWeekRainSkyUseCase(landCode, timeManager.urlWeekWeatherTime())).collect { result ->
-                _state.value = _state.value.copy(weekRainSkyState = result)
-            }
+        fetchData(mapper.domainToUIWeekRainSky(getWeekRainSkyUseCase(landCode, timeManager.urlWeekWeatherTime()))) { currentState, result->
+            currentState.copy(weekRainSkyState = result)
         }
     }
 }

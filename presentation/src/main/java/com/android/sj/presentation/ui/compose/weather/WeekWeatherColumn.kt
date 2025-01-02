@@ -23,11 +23,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIData
+import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIModel
 import com.android.sj.presentation.models.state.WeatherViewState
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
+import com.android.sj.presentation.ui.previewParam.WeekCardDataPreviewParamProvider
 import com.android.sj.presentation.ui.theme.Color_eceff1
 import com.android.sj.presentation.utils.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -59,7 +62,8 @@ fun WeekWeatherColumn(
                 verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
                 items(successState.value.items.size) { item ->
-                    WeekWeatherItem(successState.value.items[item])
+                    if(successState.value.items[item].skyAm != null && successState.value.items[item].skyPm != null)
+                        WeekWeatherItem(successState.value.items[item])
                 }
             }
         }
@@ -68,7 +72,7 @@ fun WeekWeatherColumn(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun WeekWeatherItem(data: WeekRainSkyUIData.Item) {
+fun WeekWeatherItem(data: WeekRainSkyUIModel.Item) {
     val imageSize = dimensionResource(R.dimen.WeekItemImageSmall)
     val textSize = dimensionResource(R.dimen.WeekItemText).sp()
 
@@ -144,10 +148,10 @@ fun WeekWeatherItem(data: WeekRainSkyUIData.Item) {
     }
 }
 
-//@Preview
-//@Composable
-//fun PreviewWeekCard(
-//    @PreviewParameter(WeekCardDataPreviewParamProvider::class) weatherState: WeekWeatherData
-//) {
-//    WeekWeatherItem(data = weatherState)
-//}
+@Preview
+@Composable
+fun PreviewWeekCard(
+    @PreviewParameter(WeekCardDataPreviewParamProvider::class) weatherState: WeekRainSkyUIModel.Item
+) {
+    WeekWeatherItem(data = weatherState)
+}

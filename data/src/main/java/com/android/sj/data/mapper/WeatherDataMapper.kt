@@ -1,6 +1,7 @@
 package com.android.sj.data.mapper
 
 import com.android.sj.common.NO_ERROR
+import com.android.sj.common.utils.logMessage
 import com.android.sj.data.network.response.datapotal.WeatherResponse
 import com.android.sj.data.network.response.datapotal.WeekRainSkyResponse
 import com.android.sj.domain.mappers.BaseMapper

@@ -2,7 +2,7 @@ package com.android.sj.presentation.models.uimodels.weather
 
 import android.graphics.drawable.Drawable
 
-data class TimeWeatherUIData(
+data class TimeWeatherUIModel(
     val items: MutableList<Item>
 ) {
     data class Item(

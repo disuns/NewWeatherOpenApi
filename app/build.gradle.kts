@@ -61,7 +61,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":presentation"))
 
-    debugImplementation(libs.bundles.debug.test)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     testImplementation(libs.bundles.testing)
 
     implementation(platform(libs.firebase.bom))

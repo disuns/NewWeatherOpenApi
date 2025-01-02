@@ -16,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.android.sj.common.utils.isNetworkCheck
 import com.android.sj.common.utils.logMessage
 import com.android.sj.presentation.R
 import com.android.sj.presentation.ui.theme.Color_c3cdd3
-import com.android.sj.presentation.utils.isNetworkCheck
 import com.android.sj.presentation.utils.toastMessage
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState

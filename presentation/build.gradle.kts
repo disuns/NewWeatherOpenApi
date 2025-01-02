@@ -49,11 +49,13 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)
+    testImplementation(libs.bundles.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     androidTestImplementation(libs.bundles.androidx.ui.test)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+    debugImplementation(libs.bundles.debug.test)
 
     implementation(libs.bundles.androidx.ui)
     implementation(libs.androidx.activity.compose)

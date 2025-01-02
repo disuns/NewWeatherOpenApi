@@ -3,7 +3,7 @@ package com.android.sj.presentation.models.uimodels.weather
 import android.graphics.drawable.Drawable
 import com.android.sj.presentation.enum.WeatherImgEnum
 
-data class WeatherUIData(
+data class WeatherUIModel(
     var nowTemp: String = "",
     var nowRain: String = "",
     var nowWet: String = "",

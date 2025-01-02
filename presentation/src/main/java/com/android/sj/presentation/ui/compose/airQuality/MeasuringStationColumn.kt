@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,16 +32,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.R
-import com.android.sj.presentation.intent.AirQualityIntent
-import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIData
-import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIData.MeasuringData
-import com.android.sj.presentation.models.uimodels.airquality.StationFindUIData
 import com.android.sj.presentation.models.state.AirQualityViewState
+import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
+import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel.MeasuringData
+import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
+import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
 import com.android.sj.presentation.ui.theme.Color_F0FFF0
 import com.android.sj.presentation.ui.theme.Color_ffd700
 import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
@@ -48,24 +51,27 @@ import com.android.sj.presentation.utils.rltmFlag
 import com.android.sj.presentation.utils.rltmGradeConvert
 import com.android.sj.presentation.utils.rltmTitle
 import com.android.sj.presentation.utils.rltmValueConvert
-import com.android.sj.presentation.viewmodels.AirQualityViewModel
 
 @Composable
 fun MeasuringStationColumn(
     modifier: Modifier,
     airQualityState: AirQualityViewState,
-    viewModel: AirQualityViewModel,
+    onLoadStation: (String) -> Unit,
     errorFunc: () -> Unit
 ) {
     var dropdownSelectedOption by remember { mutableStateOf("통합 대기") }
 
-    ApiResultHandler(modifier, airQualityState.stationFindState, errorFunc = { errorFunc() }) { succesState ->
+    ApiResultHandler(modifier, airQualityState.stationFindState, errorFunc = { errorFunc() }) { successState ->
         StationFindSuccess(
             modifier,
-            succesState,
+            successState,
             airQualityState,
             dropdownSelectedOption,
-            viewModel,
+            {
+                if (successState.value.stationName != "정보없음") {
+                    onLoadStation(successState.value.stationName)
+                }
+            },
             onOptionSelected = {
                 dropdownSelectedOption = it
             }
@@ -77,10 +83,10 @@ fun MeasuringStationColumn(
 @Composable
 fun StationFindSuccess(
     modifier: Modifier,
-    stationFindState: ApiResult.Success<StationFindUIData>,
+    stationFindState: ApiResult.Success<StationFindUIModel>,
     airQualityState: AirQualityViewState,
     dropdownSelectedOption: String,
-    viewModel: AirQualityViewModel,
+    stationFindErrorFunc:  () -> Unit,
     onOptionSelected: (String) -> Unit
 ) {
     val context = LocalContext.current
@@ -96,17 +102,15 @@ fun StationFindSuccess(
 
         HandleRltmStationState(
             airQualityState.rltmStationState, modifier, dropdownSelectedOption, onOptionSelected
-        ) {
-            if(stationFindState.value.stationName != "정보없음"){
-                viewModel.handleIntent(AirQualityIntent.LoadRltmStation(stationFindState.value.stationName))
-            }
+        ) {stationFindErrorFunc()
+
         }
     }
 }
 
 @Composable
 fun HandleRltmStationState(
-    rltmStationState: ApiResult<RltmStationUIData>,
+    rltmStationState: ApiResult<RltmStationUIModel>,
     modifier: Modifier,
     dropdownSelectedOption: String,
     onOptionSelected: (String) -> Unit,
@@ -192,7 +196,7 @@ fun CustomSpinner(selectOption: (String) -> Unit) {
 fun MeasuringStationCard(
     modifier: Modifier,
     dropdownSelectedOption: String,
-    data: RltmStationUIData
+    data: RltmStationUIModel
 ) {
     val context = LocalContext.current
 
@@ -231,17 +235,13 @@ fun MeasuringStationCard(
     }
 }
 
-//@Preview
-//@Composable
-//fun PreviewMeasuringStationColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: AirQualityViewState) {
-//    val airQualityService = FakeAirQualityService()
-//    val airQualityRepository = AirQualityRepository(airQualityService)
-//    val airQualityViewModel = AirQualityViewModel(repository = airQualityRepository)
-//
-//    MeasuringStationColumn(
-//        modifier = Modifier.height(200.dp),
-//        airQualityState = previewData,
-//        viewModel = airQualityViewModel,
-//        errorFunc = {}
-//    )
-//}
+@Preview
+@Composable
+fun PreviewMeasuringStationColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: AirQualityViewState) {
+    MeasuringStationColumn(
+        modifier = Modifier.height(200.dp),
+        airQualityState = previewData,
+        onLoadStation = {},
+        errorFunc = {}
+    )
+}

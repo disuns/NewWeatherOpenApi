@@ -31,12 +31,12 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.android.sj.common.utils.managers.LocationDataManager
+import com.android.sj.common.utils.isNetworkCheck
+import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.presentation.R
 import com.android.sj.presentation.intent.NaverMapIntent
 import com.android.sj.presentation.ui.theme.icon.CancelImageVector
 import com.android.sj.presentation.ui.theme.icon.SearchImageVector
-import com.android.sj.presentation.utils.isNetworkCheck
 import com.android.sj.presentation.utils.sp
 import com.android.sj.presentation.viewmodels.NaverMapViewModel
 import com.naver.maps.geometry.LatLng
@@ -72,7 +72,7 @@ fun NaverMapScreen(
     val mapPosition = locationDataManager.locationData.collectAsState()
     val cameraPositionState: CameraPositionState = rememberCameraPositionState {
         mapPosition.let {
-            position = CameraPosition(it.value.latLng, 15.0)
+            position = CameraPosition(LatLng(it.value.lat,it.value.lng), 15.0)
         }
     }
     var isInitialLoad by remember { mutableStateOf(true) }

@@ -1,7 +1,8 @@
 package com.project.newweatheropenapi.di
 
 import android.content.Context
-import com.android.sj.common.utils.managers.LocationDataManager
+import com.android.sj.data.impl.managers.LocationDataManagerImpl
+import com.android.sj.domain.managers.LocationDataManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import dagger.Module
@@ -23,6 +24,6 @@ object LocationModule {
     @Provides
     @Singleton
     fun provideLocationDataManager(fusedLocationProviderClient: FusedLocationProviderClient): LocationDataManager {
-        return LocationDataManager(fusedLocationProviderClient)
+        return LocationDataManagerImpl(fusedLocationProviderClient)
     }
 }

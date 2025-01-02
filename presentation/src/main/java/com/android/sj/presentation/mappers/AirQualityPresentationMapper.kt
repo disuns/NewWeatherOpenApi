@@ -6,10 +6,10 @@ import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.AirQualityData
 import com.android.sj.domain.models.RltmStationData
 import com.android.sj.domain.models.StationFindData
-import com.android.sj.presentation.models.uimodels.airquality.AirQualityUiData
-import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIData
-import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIData.MeasuringData
-import com.android.sj.presentation.models.uimodels.airquality.StationFindUIData
+import com.android.sj.presentation.models.uimodels.airquality.AirQualityUiModel
+import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
+import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel.MeasuringData
+import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
 import com.android.sj.presentation.utils.airDateAndCode
 import com.android.sj.presentation.utils.rltmStationDate
 import kotlinx.coroutines.flow.Flow
@@ -18,10 +18,10 @@ import javax.inject.Inject
 class AirQualityPresentationMapper @Inject constructor(
     private val context: Context
 ) : BaseMapper() {
-    fun domainToUIAirQuality(flow: Flow<ApiResult<AirQualityData>>): Flow<ApiResult<AirQualityUiData>> {
+    fun domainToUIAirQuality(flow: Flow<ApiResult<AirQualityData>>): Flow<ApiResult<AirQualityUiModel>> {
         return apiResultMapper(flow) {
             ApiResult.Success(
-                AirQualityUiData(
+                AirQualityUiModel(
                     dataTimeAndCode = it.code.airDateAndCode(it.dataTime, context),
                     overall = it.overall,
                     cause = it.cause,
@@ -35,10 +35,10 @@ class AirQualityPresentationMapper @Inject constructor(
         }
     }
 
-    fun domainToUIRltmStation(flow: Flow<ApiResult<RltmStationData>>): Flow<ApiResult<RltmStationUIData>> {
+    fun domainToUIRltmStation(flow: Flow<ApiResult<RltmStationData>>): Flow<ApiResult<RltmStationUIModel>> {
         return apiResultMapper(flow) {
             ApiResult.Success(
-                RltmStationUIData(
+                RltmStationUIModel(
                     dataTime = it.dataTime.rltmStationDate(context),
                     measuringData = mutableListOf(
                         MeasuringData(it.khaiValue, it.khaiGrade, null),
@@ -54,10 +54,10 @@ class AirQualityPresentationMapper @Inject constructor(
         }
     }
 
-    fun domainToUIStationFind(flow: Flow<ApiResult<StationFindData>>): Flow<ApiResult<StationFindUIData>> {
+    fun domainToUIStationFind(flow: Flow<ApiResult<StationFindData>>): Flow<ApiResult<StationFindUIModel>> {
         return apiResultMapper(flow) {
             ApiResult.Success(
-                StationFindUIData(
+                StationFindUIModel(
                     stationName = it.stationName ?: "정보없음"
                 )
             )

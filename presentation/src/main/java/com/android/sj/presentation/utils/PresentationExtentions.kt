@@ -1,8 +1,6 @@
 package com.android.sj.presentation.utils
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.widget.Toast
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
@@ -51,20 +49,6 @@ import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
-
-fun Context.isNetworkCheck(): Boolean {
-    val cm = getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager ?: return false
-    val nw = cm.activeNetwork ?: return false
-    val networkCapabilities = cm.getNetworkCapabilities(nw) ?: return false
-    return when {
-        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-        networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
-        else -> false
-    }
-}
-
 
 fun NaverMapData.mapAddressConvert(context: Context): String {
     return when (resultName) {
@@ -254,7 +238,6 @@ fun LatLng.convertGRIDGPS(mode: Int): LatLng {
     }
 }
 
-
 fun Dp.sp() = this.value.sp
 
 fun WeekDate.weekDateConvert(context: Context) =
@@ -263,7 +246,6 @@ fun WeekDate.weekDateConvert(context: Context) =
 fun String.rltmTitle(context: Context) = context.getString(R.string.rltmStation, this)
 
 fun String.rltmStationDate(context: Context) = context.getString(R.string.stationTime, this)
-
 
 fun String.rltmValueConvert(rltm: Int, context: Context): String {
     if (this == "-") {

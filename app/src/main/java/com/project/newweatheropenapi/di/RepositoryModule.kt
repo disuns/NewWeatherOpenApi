@@ -1,8 +1,8 @@
 package com.project.newweatheropenapi.di
 
-import com.android.sj.data.impl.AirQualityRepositoryImpl
-import com.android.sj.data.impl.NaverMapRepositoryImpl
-import com.android.sj.data.impl.WeatherRepositoryImpl
+import com.android.sj.data.impl.repositorys.AirQualityRepositoryImpl
+import com.android.sj.data.impl.repositorys.NaverMapRepositoryImpl
+import com.android.sj.data.impl.repositorys.WeatherRepositoryImpl
 import com.android.sj.data.mapper.AirQualityDataMapper
 import com.android.sj.data.mapper.NaverMapDataMapper
 import com.android.sj.data.network.datasource.AirQualityDataSource

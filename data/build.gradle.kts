@@ -48,4 +48,5 @@ dependencies {
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
     implementation(libs.bundles.networking)
+    implementation(libs.google.location)
 }

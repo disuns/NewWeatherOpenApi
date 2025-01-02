@@ -1,6 +1,6 @@
 package com.android.sj.presentation.models.uimodels.weather
 
-data class WeekRainSkyUIData(
+data class WeekRainSkyUIModel(
     val items : MutableList<Item>
 ){
     data class Item(

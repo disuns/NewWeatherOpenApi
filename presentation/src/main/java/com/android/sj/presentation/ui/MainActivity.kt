@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.ui.Modifier
-import com.android.sj.common.utils.managers.LocationDataManager
+import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.presentation.ui.compose.InitScreen
 import com.android.sj.presentation.ui.compose.loading.SplashDialogScreen
 import com.android.sj.presentation.ui.theme.NewWeatherOpenApiTheme

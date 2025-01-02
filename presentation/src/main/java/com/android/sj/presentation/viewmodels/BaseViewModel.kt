@@ -14,11 +14,11 @@ open class BaseViewModel<S: BaseViewState>(initialState: S) : ViewModel()  {
     val state: StateFlow<S> = _state
 
     protected fun <T> fetchData(
-        apiCall: suspend () -> Flow<ApiResult<T>>,
-        updateState: (S, ApiResult<T>) -> S
+        mapperAndUsecase: Flow<ApiResult<T>>,
+        updateState: (currentState: S, result: ApiResult<T>) -> S
     ) {
         viewModelScope.launch {
-            apiCall().collect { result ->
+            mapperAndUsecase.collect { result ->
                 _state.value = updateState(_state.value, result)
             }
         }

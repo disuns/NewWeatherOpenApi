@@ -26,12 +26,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.uimodels.weather.TimeWeatherUIData
+import com.android.sj.presentation.models.uimodels.weather.TimeWeatherUIModel
 import com.android.sj.presentation.models.state.WeatherViewState
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
+import com.android.sj.presentation.ui.previewParam.CardDataPreviewParamProvider
 import com.android.sj.presentation.ui.theme.Color_eceff1
 import com.android.sj.presentation.utils.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -102,9 +105,7 @@ fun TimeWeatherColumn(
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun WeatherTimeItem(modifier: Modifier = Modifier, timeWeatherData: TimeWeatherUIData.Item) {
-    val context = LocalContext.current
-
+fun WeatherTimeItem(modifier: Modifier = Modifier, timeWeatherData: TimeWeatherUIModel.Item) {
     val cardTimeWeatherImageSmall = dimensionResource(R.dimen.TimeItemImageSmallSize)
     val imgTextSpacer = dimensionResource(R.dimen.ItemPadding)
 
@@ -212,10 +213,10 @@ fun WeatherTimeItem(modifier: Modifier = Modifier, timeWeatherData: TimeWeatherU
     }
 }
 
-//@Preview
-//@Composable
-//fun PreviewCard(
-//    @PreviewParameter(CardDataPreviewParamProvider::class) weatherState: TimeWeatherData
-//) {
-//    WeatherTimeItem(timeWeatherData = weatherState)
-//}
+@Preview
+@Composable
+fun PreviewCard(
+    @PreviewParameter(CardDataPreviewParamProvider::class) weatherState: TimeWeatherUIModel.Item
+) {
+    WeatherTimeItem(timeWeatherData = weatherState)
+}
