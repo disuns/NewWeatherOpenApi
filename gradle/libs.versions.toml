@@ -55,19 +55,20 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 #Glide
 glide = { module = "com.github.bumptech.glide:compose", version.ref = "glide" }
 #hilt
-hilt = {module = "com.google.dagger:hilt-android", version.ref = "hilt"}
-hilt_compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt"}
+hilt = {group = "com.google.dagger", name  = "hilt-android", version.ref = "hilt"}
+hilt_compiler = {group = "com.google.dagger", name  = "hilt-android-compiler", version.ref = "hilt"}
 hilt_navigation_compose = {module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt_navigation_compose" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 #navermap
-naver-map-compose = {module = "io.github.fornewid:naver-map-compose", version.ref = "naver_map_compose" }
-naver-map-location = {module = "io.github.fornewid:naver-map-location", version.ref = "naver_map_location" }
+naver-map-compose = {group = "io.github.fornewid", name  = "naver-map-compose", version.ref = "naver_map_compose" }
+naver-map-location = {group = "io.github.fornewid", name  = "naver-map-location", version.ref = "naver_map_location" }
 #firebase
-firebase-bom = {module = "com.google.firebase:firebase-bom", version.ref ="firebase-bom" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = {group = "com.google.firebase", name  = "firebase-bom", version.ref ="firebase-bom" }
+firebase-crashlytics = { group = "com.google.firebase", name  = "firebase-crashlytics" }
+firebase-analytics = { group = "com.google.firebase", name  = "firebase-analytics" }
 #retrofit
-retrofit = {module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit"}
-converter-gson = {module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit"}
+retrofit = {group = "com.squareup.retrofit2", name  = "retrofit", version.ref = "retrofit"}
+converter-gson = {group = "com.squareup.retrofit2", name  = "converter-gson", version.ref = "retrofit"}
 #okhttp
 okhttp = {module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp"}
 logging-interceptor = {module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp"}
