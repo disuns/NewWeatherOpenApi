@@ -1,7 +1,6 @@
 package com.android.sj.presentation.viewmodels
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetTimeWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeekRainSkyUseCase
@@ -14,7 +13,6 @@ import com.android.sj.presentation.utils.managers.TimeManager
 import com.naver.maps.geometry.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,9 +55,7 @@ class WeatherViewModel @Inject constructor(
         nx: String,
         ny: String
     ) {
-        val convertLatLng = LatLng(nx.toDouble(), ny.toDouble()).convertGRIDGPS(0)
-        val lat = convertLatLng.latitude.toInt().toString()
-        val lon = convertLatLng.longitude.toInt().toString()
+        val (lat, lon) = convertCoordinates(nx, ny)
 
         fetchData(mapper.domainToUIWeather(getWeatherUseCase(timeManager.urlNowDate(), timeManager.urlNowTime(), lat, lon))) { currentState, result->
             currentState.copy(weatherState = result)
@@ -70,9 +66,7 @@ class WeatherViewModel @Inject constructor(
         nx: String,
         ny: String
     ) {
-        val convertLatLng = LatLng(nx.toDouble(), ny.toDouble()).convertGRIDGPS(0)
-        val lat = convertLatLng.latitude.toInt().toString()
-        val lon = convertLatLng.longitude.toInt().toString()
+        val (lat, lon) = convertCoordinates(nx, ny)
 
         fetchData(mapper.domainToUITimeWeather(getTimeWeatherUseCase(timeManager.urlTimeWeatherDate(), timeManager.urlTimeWeatherTime(), lat, lon))) { currentState, result->
             currentState.copy(timeWeatherState = result)
@@ -85,5 +79,12 @@ class WeatherViewModel @Inject constructor(
         fetchData(mapper.domainToUIWeekRainSky(getWeekRainSkyUseCase(landCode, timeManager.urlWeekWeatherTime()))) { currentState, result->
             currentState.copy(weekRainSkyState = result)
         }
+    }
+
+    private fun convertCoordinates(nx: String, ny: String): Pair<String, String> {
+        val convertLatLng = LatLng(nx.toDouble(), ny.toDouble()).convertGRIDGPS(0)
+        val lat = convertLatLng.latitude.toInt().toString()
+        val lon = convertLatLng.longitude.toInt().toString()
+        return Pair(lat, lon)
     }
 }

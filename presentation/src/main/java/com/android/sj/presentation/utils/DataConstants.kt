@@ -1,4 +1,4 @@
-package com.android.sj.presentation
+package com.android.sj.presentation.utils
 
 internal object DataConstants {
 

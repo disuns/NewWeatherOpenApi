@@ -28,7 +28,6 @@ class NaverMapViewModel @Inject constructor(
     }
 
     fun handleIntent(intent: NaverMapIntent) {
-        super.handleIntent(intent)
         when(intent){
             is NaverMapIntent.LoadNaverMapGeo -> fetchNaverMap(intent.lon, intent.lat)
             is NaverMapIntent.GetLocation -> getLocation()
@@ -44,10 +43,9 @@ class NaverMapViewModel @Inject constructor(
     }
 
     private fun fetchNaverMap(lon: Double, lat: Double) {
-        val latLng = "$lon,$lat"
         locationDataManager.updateLocationData(lat = lat, lon = lon)
 
-        fetchData(mapper.domainToUIReverseGeoCo(getReverseGeoCoUseCase(latLng))) { currentState, result->
+        fetchData(mapper.domainToUIReverseGeoCo(getReverseGeoCoUseCase("$lon,$lat"))) { currentState, result->
             currentState.copy(naverMapState = result)
         }
     }
