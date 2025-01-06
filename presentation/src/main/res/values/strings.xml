@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NewWeatherOpenApi</string>
+
+    <string name="gpsNeed">위치제공이 필요합니다.</string>
+    <string name="nowWeather">현재날씨</string>
+    <string name="timeWeather">시간대별 예보</string>
+    <string name="weekWeather">주간 예보</string>
+    <string name="nullString">-</string>
+    <string name="airQualityTitle">전국 대기 예보</string>
+    <string name="predictionModel">시간대별 예측 모델</string>
+
+    <string name="loadingImage">이미지 로딩중</string>
+    <string name="noInternet">인터넷 안됨</string>
+
+    <string name="error">error</string>
+    <string name="empty">Empty Data</string>
+    <string name="nationalFineDust">전국미세먼지</string>
+
+    <!--    에러 로그용-->
+    <string name="APPLICATION_ERROR">어플리케이션 에러</string>
+    <string name="DB_ERROR">데이터베이스 에러</string>
+    <string name="NODATA_ERROR">데이터없음 에러</string>
+    <string name="HTTP_ERROR">HTTP 에러</string>
+    <string name="SERVICETIME_OUT">서비스 연결실 에러</string>
+    <string name="INVALID_REQUEST_PARAMETER_ERROR">잘못된 요청 파라메터 에러</string>
+    <string name="NO_MANDATORY_REQUEST_PARAMETERS_ERROR">필수요청 파라메터가 없음</string>
+    <string name="NO_OPENAPI_SERVICE_ERROR">해당 오픈 API서비스가 없거나 폐기됨</string>
+    <string name="SERVICE_ACCESS_DENIED_ERROR">서비스 접근거부</string>
+    <string name="TEMPORARILY_DISABLE_THE_SERVICEKEY_ERROR">일시적으로 사용할 수 없는 서비스 키</string>
+    <string name="LIMITED_NUMBER_OF_SERVICE_REQUESTS_EXCEEDS_ERROR">서비스 요청제한횟수 초과에러</string>
+    <string name="SERVICE_KEY_IS_NOT_REGISTERED_ERROR">등록되지 않은 서비스키</string>
+    <string name="DEADLINE_HAS_EXPIRED_ERROR">기한만료된 서비스키</string>
+    <string name="UNREGISTERED_IP_ERROR">등록되지 않은 IP</string>
+    <string name="UNSIGNED_CALL_ERROR">서명되지 않은 호출</string>
+    <string name="UNKNOWN_ERROR">기타에러</string>
+    <string name="UNKNOWN_ADDRESS">주소를 찾을 수 없습니다</string>
+    <!--    변환 데이터 Unit-->
+    <string name="tempUnit">%s℃</string>
+    <string name="rainUnit">%s</string>
+    <string name="nowRainUnit">강수량 : %s</string>
+    <string name="nowWetUnit">습도 : %s%%</string>
+    <string name="nowWindUnit">풍속 : %s %sm/s</string>
+    <string name="perUnit">%s%%</string>
+    <string name="windUnit">%sm/s</string>
+    <string name="weekDate">%s.%s(%s)</string>
+    <string name="time">%s시</string>
+    <string name="date">%s.%s</string>
+    <string name="rltmStation">측정소 : %s</string>
+    <string name="stationTime">측정시간 : %s</string>
+    <string name="rltmUnit1">%s ㎍/㎥</string>
+    <string name="rltmUnit2">%s ppm</string>
+    <string name="concentration">농도 : %s</string>
+    <string name="grade">등급 : %s</string>
+    <string name="flag">플래그 : %s</string>
+    <string name="dateAndCode">%s( code : %s )</string>
+    <string name="actionKnack">행동요령 : %s</string>
+    <!--    방향-->
+    <string name="N">북</string>
+    <string name="NNE">북북동</string>
+    <string name="NE">북동</string>
+    <string name="ENE">동북동</string>
+    <string name="E">동</string>
+    <string name="ESE">동남동</string>
+    <string name="SE">남동</string>
+    <string name="SSE">남남동</string>
+    <string name="S">남</string>
+    <string name="SSW">남남서</string>
+    <string name="SW">남서</string>
+    <string name="WSW">서남서</string>
+    <string name="W">서</string>
+    <string name="WNW">서북서</string>
+    <string name="NW">북서</string>
+    <string name="NNW">북북서</string>
+    <!--    하늘상태-->
+    <string name="sun">맑음</string>
+    <string name="manycloud">구름많음</string>
+    <string name="cloud">흐림</string>
+    <!--    오전/오후-->
+    <string name="am">오전</string>
+    <string name="pm">오후</string>
+
+    <!--    대기예보 문구-->
+    <string name="airQualityDesc">[자료출처]환경부/한국환경공단\n(데이터는 실시간 관측된 자료이며 측정소 현지 사정이나 데이터의 수신상태에 따라 미수신 될 수 있음)</string>
+
+
+    <string-array name="Tab">
+        <item>실시간 예보</item>
+        <item>대기 예보</item>
+    </string-array>
+
+    <string-array name="Week">
+        <item>일</item>
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+    </string-array>
+
+    <string-array name="land">
+        <item>서울특별시</item>
+        <item>인천광역시</item>
+        <item>경기도</item>
+        <item>강원도</item>
+        <item>대전광역시</item>
+        <item>세종특별자치시</item>
+        <item>충청남도</item>
+        <item>충청북도</item>
+        <item>광주광역시</item>
+        <item>전라남도</item>
+        <item>전라북도</item>
+        <item>대구광역시</item>
+        <item>경상북도</item>
+        <item>부산광역시</item>
+        <item>울산광역시</item>
+        <item>경상남도</item>
+    </string-array>
+
+    <string-array name="landCode">
+        <item>11B00000</item>
+        <item>11D10000</item>
+        <item>11C20000</item>
+        <item>11C10000</item>
+        <item>11F20000</item>
+        <item>11F10000</item>
+        <item>11H10000</item>
+        <item>11H20000</item>
+        <item>11G0000</item>
+    </string-array>
+
+    <string-array name="rltmData">
+        <item>통합 대기</item>
+        <item>초미세먼지</item>
+        <item>미세먼지</item>
+        <item>오존</item>
+        <item>일산화탄소</item>
+        <item>이산화질소</item>
+        <item>아황산가스</item>
+    </string-array>
+
+    <string-array name="grade">
+        <item>좋음</item>
+        <item>보통</item>
+        <item>나쁨</item>
+        <item>매우나쁨</item>
+    </string-array>
+</resources>

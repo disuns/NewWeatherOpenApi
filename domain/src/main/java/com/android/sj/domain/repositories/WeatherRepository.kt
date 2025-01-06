@@ -1,0 +1,13 @@
+package com.android.sj.domain.repositories
+
+import com.android.sj.domain.models.WeatherData
+import com.android.sj.domain.models.WeekRainSkyData
+import com.android.sj.domain.ApiResult
+import com.android.sj.domain.models.TimeWeatherData
+import kotlinx.coroutines.flow.Flow
+
+interface WeatherRepository {
+    fun fetchWeather(date: String, time: String, lat: String, lon: String) : Flow<ApiResult<WeatherData>>
+    fun fetchTimeWeather(date: String, time: String, lat: String, lon: String) : Flow<ApiResult<TimeWeatherData>>
+    fun fetchWeekRainSky(landCode: String, time: String) : Flow<ApiResult<WeekRainSkyData>>
+}
