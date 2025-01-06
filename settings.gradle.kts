@@ -22,4 +22,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "NewWeatherOpenApi"
 include(":app")
- 
+include(":common")
+include(":data")
+include(":domain")
+include(":presentation")
