@@ -1,23 +1,13 @@
 package com.project.newweatheropenapi.app
 
 import android.app.Application
-import com.orhanobut.logger.AndroidLogAdapter
-import com.orhanobut.logger.FormatStrategy
-import com.orhanobut.logger.Logger
-import com.orhanobut.logger.PrettyFormatStrategy
+import com.android.sj.common.LoggerInitializer
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
 class WeatherApplication:Application() {
 
-    override fun onCreate() {
-        super.onCreate()
-        val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
-            .showThreadInfo(false)
-            .methodCount(5)
-            .tag("My App")
-            .build()
-
-        Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
-    }
+    @Inject
+    lateinit var loggerInitializer: LoggerInitializer
 }
