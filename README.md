@@ -22,6 +22,8 @@
 - StateFlow: 통신 및 UI 상태 관리
 - PreviewParameterProvider: Compose Preview 테스트
 - Kotlin DSL + Version Catalog: 빌드 및 버전 관리
+- Clean Architecture + 멀티모듈 : 의존성 관리 및 Clean Architecture 구조 명확화 위해 멀티모듈 사용
+- Git-Flow : Git-Flow 구조 참조
 
 ## **화면 구성**
 ### **인트로 화면**
@@ -81,3 +83,11 @@
 ### 외부 파라미터를 받아오는 Compose Preview의 미작동 문제
 + **이슈**: 외부에서 파라미터를 받아야 하는 컴포넌트의 경우 Compose Preview가 작동하지 않음  
     + **해결**: PreviewParameterProvider를 이용해 외부 파라미터를 가상으로 생성하여 Preview에서 사용할 수 있도록 구현
+
+### Clean Architecture를 위한 멀티 모듈 사용으로 인한 의존성 관리
++ **이슈**: 멀티 모듈 분리 과정에서의 각 모듈간 의존성 문제로 인한 구조 정리
+    + **해결**: 의존성에 더 신경쓴 구조 및 Hilt를 이용한 DI를 이용한 문제 해결
+ 
+### Git-Flow 이용을 위한 branch 및 Pull Request 이용법
++ **이슈**: 이론으로만 알고있던 Git-Flow의 활용법을 익히기 위한 사용법
+    + **해결**: 1인 프로젝트지만 Branch 분리 및 Pull Request 직접 사용으로 사용법 숙지
