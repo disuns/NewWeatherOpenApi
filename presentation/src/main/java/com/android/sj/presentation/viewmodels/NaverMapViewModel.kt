@@ -7,6 +7,7 @@ import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.ApiResult
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
+import com.android.sj.presentation.MapperFactory
 import com.android.sj.presentation.intent.NaverMapIntent
 import com.android.sj.presentation.mappers.NaverMapPresentationMapper
 import com.android.sj.presentation.models.state.NaverMapViewState
@@ -20,9 +21,11 @@ import javax.inject.Inject
 class NaverMapViewModel @Inject constructor(
     private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase,
     private val locationDataManager: LocationDataManager,
-    private val mapper : NaverMapPresentationMapper,
+    mapperFactory: MapperFactory,
     @ApplicationContext val context: Context
 ) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
+    private val mapper = mapperFactory.naverMapPresentationMapper(viewModelScope)
+
     init {
         onHandledFlow()
     }
@@ -53,7 +56,7 @@ class NaverMapViewModel @Inject constructor(
     private fun onHandledFlow() {
         viewModelScope.launch {
             state.collect { mapState ->
-                state.value.isAllLoading()
+                mapState.isAllLoading()
 
                 when (mapState.naverMapState) {
                     is ApiResult.Success -> {

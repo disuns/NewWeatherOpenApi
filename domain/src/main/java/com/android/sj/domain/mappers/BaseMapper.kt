@@ -2,18 +2,16 @@ package com.android.sj.domain.mappers
 
 import com.android.sj.domain.ApiResult
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.launch
 
-abstract class BaseMapper {
-    @OptIn(ExperimentalCoroutinesApi::class)
+abstract class BaseMapper(protected val coroutineScope: CoroutineScope) {
     fun <T, R> apiResultMapper(
-        response: ReceiveChannel<ApiResult<T>>,
+        response: Channel<ApiResult<T>>,
         handleSuccess: (T) -> ApiResult<R>
-    ): ReceiveChannel<ApiResult<R>> {
-        return CoroutineScope(Dispatchers.IO).produce {
+    ): Channel<ApiResult<R>> {
+        val channel = Channel<ApiResult<R>>(Channel.BUFFERED)
+        coroutineScope.launch {
             for (result in response) {
                 val mappedResult = when (result) {
                     is ApiResult.Success -> handleSuccess(result.value)
@@ -21,8 +19,10 @@ abstract class BaseMapper {
                     is ApiResult.Loading -> ApiResult.Loading
                     is ApiResult.Error -> ApiResult.Error(result.code, result.exception)
                 }
-                send(mappedResult)
+                channel.send(mappedResult)
             }
+            channel.close()
         }
+        return channel
     }
 }

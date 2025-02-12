@@ -1,19 +1,22 @@
 package com.android.sj.data.mapper
 
 import com.android.sj.common.NO_ERROR
-import com.android.sj.common.utils.logMessage
+import com.android.sj.common.utils.IoScope
 import com.android.sj.data.network.response.datapotal.WeatherResponse
 import com.android.sj.data.network.response.datapotal.WeekRainSkyResponse
+import com.android.sj.domain.ApiResult
 import com.android.sj.domain.mappers.BaseMapper
+import com.android.sj.domain.models.TimeWeatherData
 import com.android.sj.domain.models.WeatherData
 import com.android.sj.domain.models.WeekRainSkyData
-import com.android.sj.domain.ApiResult
-import com.android.sj.domain.models.TimeWeatherData
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 
-class WeatherDataMapper @Inject constructor() : BaseMapper() {
-    fun responseToDomainWeather(response: Flow<ApiResult<WeatherResponse>>): Flow<ApiResult<WeatherData>> {
+class WeatherDataMapper @Inject constructor(
+    @IoScope scope: CoroutineScope
+) : BaseMapper(scope) {
+    fun responseToDomainWeather(response: Channel<ApiResult<WeatherResponse>>): Channel<ApiResult<WeatherData>> {
         return apiResultMapper(response) {
             if (it.response.header.resultCode != NO_ERROR) {
                 ApiResult.Error(it.response.header.resultCode.toInt(), Throwable("PotalError"))
@@ -30,7 +33,7 @@ class WeatherDataMapper @Inject constructor() : BaseMapper() {
         }
     }
 
-    fun responseToDomainTimeWeather(response: Flow<ApiResult<WeatherResponse>>): Flow<ApiResult<TimeWeatherData>> {
+    fun responseToDomainTimeWeather(response: Channel<ApiResult<WeatherResponse>>): Channel<ApiResult<TimeWeatherData>> {
         return apiResultMapper(response) {
             if (it.response.header.resultCode != NO_ERROR) {
                 ApiResult.Error(it.response.header.resultCode.toInt(), Throwable("PotalError"))
@@ -51,7 +54,7 @@ class WeatherDataMapper @Inject constructor() : BaseMapper() {
         }
     }
 
-    fun responseToDomainRainSky(response: Flow<ApiResult<WeekRainSkyResponse>>): Flow<ApiResult<WeekRainSkyData>> {
+    fun responseToDomainRainSky(response: Channel<ApiResult<WeekRainSkyResponse>>): Channel<ApiResult<WeekRainSkyData>> {
         return apiResultMapper(response) {
             if (it.response.header.resultCode != NO_ERROR) {
                 ApiResult.Error(it.response.header.resultCode.toInt(), Throwable("PotalError"))

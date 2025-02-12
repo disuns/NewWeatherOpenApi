@@ -6,6 +6,7 @@ import com.android.sj.domain.ApiResult
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetAirQualityUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetRltmStationUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetStationFindUseCase
+import com.android.sj.presentation.MapperFactory
 import com.android.sj.presentation.intent.AirQualityIntent
 import com.android.sj.presentation.mappers.AirQualityPresentationMapper
 import com.android.sj.presentation.models.state.AirQualityViewState
@@ -19,8 +20,10 @@ class AirQualityViewModel @Inject constructor(
     private val getAirQualityUseCase : GetAirQualityUseCase,
     private val getRltmStationUseCase : GetRltmStationUseCase,
     private val getStationFindUseCase : GetStationFindUseCase,
-    private val mapper : AirQualityPresentationMapper
+    mapperFactory: MapperFactory
 ) : BaseViewModel<AirQualityViewState>(AirQualityViewState()) {
+    private val mapper = mapperFactory.airQualityPresentation(viewModelScope)
+
     fun handleIntent(intent: AirQualityIntent) {
         super.handleIntent(intent)
         when (intent) {
@@ -45,7 +48,8 @@ class AirQualityViewModel @Inject constructor(
     private fun fetchStationFindAndThenRltmStation(regionX: String, regionY: String) {
         viewModelScope.launch {
             mapper.domainToUIStationFind(getStationFindUseCase(regionX, regionY)).collect { result ->
-                _state.value = _state.value.copy(stationFindState = result)
+
+                updateChannelState{ copy(stationFindState = result) }
 
                 if (result is ApiResult.Success && result.value.stationName != "정보없음") {
                     fetchRltmStation(result.value.stationName)

@@ -3,10 +3,11 @@ package com.android.sj.common.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import com.orhanobut.logger.BuildConfig
 import com.orhanobut.logger.Logger
 
 fun Any.logMessage(message: Any?, tag: String = "MyApp") {
-    Logger.t(tag).e(message.toString())
+    if(BuildConfig.DEBUG) Logger.t(tag).e(message.toString())
 }
 
 fun Context.isNetworkCheck(): Boolean {

@@ -1,14 +1,18 @@
 package com.android.sj.data.mapper
 
+import com.android.sj.common.utils.IoScope
 import com.android.sj.data.network.response.navermap.NaverMapResponse
 import com.android.sj.domain.ApiResult
 import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.NaverMapData
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 
-class NaverMapDataMapper @Inject constructor() : BaseMapper() {
-    fun responseToDomainReverseGeoCo(response: Flow<ApiResult<NaverMapResponse>>): Flow<ApiResult<NaverMapData>> {
+class NaverMapDataMapper @Inject constructor(
+    @IoScope scope: CoroutineScope
+) : BaseMapper(scope) {
+    fun responseToDomainReverseGeoCo(response: Channel<ApiResult<NaverMapResponse>>): Channel<ApiResult<NaverMapData>> {
         return apiResultMapper(response) {
             if (it.status.code != 0) {
                 ApiResult.Error(it.status.code)
