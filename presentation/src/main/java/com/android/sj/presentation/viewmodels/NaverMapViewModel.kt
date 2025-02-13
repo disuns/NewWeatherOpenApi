@@ -7,9 +7,8 @@ import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.ApiResult
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
-import com.android.sj.presentation.MapperFactory
+import com.android.sj.presentation.NaverMapPresentationMapperFactory
 import com.android.sj.presentation.intent.NaverMapIntent
-import com.android.sj.presentation.mappers.NaverMapPresentationMapper
 import com.android.sj.presentation.models.state.NaverMapViewState
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,10 +20,10 @@ import javax.inject.Inject
 class NaverMapViewModel @Inject constructor(
     private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase,
     private val locationDataManager: LocationDataManager,
-    mapperFactory: MapperFactory,
+    mapperFactory: NaverMapPresentationMapperFactory,
     @ApplicationContext val context: Context
 ) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
-    private val mapper = mapperFactory.naverMapPresentationMapper(viewModelScope)
+    private val mapper = mapperFactory.create(viewModelScope)
 
     init {
         onHandledFlow()

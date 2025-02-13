@@ -7,11 +7,12 @@ import com.android.sj.domain.models.NaverMapData
 import com.android.sj.presentation.models.uimodels.navermap.ReverseGeoUIModel
 import com.android.sj.presentation.utils.mapAddressConvert
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 
-class NaverMapPresentationMapper @Inject constructor(
+class NaverMapPresentationMapper @AssistedInject constructor(
     private val context: Context,
     @Assisted private val scope: CoroutineScope
 ) : BaseMapper(scope) {

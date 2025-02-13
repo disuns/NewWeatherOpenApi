@@ -2,6 +2,7 @@ package com.android.sj.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.models.state.BaseViewState
 import kotlinx.coroutines.channels.Channel
@@ -23,9 +24,12 @@ open class BaseViewModel<S: BaseViewState>(val initialState: S) : ViewModel()  {
             mapperAndUsecase
                 .receiveAsFlow()
                 .scan(initialState) { previousState, result ->
+                    logMessage("previousState : $previousState")
+                    logMessage("result : $result")
                     updateState(previousState, result)
                 }
                 .collect { newState ->
+                    logMessage("newState : $newState")
                     _state.send(newState)
                 }
         }

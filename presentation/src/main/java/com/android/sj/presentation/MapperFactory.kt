@@ -7,8 +7,16 @@ import dagger.assisted.AssistedFactory
 import kotlinx.coroutines.CoroutineScope
 
 @AssistedFactory
-interface MapperFactory {
-    fun airQualityPresentation(scope : CoroutineScope): AirQualityPresentationMapper
-    fun naverMapPresentationMapper(scope : CoroutineScope): NaverMapPresentationMapper
-    fun weatherPresentationMapper(scope : CoroutineScope): WeatherPresentationMapper
+interface NaverMapPresentationMapperFactory {
+    fun create(scope : CoroutineScope): NaverMapPresentationMapper
+}
+
+@AssistedFactory
+interface AirQualityPresentationMapperFactory{
+    fun create(scope : CoroutineScope): AirQualityPresentationMapper
+}
+
+@AssistedFactory
+interface WeatherPresentationMapperFactory{
+    fun create(scope : CoroutineScope): WeatherPresentationMapper
 }

@@ -4,6 +4,7 @@ import com.android.sj.domain.ApiResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
+import kotlin.math.log
 
 abstract class BaseMapper(protected val coroutineScope: CoroutineScope) {
     fun <T, R> apiResultMapper(

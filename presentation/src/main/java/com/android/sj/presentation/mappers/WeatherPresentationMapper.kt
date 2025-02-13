@@ -35,11 +35,12 @@ import com.android.sj.presentation.utils.wetConvert
 import com.android.sj.presentation.utils.windDir
 import com.android.sj.presentation.utils.windPower
 import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import javax.inject.Inject
 
-class WeatherPresentationMapper @Inject constructor(
+class WeatherPresentationMapper @AssistedInject constructor(
     private val context: Context,
     @Assisted private val scope: CoroutineScope
 ) : BaseMapper(scope) {
