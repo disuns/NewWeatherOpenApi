@@ -20,8 +20,7 @@ class WeatherRepositoryImpl @Inject constructor(
     override fun fetchWeather(date: String, time: String, lat: String, lon: String): Channel<ApiResult<WeatherData>> {
         val request = WeatherRequest(baseDate = date, baseTime = time, nx = lat, ny = lon)
 
-        val ss = weatherDataSource.fetchWeather(request.toMap())
-        return mapper.responseToDomainWeather(ss)
+        return mapper.responseToDomainWeather(weatherDataSource.fetchWeather(request.toMap()))
     }
 
     override fun fetchTimeWeather(date: String, time: String, lat: String, lon: String): Channel<ApiResult<TimeWeatherData>> {

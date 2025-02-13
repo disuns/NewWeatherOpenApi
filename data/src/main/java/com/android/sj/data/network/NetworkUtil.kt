@@ -4,16 +4,12 @@ import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.ApiResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.channels.ReceiveChannel
-import kotlinx.coroutines.channels.produce
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun <T> safeChannel(apiFunc: suspend () -> Response<T>): Channel<ApiResult<T>> {
     val channel = Channel<ApiResult<T>>(Channel.BUFFERED)
 

@@ -3,10 +3,10 @@ package com.android.sj.common.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import com.orhanobut.logger.BuildConfig
+import com.android.sj.common.BuildConfig
 import com.orhanobut.logger.Logger
 
-fun Any.logMessage(message: Any?, tag: String = "MyApp") {
+fun logMessage(message: Any?, tag: String = "MyApp") {
     if(BuildConfig.DEBUG) Logger.t(tag).e(message.toString())
 }
 

@@ -1,6 +1,5 @@
 package com.android.sj.presentation.viewmodels
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.android.sj.common.utils.logMessage
@@ -36,7 +35,6 @@ class NaverMapViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("MissingPermission")
     private fun getLocation() {
         LoadingStateManager.isShow(true)
         locationDataManager.getGps { lat, lon ->
