@@ -1,11 +1,12 @@
 package com.android.sj.presentation.viewmodels
 
 import android.content.Context
+import androidx.lifecycle.viewModelScope
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetTimeWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeekRainSkyUseCase
+import com.android.sj.presentation.WeatherPresentationMapperFactory
 import com.android.sj.presentation.intent.WeatherIntent
-import com.android.sj.presentation.mappers.WeatherPresentationMapper
 import com.android.sj.presentation.models.state.WeatherViewState
 import com.android.sj.presentation.utils.convertGRIDGPS
 import com.android.sj.presentation.utils.landCodeGu
@@ -20,10 +21,11 @@ class WeatherViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getTimeWeatherUseCase: GetTimeWeatherUseCase,
     private val getWeekRainSkyUseCase: GetWeekRainSkyUseCase,
-    private val mapper: WeatherPresentationMapper,
+    mapperFactory: WeatherPresentationMapperFactory,
     private val timeManager: TimeManager,
     @ApplicationContext val context: Context
 ) : BaseViewModel<WeatherViewState>(WeatherViewState()) {
+    private val mapper = mapperFactory.create(viewModelScope)
 
     fun handleIntent(intent: WeatherIntent) {
         super.handleIntent(intent)

@@ -1,14 +1,13 @@
 package com.android.sj.presentation.viewmodels
 
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.ApiResult
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
+import com.android.sj.presentation.NaverMapPresentationMapperFactory
 import com.android.sj.presentation.intent.NaverMapIntent
-import com.android.sj.presentation.mappers.NaverMapPresentationMapper
 import com.android.sj.presentation.models.state.NaverMapViewState
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,9 +19,11 @@ import javax.inject.Inject
 class NaverMapViewModel @Inject constructor(
     private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase,
     private val locationDataManager: LocationDataManager,
-    private val mapper : NaverMapPresentationMapper,
+    mapperFactory: NaverMapPresentationMapperFactory,
     @ApplicationContext val context: Context
 ) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
+    private val mapper = mapperFactory.create(viewModelScope)
+
     init {
         onHandledFlow()
     }
@@ -34,7 +35,6 @@ class NaverMapViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("MissingPermission")
     private fun getLocation() {
         LoadingStateManager.isShow(true)
         locationDataManager.getGps { lat, lon ->
@@ -53,7 +53,7 @@ class NaverMapViewModel @Inject constructor(
     private fun onHandledFlow() {
         viewModelScope.launch {
             state.collect { mapState ->
-                state.value.isAllLoading()
+                mapState.isAllLoading()
 
                 when (mapState.naverMapState) {
                     is ApiResult.Success -> {
