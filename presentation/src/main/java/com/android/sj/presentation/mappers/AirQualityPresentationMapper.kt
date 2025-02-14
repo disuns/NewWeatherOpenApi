@@ -12,17 +12,14 @@ import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
 import com.android.sj.presentation.utils.airDateAndCode
 import com.android.sj.presentation.utils.rltmStationDate
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class AirQualityPresentationMapper @AssistedInject constructor(
-    private val context: Context,
-    @Assisted private val scope: CoroutineScope
-) : BaseMapper(scope) {
-    fun domainToUIAirQuality(channel: Channel<ApiResult<AirQualityData>>): Channel<ApiResult<AirQualityUiModel>> {
-        return apiResultMapper(channel) {
+class AirQualityPresentationMapper @Inject constructor(
+    private val context: Context
+) : BaseMapper() {
+    fun domainToUIAirQuality(flow: Flow<ApiResult<AirQualityData>>): Flow<ApiResult<AirQualityUiModel>> {
+        return apiResultMapper(flow) {
             ApiResult.Success(
                 AirQualityUiModel(
                     dataTimeAndCode = it.code.airDateAndCode(it.dataTime, context),
@@ -38,8 +35,8 @@ class AirQualityPresentationMapper @AssistedInject constructor(
         }
     }
 
-    fun domainToUIRltmStation(channel: Channel<ApiResult<RltmStationData>>): Channel<ApiResult<RltmStationUIModel>> {
-        return apiResultMapper(channel) {
+    fun domainToUIRltmStation(flow: Flow<ApiResult<RltmStationData>>): Flow<ApiResult<RltmStationUIModel>> {
+        return apiResultMapper(flow) {
             ApiResult.Success(
                 RltmStationUIModel(
                     dataTime = it.dataTime.rltmStationDate(context),
@@ -57,8 +54,8 @@ class AirQualityPresentationMapper @AssistedInject constructor(
         }
     }
 
-    fun domainToUIStationFind(channel: Channel<ApiResult<StationFindData>>): Channel<ApiResult<StationFindUIModel>> {
-        return apiResultMapper(channel) {
+    fun domainToUIStationFind(flow: Flow<ApiResult<StationFindData>>): Flow<ApiResult<StationFindUIModel>> {
+        return apiResultMapper(flow) {
             ApiResult.Success(
                 StationFindUIModel(
                     stationName = it.stationName ?: "정보없음"

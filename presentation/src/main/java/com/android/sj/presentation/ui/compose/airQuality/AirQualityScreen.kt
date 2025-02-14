@@ -22,7 +22,7 @@ fun AirQualityScreen(
     stationFindErrorFunc : () -> Unit,
     airQualityErrorFunc : () -> Unit
 ) {
-    val airQualityViewState by viewModel.state.collectAsState(initial = viewModel.initialState)
+    val airQualityViewState by viewModel.state.collectAsState()
 
     airQualityViewState.isAllLoading()
 

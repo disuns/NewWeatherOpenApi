@@ -6,10 +6,6 @@ import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.TimeWeatherData
 import com.android.sj.domain.models.WeatherData
 import com.android.sj.domain.models.WeekRainSkyData
-import com.android.sj.presentation.enum.imgConvert
-import com.android.sj.presentation.models.uimodels.weather.TimeWeatherUIModel
-import com.android.sj.presentation.models.uimodels.weather.WeatherUIModel
-import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIModel
 import com.android.sj.presentation.utils.DataConstants.RAIN_MM
 import com.android.sj.presentation.utils.DataConstants.RAIN_MM_NOW
 import com.android.sj.presentation.utils.DataConstants.RAIN_PER
@@ -20,6 +16,10 @@ import com.android.sj.presentation.utils.DataConstants.TMP_TIME
 import com.android.sj.presentation.utils.DataConstants.WET
 import com.android.sj.presentation.utils.DataConstants.WIND_DIR
 import com.android.sj.presentation.utils.DataConstants.WIND_POWER
+import com.android.sj.presentation.enum.imgConvert
+import com.android.sj.presentation.models.uimodels.weather.TimeWeatherUIModel
+import com.android.sj.presentation.models.uimodels.weather.WeatherUIModel
+import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIModel
 import com.android.sj.presentation.utils.dateConvert
 import com.android.sj.presentation.utils.managers.TimeManager
 import com.android.sj.presentation.utils.nowRainConvert
@@ -34,18 +34,14 @@ import com.android.sj.presentation.utils.weatherRainImgConvert
 import com.android.sj.presentation.utils.wetConvert
 import com.android.sj.presentation.utils.windDir
 import com.android.sj.presentation.utils.windPower
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class WeatherPresentationMapper @AssistedInject constructor(
-    private val context: Context,
-    @Assisted private val scope: CoroutineScope
-) : BaseMapper(scope) {
-    fun domainToUIWeather(channel: Channel<ApiResult<WeatherData>>): Channel<ApiResult<WeatherUIModel>> {
-        return apiResultMapper(channel) {
+class WeatherPresentationMapper @Inject constructor(
+    private val context: Context
+) : BaseMapper() {
+    fun domainToUIWeather(flow: Flow<ApiResult<WeatherData>>): Flow<ApiResult<WeatherUIModel>> {
+        return apiResultMapper(flow) {
             val weatherData = WeatherUIModel()
             it.items.forEach { item->
                 when (item.category) {
@@ -67,8 +63,8 @@ class WeatherPresentationMapper @AssistedInject constructor(
         }
     }
 
-    fun domainToUITimeWeather(channel: Channel<ApiResult<TimeWeatherData>>): Channel<ApiResult<TimeWeatherUIModel>> {
-        return apiResultMapper(channel) { item ->
+    fun domainToUITimeWeather(flow: Flow<ApiResult<TimeWeatherData>>): Flow<ApiResult<TimeWeatherUIModel>> {
+        return apiResultMapper(flow) { item ->
             val list = item.items.groupBy { it.weatherDate to it.weatherTime }
                 .map { (_, items) ->
                     TimeWeatherUIModel.Item(
@@ -90,10 +86,10 @@ class WeatherPresentationMapper @AssistedInject constructor(
         }
     }
 
-    fun domainToUIWeekRainSky(channel: Channel<ApiResult<WeekRainSkyData>>): Channel<ApiResult<WeekRainSkyUIModel>> {
+    fun domainToUIWeekRainSky(flow: Flow<ApiResult<WeekRainSkyData>>): Flow<ApiResult<WeekRainSkyUIModel>> {
         val timeManager = TimeManager(context)
 
-        return apiResultMapper(channel) { data ->
+        return apiResultMapper(flow) { data ->
             val uiList = data.items.flatMap { item ->
                 (0..3).map { dayIndex ->
                     setWeekWeatherData(
