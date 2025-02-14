@@ -13,7 +13,3 @@ annotation class NaverMapServiceRetrofit
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class AirQualityServiceRetrofit
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class IoScope

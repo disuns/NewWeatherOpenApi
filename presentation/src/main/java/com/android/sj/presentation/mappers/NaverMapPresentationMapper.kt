@@ -6,18 +6,14 @@ import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.NaverMapData
 import com.android.sj.presentation.models.uimodels.navermap.ReverseGeoUIModel
 import com.android.sj.presentation.utils.mapAddressConvert
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class NaverMapPresentationMapper @AssistedInject constructor(
-    private val context: Context,
-    @Assisted private val scope: CoroutineScope
-) : BaseMapper(scope) {
-    fun domainToUIReverseGeoCo(channel: Channel<ApiResult<NaverMapData>>): Channel<ApiResult<ReverseGeoUIModel>> {
-        return apiResultMapper(channel) {
+class NaverMapPresentationMapper @Inject constructor(
+    private val context: Context
+) : BaseMapper() {
+    fun domainToUIReverseGeoCo(flow: Flow<ApiResult<NaverMapData>>): Flow<ApiResult<ReverseGeoUIModel>> {
+        return apiResultMapper(flow) {
             ApiResult.Success(
                 ReverseGeoUIModel(
                     mapAddress = it.mapAddressConvert(context),

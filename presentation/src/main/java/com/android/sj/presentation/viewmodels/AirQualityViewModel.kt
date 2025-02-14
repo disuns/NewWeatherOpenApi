@@ -6,11 +6,12 @@ import com.android.sj.domain.ApiResult
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetAirQualityUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetRltmStationUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetStationFindUseCase
-import com.android.sj.presentation.AirQualityPresentationMapperFactory
 import com.android.sj.presentation.intent.AirQualityIntent
+import com.android.sj.presentation.mappers.AirQualityPresentationMapper
 import com.android.sj.presentation.models.state.AirQualityViewState
 import com.android.sj.presentation.utils.managers.TimeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,10 +19,8 @@ class AirQualityViewModel @Inject constructor(
     private val getAirQualityUseCase : GetAirQualityUseCase,
     private val getRltmStationUseCase : GetRltmStationUseCase,
     private val getStationFindUseCase : GetStationFindUseCase,
-    mapperFactory: AirQualityPresentationMapperFactory
+    private val mapper : AirQualityPresentationMapper
 ) : BaseViewModel<AirQualityViewState>(AirQualityViewState()) {
-    private val mapper = mapperFactory.create(viewModelScope)
-
     fun handleIntent(intent: AirQualityIntent) {
         super.handleIntent(intent)
         when (intent) {
@@ -44,13 +43,14 @@ class AirQualityViewModel @Inject constructor(
     }
 
     private fun fetchStationFindAndThenRltmStation(regionX: String, regionY: String) {
-        fetchData(mapper.domainToUIStationFind(getStationFindUseCase(regionX, regionY))) { currentState, result ->
-            // 부수효과(side effect): 조건에 따라 추가 작업 수행
-            if (result is ApiResult.Success && result.value.stationName != "정보없음") {
-                fetchRltmStation(result.value.stationName)
+        viewModelScope.launch {
+            mapper.domainToUIStationFind(getStationFindUseCase(regionX, regionY)).collect { result ->
+                _state.value = _state.value.copy(stationFindState = result)
+
+                if (result is ApiResult.Success && result.value.stationName != "정보없음") {
+                    fetchRltmStation(result.value.stationName)
+                }
             }
-            // 상태 업데이트: stationFindState만 변경
-            currentState.copy(stationFindState = result)
         }
     }
 

@@ -1,10 +1,11 @@
 package com.android.sj.data.impl.managers
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Looper
 import androidx.annotation.RequiresPermission
-import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.models.info.LocationInfo
+import com.android.sj.domain.managers.LocationDataManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -21,8 +22,9 @@ class LocationDataManagerImpl @Inject constructor(
     private val _locationData = MutableStateFlow(LocationInfo())
     override val locationData : StateFlow<LocationInfo> = _locationData.asStateFlow()
 
+    @SuppressLint("MissingPermission")
     @RequiresPermission(
-        allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]
+        anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]
     )
     override fun getGps(onLocationFetched: (Double, Double) -> Unit) {
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
