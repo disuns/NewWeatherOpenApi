@@ -2,8 +2,8 @@ package com.android.sj.domain.usecase.usecaseinterface.airquality
 
 import com.android.sj.domain.ApiResult
 import com.android.sj.domain.models.AirQualityData
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.channels.Channel
 
 interface GetAirQualityUseCase {
-    operator fun invoke(airQualityDate: String) : Flow<ApiResult<AirQualityData>>
+    operator fun invoke(airQualityDate: String) : Channel<ApiResult<AirQualityData>>
 }
