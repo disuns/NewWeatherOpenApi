@@ -3,8 +3,6 @@ name: Android CI
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 jobs:
   build:
@@ -24,7 +22,7 @@ jobs:
       run: |
         echo "$KEYSTORE_BASE_64" | base64 --decode > release.keystore
       env:
-        KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+        KEYSTORE_BASE_64: ${{ secrets.KEYSTORE_BASE_64 }}
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
