@@ -22,10 +22,13 @@ jobs:
 
     - name: Decode Keystore
       run: |
-        echo "$KEYSTORE_BASE_64" | base64 --decode > release.keystore
+        echo "$KEYSTORE_BASE_64" | base64 --decode > app/release.keystore
       env:
         KEYSTORE_BASE_64: ${{ secrets.KEYSTORE_BASE_64 }}
-
+        
+    - name: List app directory for keystore
+      run: ls -al app/
+      
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
