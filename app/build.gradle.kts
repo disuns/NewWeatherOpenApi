@@ -26,10 +26,10 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("${project.rootDir}/WeatherKey.jks")
-            storePassword = "weatherkeypassword"
-            keyAlias = "weatherKey"
-            keyPassword = "weatherkeypassword"
+            storeFile = file("release.keystore")
+            storePassword = System.getenv("STORE_PASSWORD")
+            keyAlias = System.getenv("KEY_ALIAS")
+            keyPassword = System.getenv("KEY_PASSWORD")
         }
     }
 
