@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.project.newweatheropenapi"
+    namespace = "com.codedevs.newweatheropenapi"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.project.newweatheropenapi"
+        applicationId = "com.codedevs.newweatheropenapi"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -23,6 +23,7 @@ android {
             useSupportLibrary = true
         }
     }
+
     signingConfigs {
         create("release") {
             storeFile = file("${project.rootDir}/WeatherKey.jks")
@@ -31,16 +32,30 @@ android {
             keyPassword = "weatherkeypassword"
         }
     }
+
+    flavorDimensions += "version"
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
+            manifestPlaceholders["appNameSuffix"] = ""
+        }
+        debug {
+            isMinifyEnabled = false
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            applicationIdSuffix = ".debug"
+            manifestPlaceholders["appNameSuffix"] = "[개발]"
         }
     }
+
+    productFlavors {
+        create("weather") {
+            dimension = "version"
+            manifestPlaceholders["appName"] = "날씨 및 미세먼저 확인"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

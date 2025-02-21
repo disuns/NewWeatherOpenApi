@@ -2,6 +2,7 @@ package com.android.sj.data.mapper
 
 import com.android.sj.common.NO_ERROR
 import com.android.sj.common.utils.IoScope
+import com.android.sj.common.utils.logMessage
 import com.android.sj.data.network.response.datapotal.AirQualityResponse
 import com.android.sj.data.network.response.datapotal.RltmStationResponse
 import com.android.sj.data.network.response.datapotal.StationFindResponse
@@ -46,6 +47,7 @@ class AirQualityDataMapper @Inject constructor(
                 ApiResult.Error(it.response.header.resultCode.toInt(), Throwable("PotalError"))
             } else {
                 val data = it.response.body.items[0]
+                logMessage(data)
                 ApiResult.Success(
                     RltmStationData(
                         dataTime = data.dataTime,

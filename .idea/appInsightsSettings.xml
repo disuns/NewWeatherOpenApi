@@ -9,10 +9,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.project.newweatheropenapi" />
-                  <option name="mobileSdkAppId" value="1:1095451201104:android:e9c6ace141b141aced4b55" />
-                  <option name="projectId" value="weatheropenapi-60cd6" />
-                  <option name="projectNumber" value="1095451201104" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
