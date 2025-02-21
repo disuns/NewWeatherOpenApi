@@ -68,7 +68,7 @@ private fun PermissionCheck(onNavigate: () -> Unit = {}) {
         }
         multiplePermissionsState.shouldShowRationale -> {
             toastMessage(context.getString(R.string.gpsNeed), context)
-                .logMessage(context.getString(R.string.gpsNeed))
+            logMessage(context.getString(R.string.gpsNeed))
             openAppSettings(context)
         }
         else -> {
