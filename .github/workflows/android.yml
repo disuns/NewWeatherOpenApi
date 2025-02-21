@@ -33,7 +33,7 @@ jobs:
       run: ./gradlew test
       
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew :app:assembleRelease
       env:
         STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
