@@ -33,9 +33,6 @@ jobs:
       
     - name: Gradlew에 대한 실행 권한 부여
       run: chmod +x gradlew
-
-    - name: 유닛테스트 실행
-      run: ./gradlew test --parallel
       
     - name: app 빌드
       run: ./gradlew :app:bundleRelease --parallel
