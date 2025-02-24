@@ -81,7 +81,14 @@ class TimeManager @Inject constructor(@ApplicationContext private val context: C
 
     fun urlWeekWeatherTime(): String {
         val hour = timeFormat.format(getCurrentCalendar().time).toInt()
-        return if (hour in 7..18) {
+
+
+        if (hour !in 6..18) {
+            val adjustedCalendar = getCurrentCalendar()
+            adjustedCalendar.add(Calendar.DATE, if (hour < 6) -1 else 0)
+        }
+
+        return if (hour in 6..18) {
             weekFormatDay.format(getCurrentCalendar().time)
         } else {
             weekFormatNight.format(getCurrentCalendar().time)
@@ -105,5 +112,15 @@ class TimeManager @Inject constructor(@ApplicationContext private val context: C
         return WeekDate(monthFormat.format(calendar.time), dayFormat.format(calendar.time), weekDay).weekDateConvert(context)
     }
 
-    fun urlAirQualityDate(): String = airQualityDateFormat.format(getCurrentCalendar().time)
+    fun urlAirQualityDate(): String {
+        val hour = getCurrentCalendar()[Calendar.HOUR_OF_DAY]
+
+        val targetDate = if (hour in 23..23 || hour in 0..4) {
+            getCurrentCalendar().apply { add(Calendar.DAY_OF_MONTH, -1) }.time
+        } else {
+            getCurrentCalendar().time
+        }
+
+        return airQualityDateFormat.format(targetDate)
+    }
 }

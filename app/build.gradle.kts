@@ -16,7 +16,7 @@ android {
         minSdk = 24
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -52,7 +52,7 @@ android {
     productFlavors {
         create("weather") {
             dimension = "version"
-            manifestPlaceholders["appName"] = "날씨 및 미세먼저 확인"
+            manifestPlaceholders["appName"] = "날씨 및 미세먼지 확인"
         }
     }
 
