@@ -47,7 +47,6 @@ class AirQualityDataMapper @Inject constructor(
                 ApiResult.Error(it.response.header.resultCode.toInt(), Throwable("PotalError"))
             } else {
                 val data = it.response.body.items[0]
-                logMessage(data)
                 ApiResult.Success(
                     RltmStationData(
                         dataTime = data.dataTime,
