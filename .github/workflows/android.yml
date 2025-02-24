@@ -62,7 +62,7 @@ jobs:
         release_name: ${{ steps.extract_version.outputs.version }}
         body: ${{ github.event.head_commit.message }}
 
-    - name: APK 파일 릴리즈에 첨부
+    - name: Bundle 파일 릴리즈에 첨부
       if: github.event_name == 'push'
       uses: actions/upload-release-asset@v1
       env:
