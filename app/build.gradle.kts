@@ -15,8 +15,9 @@ android {
         applicationId = "com.codedevs.newweatheropenapi"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
         versionName = "1.0.7"
+        val versionParts = versionName.toString().split(".")
+        versionCode = versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
