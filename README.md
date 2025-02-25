@@ -19,11 +19,12 @@
 - MVI: Intent를 이용한 상태 관리
 - Glide: 이미지 로딩 및 캐싱
 - Hilt: 의존성 주입
-- StateFlow: 통신 및 UI 상태 관리
+- StateFlow -> Channel: 통신 및 UI 상태 관리
 - PreviewParameterProvider: Compose Preview 테스트
 - Kotlin DSL + Version Catalog: 빌드 및 버전 관리
 - Clean Architecture + 멀티모듈 : 의존성 관리 및 Clean Architecture 구조 명확화 위해 멀티모듈 사용
 - Git-Flow : Git-Flow 구조 참조
+- GitHub Action : app bundle 자동화 및 Tag/Release 버전 관리 자동화
 
 ## **화면 구성**
 ### **인트로 화면**
