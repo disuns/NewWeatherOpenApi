@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.state.AirQualityViewState
+import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
 import com.android.sj.presentation.ui.theme.defaultTitleTextStyle

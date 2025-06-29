@@ -8,10 +8,16 @@ import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
 import com.android.sj.presentation.NaverMapPresentationMapperFactory
 import com.android.sj.presentation.intent.NaverMapIntent
-import com.android.sj.presentation.models.state.NaverMapViewState
+import com.android.sj.presentation.models.state.uistate.ReverseGeoUIState
+import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
+import com.android.sj.presentation.models.state.viewstate.NaverMapViewState
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +29,14 @@ class NaverMapViewModel @Inject constructor(
     @ApplicationContext val context: Context
 ) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
     private val mapper = mapperFactory.create(viewModelScope)
+
+    private val _reverseGeoState = MutableStateFlow(ReverseGeoUIState())
+
+    val viewState = combine(
+        _reverseGeoState
+    ){ regeo ->
+        NaverMapViewState(regeo)
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, NaverMapViewState())
 
     init {
         onHandledFlow()

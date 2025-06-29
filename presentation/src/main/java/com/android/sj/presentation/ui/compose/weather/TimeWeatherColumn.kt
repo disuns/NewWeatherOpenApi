@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.android.sj.presentation.R
 import com.android.sj.presentation.models.uimodels.weather.TimeWeatherUIModel
-import com.android.sj.presentation.models.state.WeatherViewState
+import com.android.sj.presentation.models.state.viewstate.WeatherViewState
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
 import com.android.sj.presentation.ui.previewParam.CardDataPreviewParamProvider
 import com.android.sj.presentation.ui.theme.Color_eceff1
@@ -49,7 +49,7 @@ fun TimeWeatherColumn(
 ) {
     val context = LocalContext.current
 
-    ApiResultHandler(modifier, weatherState.timeWeatherState, errorFunc = {errorFunc()}) { successState ->
+    ApiResultHandler(modifier, weatherState.timeWeatherUiState, errorFunc = {errorFunc()}) { successState ->
         val list = successState.value.items
         val pagerState = rememberPagerState(
             pageCount = { list.size }

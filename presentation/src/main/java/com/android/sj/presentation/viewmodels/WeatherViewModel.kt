@@ -7,7 +7,7 @@ import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeekRainSkyUseCase
 import com.android.sj.presentation.WeatherPresentationMapperFactory
 import com.android.sj.presentation.intent.WeatherIntent
-import com.android.sj.presentation.models.state.WeatherViewState
+import com.android.sj.presentation.models.state.viewstate.WeatherViewState
 import com.android.sj.presentation.utils.convertGRIDGPS
 import com.android.sj.presentation.utils.landCodeGu
 import com.android.sj.presentation.utils.managers.TimeManager
@@ -60,7 +60,7 @@ class WeatherViewModel @Inject constructor(
         val (lat, lon) = convertCoordinates(nx, ny)
 
         fetchData(mapper.domainToUIWeather(getWeatherUseCase(timeManager.urlNowDate(), timeManager.urlNowTime(), lat, lon))) { currentState, result->
-            currentState.copy(weatherState = result)
+            currentState.copy(weatherUiState = result)
         }
     }
 
@@ -71,7 +71,7 @@ class WeatherViewModel @Inject constructor(
         val (lat, lon) = convertCoordinates(nx, ny)
 
         fetchData(mapper.domainToUITimeWeather(getTimeWeatherUseCase(timeManager.urlTimeWeatherDate(), timeManager.urlTimeWeatherTime(), lat, lon))) { currentState, result->
-            currentState.copy(timeWeatherState = result)
+            currentState.copy(timeWeatherUiState = result)
         }
     }
 
@@ -79,7 +79,7 @@ class WeatherViewModel @Inject constructor(
         val landCode = regId.landCodeGu(context = context)
 
         fetchData(mapper.domainToUIWeekRainSky(getWeekRainSkyUseCase(landCode, timeManager.urlWeekWeatherTime()))) { currentState, result->
-            currentState.copy(weekRainSkyState = result)
+            currentState.copy(weekRainSkyUiState = result)
         }
     }
 

@@ -28,7 +28,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
 import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIModel
-import com.android.sj.presentation.models.state.WeatherViewState
+import com.android.sj.presentation.models.state.viewstate.WeatherViewState
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
 import com.android.sj.presentation.ui.previewParam.WeekCardDataPreviewParamProvider
 import com.android.sj.presentation.ui.theme.Color_eceff1
@@ -42,7 +42,7 @@ fun WeekWeatherColumn(
     weatherState: WeatherViewState,
     errorFunc: () -> Unit
 ) {
-    ApiResultHandler(modifier, weatherState.weekRainSkyState, errorFunc = {errorFunc()}) { successState ->
+    ApiResultHandler(modifier, weatherState.weekRainSkyUiState, errorFunc = {errorFunc()}) { successState ->
         Column(
             modifier = modifier
         ) {

@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.state.AirQualityViewState
+import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel.MeasuringData
 import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel

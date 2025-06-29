@@ -9,7 +9,6 @@ import retrofit2.Response
 import java.io.IOException
 
 fun <T> safeFlow(apiFunc: suspend () -> Response<T>): Flow<ApiResult<T>> = flow{
-    emit(ApiResult.Loading)
     try {
         val response = apiFunc()
         if (response.isSuccessful) {

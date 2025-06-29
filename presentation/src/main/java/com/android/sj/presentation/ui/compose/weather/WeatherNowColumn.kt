@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.state.WeatherViewState
+import com.android.sj.presentation.models.state.viewstate.WeatherViewState
 import com.android.sj.presentation.ui.compose.common.ApiResultHandler
 import com.android.sj.presentation.ui.previewParam.WeatherViewStatePreviewParamProvider
 import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
@@ -44,7 +44,7 @@ fun NowWeatherColumn(
             text = stringResource(R.string.nowWeather),
             style = defaultTitleTextStyle()
         )
-        ApiResultHandler(modifier, weatherState.weatherState, errorFunc = {errorFunc()}) { successState ->
+        ApiResultHandler(modifier, weatherState.weatherUiState, errorFunc = {errorFunc()}) { successState ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

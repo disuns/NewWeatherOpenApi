@@ -13,7 +13,6 @@ abstract class BaseMapper {
             when (flow) {
                 is ApiResult.Success -> handleSuccess(flow.value)
                 is ApiResult.Empty -> ApiResult.Empty
-                is ApiResult.Loading -> ApiResult.Loading
                 is ApiResult.Error -> ApiResult.Error(flow.code, flow.exception)
             }
         }

@@ -3,13 +3,13 @@ package com.android.sj.presentation.ui.previewParam
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.enum.WeatherImgEnum
-import com.android.sj.presentation.models.state.WeatherViewState
+import com.android.sj.presentation.models.state.viewstate.WeatherViewState
 import com.android.sj.presentation.models.uimodels.weather.WeatherUIModel
 
 class WeatherViewStatePreviewParamProvider : PreviewParameterProvider<WeatherViewState> {
     override val values = sequenceOf(
         WeatherViewState(
-            weatherState = ApiResult.Success(
+            weatherUiState = ApiResult.Success(
                 WeatherUIModel(
                     nowTemp = "123",
                     nowRain = "123",
