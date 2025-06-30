@@ -11,10 +11,11 @@ import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
 import com.android.sj.presentation.utils.airDateAndCode
 import com.android.sj.presentation.utils.rltmStationDate
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class AirQualityPresentationMapper @AssistedInject constructor(
-    private val context: Context,
+class AirQualityPresentationMapper @Inject constructor(
+    @ApplicationContext private val context: Context,
 ) : BaseMapper() {
     fun domainToUIAirQuality(data: AirQualityData) = AirQualityUiModel(
             dataTimeAndCode = data.code.airDateAndCode(data.dataTime, context),

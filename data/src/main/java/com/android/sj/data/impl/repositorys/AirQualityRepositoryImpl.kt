@@ -11,7 +11,6 @@ import com.android.sj.domain.models.AirQualityData
 import com.android.sj.domain.models.RltmStationData
 import com.android.sj.domain.models.StationFindData
 import com.android.sj.domain.repositories.AirQualityRepository
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

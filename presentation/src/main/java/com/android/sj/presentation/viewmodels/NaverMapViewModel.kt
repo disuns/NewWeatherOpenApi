@@ -3,21 +3,14 @@ package com.android.sj.presentation.viewmodels
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.android.sj.common.utils.logMessage
-import com.android.sj.domain.ApiResult
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
-import com.android.sj.presentation.NaverMapPresentationMapperFactory
-import com.android.sj.presentation.intent.NaverMapIntent
-import com.android.sj.presentation.models.state.uistate.ReverseGeoUIState
-import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
+import com.android.sj.presentation.event.UiEvent
+import com.android.sj.presentation.mappers.NaverMapPresentationMapper
 import com.android.sj.presentation.models.state.viewstate.NaverMapViewState
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,63 +18,61 @@ import javax.inject.Inject
 class NaverMapViewModel @Inject constructor(
     private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase,
     private val locationDataManager: LocationDataManager,
-    mapperFactory: NaverMapPresentationMapperFactory,
+    private val mapper : NaverMapPresentationMapper,
     @ApplicationContext val context: Context
 ) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
-    private val mapper = mapperFactory.create(viewModelScope)
-
-    private val _reverseGeoState = MutableStateFlow(ReverseGeoUIState())
-
-    val viewState = combine(
-        _reverseGeoState
-    ){ regeo ->
-        NaverMapViewState(regeo)
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, NaverMapViewState())
 
     init {
         onHandledFlow()
     }
 
-    fun handleIntent(intent: NaverMapIntent) {
-        when(intent){
-            is NaverMapIntent.LoadNaverMapGeo -> fetchNaverMap(intent.lon, intent.lat)
-            is NaverMapIntent.GetLocation -> getLocation()
-        }
-    }
+//    fun handleIntent(intent: NaverMapIntent) {
+//        when(intent){
+//            is NaverMapIntent.LoadNaverMapGeo -> fetchNaverMap(intent.lon, intent.lat)
+//            is NaverMapIntent.GetLocation -> getLocation()
+//        }
+//    }
 
-    private fun getLocation() {
+    fun getLocation() {
         LoadingStateManager.isShow(true)
         locationDataManager.getGps { lat, lon ->
             fetchNaverMap(lon, lat)
         }
     }
 
-    private fun fetchNaverMap(lon: Double, lat: Double) {
-        locationDataManager.updateLocationData(lat = lat, lon = lon)
-
-        fetchData(mapper.domainToUIReverseGeoCo(getReverseGeoCoUseCase("$lon,$lat"))) { currentState, result->
-            currentState.copy(naverMapState = result)
+    fun fetchNaverMap(lon: Double, lat: Double) {
+        sendEvent(UiEvent.UpdateLocation(lat = lat, lon = lon))
+        fetchData(
+            usecase = getReverseGeoCoUseCase("$lon,$lat"),
+            mapper = mapper::domainToUIReverseGeoCo
+        ){ ui ->
+            copy(naverMapUiState = ui)
         }
     }
 
     private fun onHandledFlow() {
         viewModelScope.launch {
-            state.collect { mapState ->
+            viewState.collect { mapState ->
                 mapState.isAllLoading()
 
-                when (mapState.naverMapState) {
-                    is ApiResult.Success -> {
-                        val data = mapState.naverMapState.value
-                        locationDataManager.updateLocationData(
-                            locationDataManager.locationData.value.lat,
-                            locationDataManager.locationData.value.lng,
-                            data.mapAddress,
-                            data.centerX,
-                            data.centerY
-                        )
+                val uiState = mapState.naverMapUiState
+                when {
+                    uiState.isError -> {
+                        logMessage("Error: ${uiState.errorMessage}")
                     }
-                    is ApiResult.Error -> logMessage("Error: ${mapState.naverMapState.exception}")
-                    else -> {}
+                    uiState.isEmptyData || uiState.isLoading -> {
+                    }
+                    uiState.model != null -> {
+                        with(locationDataManager.locationData.value) {
+                            sendEvent(UiEvent.UpdateLocation(
+                                lat = lat,
+                                lon = lng,
+                                address = uiState.model.mapAddress,
+                                x = uiState.model.centerX,
+                                y =  uiState.model.centerY)
+                            )
+                        }
+                    }
                 }
             }
         }

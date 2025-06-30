@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.android.sj.presentation.R
 import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
-import com.android.sj.presentation.ui.compose.common.ApiResultHandler
+import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
 import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -35,7 +35,7 @@ fun PredictionModelColumn(
     errorFunc: () -> Unit
 ) {
     Column(modifier = modifier.padding(top = 8.dp)) {
-        ApiResultHandler(modifier, airQualityState.airQualityState, errorFunc = { errorFunc() }) { successState ->
+        UiStateHandler(modifier, airQualityState.airQualityUiState, errorFunc = { errorFunc() }) { successState ->
 
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -43,11 +43,12 @@ fun PredictionModelColumn(
                 style = defaultTitleTextStyle()
             )
 
-            val imageList = mutableListOf(
-                successState.value.imageUrl1,
-                successState.value.imageUrl2,
-                successState.value.imageUrl3
+            val imageList = listOf(
+                successState.imageUrl1,
+                successState.imageUrl2,
+                successState.imageUrl3
             )
+
             val pagerState = rememberPagerState(
                 pageCount = { imageList.size }
             )

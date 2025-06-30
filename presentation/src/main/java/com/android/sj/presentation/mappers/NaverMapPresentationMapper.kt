@@ -5,10 +5,11 @@ import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.NaverMapData
 import com.android.sj.presentation.models.uimodels.navermap.ReverseGeoUIModel
 import com.android.sj.presentation.utils.mapAddressConvert
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class NaverMapPresentationMapper @AssistedInject constructor(
-    private val context: Context
+class NaverMapPresentationMapper @Inject constructor(
+    @ApplicationContext private val context: Context
 ) : BaseMapper() {
     fun domainToUIReverseGeoCo(data: NaverMapData) = ReverseGeoUIModel(
         mapAddress = data.mapAddressConvert(context),
