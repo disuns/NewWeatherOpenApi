@@ -44,9 +44,9 @@ import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
-import com.android.sj.presentation.ui.theme.Color_F0FFF0
-import com.android.sj.presentation.ui.theme.Color_ffd700
-import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
+import com.android.sj.presentation.common.ui.theme.Color_F0FFF0
+import com.android.sj.presentation.common.ui.theme.Color_ffd700
+import com.android.sj.presentation.common.ui.theme.defaultTitleTextStyle
 import com.android.sj.presentation.utils.rltmFlag
 import com.android.sj.presentation.utils.rltmGradeConvert
 import com.android.sj.presentation.utils.rltmTitle

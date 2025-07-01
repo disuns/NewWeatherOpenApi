@@ -4,7 +4,7 @@ import android.content.Context
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
 import com.android.sj.presentation.mappers.NaverMapPresentationMapper
-import com.android.sj.presentation.viewmodels.NaverMapViewModel
+import com.android.sj.presentation.mvvm.viewmodels.NaverMapViewModel
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.After

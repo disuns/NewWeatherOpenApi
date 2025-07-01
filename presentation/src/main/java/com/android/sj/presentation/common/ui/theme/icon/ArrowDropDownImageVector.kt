@@ -1,4 +1,4 @@
-package com.android.sj.presentation.ui.theme.icon
+package com.android.sj.presentation.common.ui.theme.icon
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

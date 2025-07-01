@@ -34,10 +34,10 @@ import androidx.compose.ui.unit.dp
 import com.android.sj.common.utils.isNetworkCheck
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.presentation.R
-import com.android.sj.presentation.ui.theme.icon.CancelImageVector
-import com.android.sj.presentation.ui.theme.icon.SearchImageVector
+import com.android.sj.presentation.common.ui.theme.icon.CancelImageVector
+import com.android.sj.presentation.common.ui.theme.icon.SearchImageVector
 import com.android.sj.presentation.utils.sp
-import com.android.sj.presentation.viewmodels.NaverMapViewModel
+import com.android.sj.presentation.mvvm.viewmodels.NaverMapViewModel
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition

@@ -1,4 +1,4 @@
-package com.android.sj.presentation.viewmodels
+package com.android.sj.presentation.mvvm.viewmodels
 
 import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetAirQualityUseCase

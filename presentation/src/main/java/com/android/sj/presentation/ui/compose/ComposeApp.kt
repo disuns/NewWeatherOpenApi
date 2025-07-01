@@ -27,9 +27,9 @@ import com.android.sj.presentation.ui.compose.intro.IntroScreen
 import com.android.sj.presentation.ui.compose.navermap.NaverMapScreen
 import com.android.sj.presentation.ui.compose.weather.WeatherScreen
 import com.android.sj.presentation.utils.toastMessage
-import com.android.sj.presentation.viewmodels.AirQualityViewModel
-import com.android.sj.presentation.viewmodels.NaverMapViewModel
-import com.android.sj.presentation.viewmodels.WeatherViewModel
+import com.android.sj.presentation.mvvm.viewmodels.AirQualityViewModel
+import com.android.sj.presentation.mvvm.viewmodels.NaverMapViewModel
+import com.android.sj.presentation.mvvm.viewmodels.WeatherViewModel
 import kotlinx.coroutines.flow.merge
 
 @Composable

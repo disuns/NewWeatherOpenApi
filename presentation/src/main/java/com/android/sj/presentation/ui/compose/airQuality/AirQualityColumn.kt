@@ -26,7 +26,7 @@ import com.android.sj.presentation.R
 import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
-import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
+import com.android.sj.presentation.common.ui.theme.defaultTitleTextStyle
 import com.android.sj.presentation.utils.actionKnact
 import com.android.sj.presentation.utils.sp
 

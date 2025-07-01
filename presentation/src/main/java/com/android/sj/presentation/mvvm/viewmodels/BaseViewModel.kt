@@ -1,4 +1,4 @@
-package com.android.sj.presentation.viewmodels
+package com.android.sj.presentation.mvvm.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

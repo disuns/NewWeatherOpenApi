@@ -34,12 +34,12 @@ android {
         }
     }
 
-    flavorDimensions += "version"
+    flavorDimensions += listOf("version", "arch")
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
             manifestPlaceholders["appNameSuffix"] = ""
         }
         debug {
@@ -59,6 +59,14 @@ android {
         create("weather") {
             dimension = "version"
             manifestPlaceholders["appName"] = "날씨 및 미세먼지 확인"
+        }
+        create("mvvm") {
+            dimension = "arch"
+            buildConfigField("boolean", "USE_MVI", "false")
+        }
+        create("mvi") {
+            dimension           = "arch"
+            buildConfigField("boolean", "USE_MVI", "true")
         }
     }
 

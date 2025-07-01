@@ -1,4 +1,4 @@
-package com.android.sj.presentation.viewmodels
+package com.android.sj.presentation.mvvm.viewmodels
 
 import android.content.Context
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetTimeWeatherUseCase

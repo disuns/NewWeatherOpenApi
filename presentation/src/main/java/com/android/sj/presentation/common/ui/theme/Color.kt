@@ -1,4 +1,4 @@
-package com.android.sj.presentation.ui.theme
+package com.android.sj.presentation.common.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
