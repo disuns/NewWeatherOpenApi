@@ -43,10 +43,13 @@ class AirQualityDataMapper @Inject constructor(
 
     fun responseToDomainRltmStation(response: Channel<ApiResult<RltmStationResponse>>): Channel<ApiResult<RltmStationData>> {
         return apiResultMapper(response) {
+            val body = it.response.body
             if (it.response.header.resultCode != NO_ERROR) {
                 ApiResult.Error(it.response.header.resultCode.toInt(), Throwable("PotalError"))
+            } else if (body.items.size == 0) {
+                ApiResult.Error(it.response.header.resultCode.toInt(), Throwable("No Item"))
             } else {
-                val data = it.response.body.items[0]
+                val data = body.items[0]
                 ApiResult.Success(
                     RltmStationData(
                         dataTime = data.dataTime,
