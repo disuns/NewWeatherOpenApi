@@ -25,7 +25,7 @@
 - Clean Architecture + 멀티모듈 : 의존성 관리 및 Clean Architecture 구조 명확화 위해 멀티모듈 사용
 - Git-Flow : Git-Flow 구조 참조
 - GitHub Action : app bundle 자동화 및 Tag/Release 버전 관리 자동화
-  -이로 인하여 release 버전 앱은 로컬에선 빌드되지 않고 자동화로만 빌드 가능
+  - 이로 인하여 release 버전 앱은 로컬에선 빌드되지 않고 자동화로만 빌드 가능
 
 ## **화면 구성**
 ### **인트로 화면**
