@@ -36,13 +36,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.state.AirQualityViewState
+import com.android.sj.presentation.models.state.uistate.RltmStationUiState
+import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel.MeasuringData
 import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
-import com.android.sj.presentation.ui.compose.common.ApiResultHandler
+import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
 import com.android.sj.presentation.ui.theme.Color_F0FFF0
 import com.android.sj.presentation.ui.theme.Color_ffd700
@@ -61,15 +61,15 @@ fun MeasuringStationColumn(
 ) {
     var dropdownSelectedOption by remember { mutableStateOf("통합 대기") }
 
-    ApiResultHandler(modifier, airQualityState.stationFindState, errorFunc = { errorFunc() }) { successState ->
+    UiStateHandler(modifier, airQualityState.stationFindUiState, errorFunc = { errorFunc() }) { successState ->
         StationFindSuccess(
             modifier,
             successState,
             airQualityState,
             dropdownSelectedOption,
             {
-                if (successState.value.stationName != "정보없음") {
-                    onLoadStation(successState.value.stationName)
+                if (successState.stationName != "정보없음") {
+                    onLoadStation(successState.stationName)
                 }
             },
             onOptionSelected = {
@@ -83,7 +83,7 @@ fun MeasuringStationColumn(
 @Composable
 fun StationFindSuccess(
     modifier: Modifier,
-    stationFindState: ApiResult.Success<StationFindUIModel>,
+    stationFindState: StationFindUIModel,
     airQualityState: AirQualityViewState,
     dropdownSelectedOption: String,
     stationFindErrorFunc:  () -> Unit,
@@ -96,12 +96,12 @@ fun StationFindSuccess(
     ) {
         Text(
             modifier = Modifier.padding(top = 8.dp),
-            text = stationFindState.value.stationName.rltmTitle(context),
+            text = stationFindState.stationName.rltmTitle(context),
             style = defaultTitleTextStyle()
         )
 
         HandleRltmStationState(
-            airQualityState.rltmStationState, modifier, dropdownSelectedOption, onOptionSelected
+            airQualityState.rltmStationUiState, modifier, dropdownSelectedOption, onOptionSelected
         ) {stationFindErrorFunc()
 
         }
@@ -110,7 +110,7 @@ fun StationFindSuccess(
 
 @Composable
 fun HandleRltmStationState(
-    rltmStationState: ApiResult<RltmStationUIModel>,
+    rltmStationState: RltmStationUiState,
     modifier: Modifier,
     dropdownSelectedOption: String,
     onOptionSelected: (String) -> Unit,
@@ -119,20 +119,20 @@ fun HandleRltmStationState(
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        ApiResultHandler(modifier, rltmStationState, errorFunc = { errorFunc() }) { successState ->
+        UiStateHandler(modifier, rltmStationState, errorFunc = { errorFunc() }) { successState ->
             Column(modifier = Modifier.weight(1f)) {
                 CustomSpinner(onOptionSelected)
                 Text(
                     modifier = Modifier.align(Alignment.End),
                     fontSize = 10.sp,
-                    text = successState.value.dataTime
+                    text = successState.dataTime
                 )
             }
             Spacer(Modifier.width(3.dp))
             MeasuringStationCard(
                 modifier = Modifier.weight(1f),
                 dropdownSelectedOption = dropdownSelectedOption,
-                data = successState.value
+                data = successState
             )
         }
     }

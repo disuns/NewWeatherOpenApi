@@ -24,7 +24,7 @@ fun WeatherScreen(
     timeErrorFunc: () -> Unit,
     weekErrorFunc: () -> Unit
 ) {
-    val weatherState by viewModel.state.collectAsState(initial = viewModel.initialState)
+    val weatherState by viewModel.viewState.collectAsState()
 
     weatherState.isAllLoading()
 
