@@ -1,14 +1,12 @@
 package com.android.sj.presentation.viewmodels
 
-import android.content.Context
-import androidx.lifecycle.viewModelScope
-import com.android.sj.domain.ApiResult
+import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetAirQualityUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetRltmStationUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetStationFindUseCase
-import com.android.sj.presentation.AirQualityPresentationMapperFactory
-import com.android.sj.presentation.intent.AirQualityIntent
-import com.android.sj.presentation.models.state.AirQualityViewState
+import com.android.sj.presentation.mappers.AirQualityPresentationMapper
+import com.android.sj.presentation.models.state.uistate.RltmStationUiState
+import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.utils.managers.TimeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,51 +16,60 @@ class AirQualityViewModel @Inject constructor(
     private val getAirQualityUseCase : GetAirQualityUseCase,
     private val getRltmStationUseCase : GetRltmStationUseCase,
     private val getStationFindUseCase : GetStationFindUseCase,
-    mapperFactory: AirQualityPresentationMapperFactory
+    private val timeManager: TimeManager,
+    private val mapper : AirQualityPresentationMapper
 ) : BaseViewModel<AirQualityViewState>(AirQualityViewState()) {
-    private val mapper = mapperFactory.create(viewModelScope)
+//    fun handleIntent(intent: AirQualityIntent) {
+//        super.handleIntent(intent)
+//        when (intent) {
+//            is AirQualityIntent.LoadAllAirQuality -> fetchAllAirQualityData(intent.regionX, intent.regionY)
+//            is AirQualityIntent.LoadAirQuality -> fetchAirQuality()
+//            is AirQualityIntent.LoadRltmStation -> fetchRltmStation(intent.stationName)
+//            is AirQualityIntent.LoadStationFind -> fetchStationFindAndThenRltmStation(intent.regionX, intent.regionY)
+//        }
+//    }
 
-    fun handleIntent(intent: AirQualityIntent) {
-        super.handleIntent(intent)
-        when (intent) {
-            is AirQualityIntent.LoadAllAirQuality -> fetchAllAirQualityData(intent.regionX, intent.regionY, intent.context)
-            is AirQualityIntent.LoadAirQuality -> fetchAirQuality(intent.context)
-            is AirQualityIntent.LoadRltmStation -> fetchRltmStation(intent.stationName)
-            is AirQualityIntent.LoadStationFind -> fetchStationFindAndThenRltmStation(intent.regionX, intent.regionY)
-        }
-    }
-
-    private fun fetchAllAirQualityData(
+    fun fetchAllAirQualityData(
         regionX: String,
-        regionY: String,
-        context: Context
+        regionY: String
     ) {
         fetchAllData(
-            { fetchAirQuality(context) },
+            { fetchAirQuality() },
             { fetchStationFindAndThenRltmStation(regionX, regionY) }
         )
     }
 
-    private fun fetchStationFindAndThenRltmStation(regionX: String, regionY: String) {
-        fetchData(mapper.domainToUIStationFind(getStationFindUseCase(regionX, regionY))) { currentState, result ->
-            // 부수효과(side effect): 조건에 따라 추가 작업 수행
-            if (result is ApiResult.Success && result.value.stationName != "정보없음") {
-                fetchRltmStation(result.value.stationName)
+    fun fetchStationFindAndThenRltmStation(regionX: String, regionY: String) {
+        fetchData(
+            usecase = getStationFindUseCase(regionX, regionY),
+            mapper = mapper::domainToUIStationFind,
+            onFetchSuccessBefore = { result ->
+                val data = result.stationName
+                if(data != null && data != "정보없음") fetchRltmStation(data)
             }
-            // 상태 업데이트: stationFindState만 변경
-            currentState.copy(stationFindState = result)
+        ) { ui ->
+            copy(
+                stationFindUiState = ui,
+                rltmStationUiState = RltmStationUiState()
+            )
         }
     }
 
-    private fun fetchAirQuality(context: Context) {
-        fetchData(mapper.domainToUIAirQuality(getAirQualityUseCase(TimeManager(context).urlAirQualityDate()))) { currentState, result->
-            currentState.copy(airQualityState = result)
+    fun fetchAirQuality() {
+        fetchData(
+            usecase = getAirQualityUseCase(timeManager.urlAirQualityDate()),
+            mapper = mapper::domainToUIAirQuality
+        ){ ui->
+            copy(airQualityUiState = ui)
         }
     }
 
-    private fun fetchRltmStation(stationName: String) {
-        fetchData(mapper.domainToUIRltmStation(getRltmStationUseCase(stationName))) { currentState, result->
-            currentState.copy(rltmStationState = result)
+    fun fetchRltmStation(stationName: String) {
+        fetchData(
+            usecase = getRltmStationUseCase(stationName),
+            mapper = mapper::domainToUIRltmStation
+        ){ ui ->
+            copy(rltmStationUiState = ui)
         }
     }
 }

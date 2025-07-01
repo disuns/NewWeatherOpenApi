@@ -1,7 +1,6 @@
 package com.android.sj.presentation.mappers
 
 import android.content.Context
-import com.android.sj.domain.ApiResult
 import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.TimeWeatherData
 import com.android.sj.domain.models.WeatherData
@@ -34,81 +33,65 @@ import com.android.sj.presentation.utils.weatherRainImgConvert
 import com.android.sj.presentation.utils.wetConvert
 import com.android.sj.presentation.utils.windDir
 import com.android.sj.presentation.utils.windPower
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class WeatherPresentationMapper @AssistedInject constructor(
-    private val context: Context,
-    @Assisted private val scope: CoroutineScope
-) : BaseMapper(scope) {
-    fun domainToUIWeather(channel: Channel<ApiResult<WeatherData>>): Channel<ApiResult<WeatherUIModel>> {
-        return apiResultMapper(channel) {
-            val weatherData = WeatherUIModel()
-            it.items.forEach { item->
-                when (item.category) {
-                    TMP_NOW -> weatherData.nowTemp = item.value.tempConvert(context)
-                    RAIN_MM_NOW -> weatherData.nowRain = item.value.nowRainConvert(context)
-                    WET -> weatherData.nowWet = item.value.nowWetConvert(context)
-                    WIND_DIR -> weatherData.windDir = item.value.windDir(context)
-                    WIND_POWER -> weatherData.nowWind = item.value.windPower(context, weatherData.windDir)
-                    RAIN_TYPE -> weatherData.weatherImg = item.value.weatherRainImgConvert()
-                    SKY -> {
-                        weatherData.weatherImgDrawable =
-                            item.value.skyImgEnum(weatherData.weatherImg).imgConvert(context)
-                        weatherData.weatherText = item.value.skyConvert(context)
-                    }
+class WeatherPresentationMapper @Inject constructor(
+    @ApplicationContext private val context: Context
+) : BaseMapper() {
+    fun domainToUIWeather(data : WeatherData) = WeatherUIModel().apply{
+        data.items.forEach { item ->
+            when (item.category) {
+                TMP_NOW -> nowTemp = item.value.tempConvert(context)
+                RAIN_MM_NOW -> nowRain = item.value.nowRainConvert(context)
+                WET -> nowWet = item.value.nowWetConvert(context)
+                WIND_DIR -> windDir = item.value.windDir(context)
+                WIND_POWER -> nowWind =
+                    item.value.windPower(context, windDir)
+
+                RAIN_TYPE -> weatherImg = item.value.weatherRainImgConvert()
+                SKY -> {
+                    weatherImgDrawable =
+                        item.value.skyImgEnum(weatherImg).imgConvert(context)
+                    weatherText = item.value.skyConvert(context)
                 }
             }
-
-            ApiResult.Success(weatherData)
         }
     }
 
-    fun domainToUITimeWeather(channel: Channel<ApiResult<TimeWeatherData>>): Channel<ApiResult<TimeWeatherUIModel>> {
-        return apiResultMapper(channel) { item ->
-            val list = item.items.groupBy { it.weatherDate to it.weatherTime }
-                .map { (_, items) ->
-                    TimeWeatherUIModel.Item(
-                        weatherTime = (items.first().weatherTime).timeDataConvert(context),
-                        weatherDate = (items.first().weatherDate).dateConvert(context),
-                        temp = (items.find { it.category == TMP_TIME }?.value ?: "").tempConvert(context),
-                        windDir = (items.find { it.category == WIND_DIR }?.value ?: "").windDir(context),
-                        windPower = (items.find { it.category == WIND_POWER }?.value ?: "").windPower(context),
-                        rainPer = (items.find { it.category == RAIN_PER }?.value ?: "").rainPerConvert(context),
-                        rainMm = (items.find { it.category == RAIN_MM }?.value ?: "").rainConvert(context),
-                        wet = (items.find { it.category == WET }?.value ?: "").wetConvert(context),
-                        imgDrawable = items.find { it.category == SKY }?.value?.skyImgEnum(
-                            (items.find { it.category == RAIN_TYPE }?.value ?: "").weatherRainImgConvert()
-                        )?.imgConvert(context)
-                    )
-                }.toMutableList()
-
-            ApiResult.Success(TimeWeatherUIModel(list))
-        }
-    }
-
-    fun domainToUIWeekRainSky(channel: Channel<ApiResult<WeekRainSkyData>>): Channel<ApiResult<WeekRainSkyUIModel>> {
-        val timeManager = TimeManager(context)
-
-        return apiResultMapper(channel) { data ->
-            val uiList = data.items.flatMap { item ->
-                (0..3).map { dayIndex ->
-                    setWeekWeatherData(
-                        weekDate = timeManager.getWeatherWeekUIDate(dayIndex+4),
-                        rainAM = item.rnStAm[dayIndex].toString().rainPerConvert(context),
-                        rainPM = item.rnStPm[dayIndex].toString().rainPerConvert(context),
-                        skyAM = item.wfAm[dayIndex],
-                        skyPM = item.wfPm[dayIndex]
-                    )
-                }
+    fun domainToUITimeWeather(data : TimeWeatherData)= TimeWeatherUIModel(
+        data.items.groupBy { it.weatherDate to it.weatherTime }
+            .map { (_,items)->
+                TimeWeatherUIModel.Item(
+                    weatherTime = (items.first().weatherTime).timeDataConvert(context),
+                    weatherDate = (items.first().weatherDate).dateConvert(context),
+                    temp = (items.find { it.category == TMP_TIME }?.value ?: "").tempConvert(context),
+                    windDir = (items.find { it.category == WIND_DIR }?.value ?: "").windDir(context),
+                    windPower = (items.find { it.category == WIND_POWER }?.value ?: "").windPower(context),
+                    rainPer = (items.find { it.category == RAIN_PER }?.value ?: "").rainPerConvert(context),
+                    rainMm = (items.find { it.category == RAIN_MM }?.value ?: "").rainConvert(context),
+                    wet = (items.find { it.category == WET }?.value ?: "").wetConvert(context),
+                    imgDrawable = items.find { it.category == SKY }?.value?.skyImgEnum(
+                        (items.find { it.category == RAIN_TYPE }?.value ?: "").weatherRainImgConvert()
+                    )?.imgConvert(context)
+                )
             }.toMutableList()
+    )
 
-            ApiResult.Success(WeekRainSkyUIModel(uiList))
-        }
-    }
+    fun domainToUIWeekRainSky(data: WeekRainSkyData) = WeekRainSkyUIModel(
+        data.items.flatMap { item ->
+            (0..3).map { dayIndex ->
+                setWeekWeatherData(
+                    weekDate = TimeManager(context).getWeatherWeekUIDate(dayIndex+4),
+                    rainAM = item.rnStAm[dayIndex].toString().rainPerConvert(context),
+                    rainPM = item.rnStPm[dayIndex].toString().rainPerConvert(context),
+                    skyAM = item.wfAm[dayIndex],
+                    skyPM = item.wfPm[dayIndex]
+                )
+            }
+        }.toMutableList()
+    )
+
     private fun setWeekWeatherData(
         weekDate: String,
         rainAM: String,

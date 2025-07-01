@@ -8,13 +8,14 @@ import com.android.sj.domain.ApiResult
 import com.android.sj.domain.models.NaverMapData
 import com.android.sj.domain.repositories.NaverMapRepository
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class NaverMapRepositoryImpl @Inject constructor(
     private val naverMapDataSource: NaverMapDataSource,
     private val mapper : NaverMapDataMapper
 ) : NaverMapRepository {
-    override fun fetchReverseGeoCo(latLng: String): Channel<ApiResult<NaverMapData>> {
+    override fun fetchReverseGeoCo(latLng: String): Flow<ApiResult<NaverMapData>> {
         val request = NaverMapRequest(coords = latLng)
         return mapper.responseToDomainReverseGeoCo(naverMapDataSource.fetchReverseGeoCo(request.toMap()))
     }

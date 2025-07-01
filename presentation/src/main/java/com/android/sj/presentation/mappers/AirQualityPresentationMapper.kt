@@ -1,7 +1,6 @@
 package com.android.sj.presentation.mappers
 
 import android.content.Context
-import com.android.sj.domain.ApiResult
 import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.AirQualityData
 import com.android.sj.domain.models.RltmStationData
@@ -12,58 +11,38 @@ import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
 import com.android.sj.presentation.utils.airDateAndCode
 import com.android.sj.presentation.utils.rltmStationDate
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class AirQualityPresentationMapper @AssistedInject constructor(
-    private val context: Context,
-    @Assisted private val scope: CoroutineScope
-) : BaseMapper(scope) {
-    fun domainToUIAirQuality(channel: Channel<ApiResult<AirQualityData>>): Channel<ApiResult<AirQualityUiModel>> {
-        return apiResultMapper(channel) {
-            ApiResult.Success(
-                AirQualityUiModel(
-                    dataTimeAndCode = it.code.airDateAndCode(it.dataTime, context),
-                    overall = it.overall,
-                    cause = it.cause,
-                    actionKnack = it.actionKnack,
-                    informGrades = it.informGrade.split(",").toMutableList(),
-                    imageUrl1 = it.imageUrl1,
-                    imageUrl2 = it.imageUrl2,
-                    imageUrl3 = it.imageUrl3
-                )
-            )
-        }
-    }
+class AirQualityPresentationMapper @Inject constructor(
+    @ApplicationContext private val context: Context,
+) : BaseMapper() {
+    fun domainToUIAirQuality(data: AirQualityData) = AirQualityUiModel(
+            dataTimeAndCode = data.code.airDateAndCode(data.dataTime, context),
+            overall = data.overall,
+            cause = data.cause,
+            actionKnack = data.actionKnack,
+            informGrades = data.informGrade.split(",").toMutableList(),
+            imageUrl1 = data.imageUrl1,
+            imageUrl2 = data.imageUrl2,
+            imageUrl3 = data.imageUrl3
+        )
 
-    fun domainToUIRltmStation(channel: Channel<ApiResult<RltmStationData>>): Channel<ApiResult<RltmStationUIModel>> {
-        return apiResultMapper(channel) {
-            ApiResult.Success(
-                RltmStationUIModel(
-                    dataTime = it.dataTime.rltmStationDate(context),
-                    measuringData = mutableListOf(
-                        MeasuringData(it.khaiValue, it.khaiGrade, null),
-                        MeasuringData(it.pm25Value, it.pm25Grade, it.pm25Flag),
-                        MeasuringData(it.pm10Value, it.pm10Grade, it.pm10Flag),
-                        MeasuringData(it.o3Value, it.o3Grade, it.o3Flag),
-                        MeasuringData(it.coValue, it.coGrade, it.coFlag),
-                        MeasuringData(it.no2Value, it.no2Grade, it.no2Flag),
-                        MeasuringData(it.so2Value, it.so2Grade, it.so2Flag)
-                    )
-                )
-            )
-        }
-    }
 
-    fun domainToUIStationFind(channel: Channel<ApiResult<StationFindData>>): Channel<ApiResult<StationFindUIModel>> {
-        return apiResultMapper(channel) {
-            ApiResult.Success(
-                StationFindUIModel(
-                    stationName = it.stationName ?: "정보없음"
-                )
-            )
-        }
-    }
+    fun domainToUIRltmStation(data: RltmStationData) = RltmStationUIModel(
+        dataTime = data.dataTime.rltmStationDate(context),
+        measuringData = mutableListOf(
+            MeasuringData(data.khaiValue, data.khaiGrade, null),
+            MeasuringData(data.pm25Value, data.pm25Grade, data.pm25Flag),
+            MeasuringData(data.pm10Value, data.pm10Grade, data.pm10Flag),
+            MeasuringData(data.o3Value, data.o3Grade, data.o3Flag),
+            MeasuringData(data.coValue, data.coGrade, data.coFlag),
+            MeasuringData(data.no2Value, data.no2Grade, data.no2Flag),
+            MeasuringData(data.so2Value, data.so2Grade, data.so2Flag)
+        )
+    )
+
+    fun domainToUIStationFind(data: StationFindData) = StationFindUIModel(
+        stationName = data.stationName ?: "정보없음"
+    )
 }

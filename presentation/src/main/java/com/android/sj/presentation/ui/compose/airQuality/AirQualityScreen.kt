@@ -10,7 +10,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.android.sj.presentation.R
-import com.android.sj.presentation.intent.AirQualityIntent
 import com.android.sj.presentation.ui.compose.common.DotLineColumn
 import com.android.sj.presentation.ui.theme.Default_BackGround
 import com.android.sj.presentation.viewmodels.AirQualityViewModel
@@ -22,7 +21,7 @@ fun AirQualityScreen(
     stationFindErrorFunc : () -> Unit,
     airQualityErrorFunc : () -> Unit
 ) {
-    val airQualityViewState by viewModel.state.collectAsState(initial = viewModel.initialState)
+    val airQualityViewState by viewModel.viewState.collectAsState()
 
     airQualityViewState.isAllLoading()
 
@@ -40,7 +39,7 @@ fun AirQualityScreen(
                     .fillMaxWidth(),
                 airQualityState = airQualityViewState,
                 onLoadStation = { stationName ->
-                    viewModel.handleIntent(AirQualityIntent.LoadRltmStation(stationName))
+                    viewModel.fetchRltmStation(stationName)
                 }
             ){stationFindErrorFunc()}
         }

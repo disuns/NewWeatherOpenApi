@@ -2,7 +2,10 @@ package com.android.sj.presentation.ui.previewParam
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.android.sj.domain.ApiResult
-import com.android.sj.presentation.models.state.AirQualityViewState
+import com.android.sj.presentation.models.state.uistate.AirQualityUiState
+import com.android.sj.presentation.models.state.uistate.RltmStationUiState
+import com.android.sj.presentation.models.state.uistate.StationFindUiState
+import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.models.uimodels.airquality.AirQualityUiModel
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel.MeasuringData
@@ -11,8 +14,8 @@ import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
 class AirQualityPreviewParamProvider : PreviewParameterProvider<AirQualityViewState> {
     override val values = sequenceOf(
         AirQualityViewState(
-            airQualityState = ApiResult.Success(
-                AirQualityUiModel(
+            airQualityUiState = AirQualityUiState(
+                model = AirQualityUiModel(
                     dataTimeAndCode = "PM10( code : 2024-09-21 11시 발표 )",
                     overall = "○ [미세먼지] 전 권역이 '좋음'으로 예상됩니다.",
                     cause = "○ [미세먼지] 원활한 대기 확산과 강수의 영향으로 대기질이 청정할 것으로 예상됩니다.",
@@ -22,12 +25,13 @@ class AirQualityPreviewParamProvider : PreviewParameterProvider<AirQualityViewSt
                     imageUrl2 = "https://www.airkorea.or.kr/file/proxyImage?fileName=2024/09/21/11/09km/AQF.20240920.NIER_09_01.PM10.1hsp.2024092109.png",
                     imageUrl3 = "https://www.airkorea.or.kr/file/proxyImage?fileName=2024/09/21/11/09km/AQF.20240920.NIER_09_01.PM10.1hsp.2024092115.png"
                 )
+
             ),
-            stationFindState = ApiResult.Success(
-                StationFindUIModel(stationName = "영등포구")
+            stationFindUiState = StationFindUiState(
+                model = StationFindUIModel(stationName = "영등포구")
             ),
-            rltmStationState = ApiResult.Success(
-                RltmStationUIModel(
+            rltmStationUiState = RltmStationUiState(
+                model = RltmStationUIModel(
                     dataTime = "측정시간 : 2024-09-19 14:00",
                     measuringData = mutableListOf(
                         MeasuringData("89", "2", null),

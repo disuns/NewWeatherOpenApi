@@ -23,8 +23,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.state.AirQualityViewState
-import com.android.sj.presentation.ui.compose.common.ApiResultHandler
+import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
+import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
 import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
 import com.android.sj.presentation.utils.actionKnact
@@ -38,8 +38,7 @@ fun AirQualityColumn(
 ) {
     val context = LocalContext.current
 
-    ApiResultHandler(modifier, airQualityState.airQualityState, errorFunc = errorFunc) { successState ->
-        val data = successState.value
+    UiStateHandler(modifier, airQualityState.airQualityUiState, errorFunc = errorFunc) { successState ->
         Column(modifier = modifier.wrapContentHeight()) {
             Text(
                 text = stringResource(R.string.airQualityTitle),
@@ -48,26 +47,26 @@ fun AirQualityColumn(
             )
 
             Text(
-                text = data.dataTimeAndCode,
+                text = successState.dataTimeAndCode,
                 fontSize = dimensionResource(R.dimen.AirQualityDateCode).sp(),
                 modifier = Modifier.align(Alignment.End)
             )
 
             Text(
-                text = data.overall,
+                text = successState.overall,
                 fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
                 modifier = Modifier.align(Alignment.Start)
             )
 
             Text(
-                text = data.cause,
+                text = successState.cause,
                 fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
                 modifier = Modifier.align(Alignment.Start)
             )
 
-            val actionKnacktNullCheck = when (data.actionKnack.isNullOrBlank()) {
+            val actionKnacktNullCheck = when (successState.actionKnack.isNullOrBlank()) {
                 true -> stringResource(R.string.nullString)
-                else -> data.actionKnack
+                else -> successState.actionKnack
             }
             Text(
                 text = actionKnacktNullCheck.actionKnact(context),
@@ -87,7 +86,7 @@ fun AirQualityColumn(
                     .heightIn(min = 0.dp, max = 500.dp)
                     .padding(vertical = 8.dp)
             ) {
-                val informGrades = data.informGrades
+                val informGrades = successState.informGrades
                 items(informGrades.size) { item ->
                     val statusColor = when {
                         informGrades[item].contains("좋음") -> Color.Green

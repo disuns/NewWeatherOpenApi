@@ -13,33 +13,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.R
+import com.android.sj.presentation.models.state.uistate.BaseUiState
 import com.android.sj.presentation.ui.theme.icon.EmptyImageVector
 import com.android.sj.presentation.ui.theme.icon.ErrorImageVector
 import com.android.sj.presentation.utils.dataPotalResultCode
 
 @Composable
-fun <T> ApiResultHandler(
+fun <T > UiStateHandler(
     modifier: Modifier,
-    state: ApiResult<T>,
+    state: BaseUiState<T>,
     errorFunc: ()->Unit,
     skeleton: @Composable () -> Unit  = {DefaultLoading(modifier)},
-    content: @Composable (ApiResult.Success<T>) -> Unit
+    content: @Composable (T) -> Unit
 ) {
-    when (state) {
-        is ApiResult.Success -> {
-            content(state)
-        }
-        is ApiResult.Empty -> DefaultEmpty(modifier)
-        is ApiResult.Error -> {
-            if(state.exception.toString() == "PotalError"){
-                DataPotalSuccesError(modifier, state.code)
+    when {
+        state.isLoading -> DefaultLoading(modifier)
+        state.isError -> {
+            if(state.errorMessage == "PotalError"){
+                DataPotalSuccesError(modifier, state.errorCode)
             }else{
                 DefaultError(modifier){errorFunc()}
             }
         }
-        is ApiResult.Loading -> DefaultLoading(modifier)
+        state.isEmptyData->DefaultEmpty(modifier)
+        state.model!=null-> content(state.model)
     }
 }
 
