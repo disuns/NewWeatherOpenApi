@@ -15,7 +15,7 @@ android {
         applicationId = "com.codedevs.newweatheropenapi"
         minSdk = 24
         targetSdk = 34
-        versionName = "1.0.8"
+        versionName = "1.0.9"
         val versionParts = versionName.toString().split(".")
         versionCode = versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
 
