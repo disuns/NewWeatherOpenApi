@@ -75,12 +75,12 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload all AABs to Release
-      uses: dwenegar/upload-multiple-assets-to-a-release@v1
+      uses: dwenegar/upload-release-assets@v1
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_glob: 'build-artifacts/*.aab'
-        asset_content_type: application/vnd.android.package-archive
+        release_id: ${{ steps.create_release.outputs.id }}
+        assets_path: '["app/build/outputs/bundle/*/release/*.aab"]'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
 
