@@ -9,6 +9,4 @@ data class AirQualityViewState(
     val airQualityUiState: AirQualityUiState = BaseUiState(),
     val rltmStationUiState: RltmStationUiState = BaseUiState(),
     val stationFindUiState: StationFindUiState = BaseUiState()
-): BaseViewState {
-    override fun getAllStates() = listOf(airQualityUiState, rltmStationUiState, stationFindUiState)
-}
+): BaseViewState

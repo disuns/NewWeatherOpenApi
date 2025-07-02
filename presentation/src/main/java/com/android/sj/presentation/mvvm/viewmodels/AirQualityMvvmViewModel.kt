@@ -11,7 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AirQualityMvvmMvvmViewModel @Inject constructor(
+class AirQualityMvvmViewModel @Inject constructor(
     private val getAirQualityUseCase : GetAirQualityUseCase,
     private val getRltmStationUseCase : GetRltmStationUseCase,
     private val getStationFindUseCase : GetStationFindUseCase,
@@ -35,7 +35,7 @@ class AirQualityMvvmMvvmViewModel @Inject constructor(
             mapper = mapper::domainToUIStationFind,
             onFetchSuccessBefore = { result ->
                 val data = result.stationName
-                if(data != null && data != "정보없음") fetchRltmStation(data)
+                if(!data.isNullOrBlank() && data != "정보없음") fetchRltmStation(data)
             }
         ) { ui ->
             copy(

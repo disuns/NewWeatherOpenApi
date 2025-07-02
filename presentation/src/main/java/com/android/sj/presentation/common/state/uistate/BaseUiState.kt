@@ -2,7 +2,7 @@ package com.android.sj.presentation.common.state.uistate
 
 data class BaseUiState<T>(
     val model : T? = null,
-    val isLoading : Boolean = false,
+    val isLoading : Boolean = false, //로딩 스켈레톤용
     val isError : Boolean = false,
     val errorMessage : String? = null,
     val errorCode : Int? = null,

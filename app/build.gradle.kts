@@ -33,6 +33,9 @@ android {
             keyPassword = System.getenv("KEY_PASSWORD")
         }
     }
+    buildFeatures{
+        buildConfig = true
+    }
 
     flavorDimensions += listOf("version", "arch")
     buildTypes {

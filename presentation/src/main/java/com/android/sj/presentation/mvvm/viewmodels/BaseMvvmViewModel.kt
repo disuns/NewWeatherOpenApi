@@ -5,11 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.common.event.UiEvent
 import com.android.sj.presentation.common.state.uistate.BaseUiState
+import com.android.sj.presentation.utils.managers.LoadingStateManager
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
@@ -40,7 +42,7 @@ abstract class BaseMvvmViewModel<VS>(
         onFetchStartBefore : () -> Unit = {},
         onFetchStartAfter : () -> Unit = {},
         onFetchSuccessBefore : (T) -> Unit = {},
-        onFetchSuccessAfter : (T) -> Unit = {},
+        onFetchSuccessAfter : (UI) -> Unit = {},
         onFetchErrorBefore : (String, Int) -> Unit = {_, _ ->},
         onFetchErrorAfter : (String, Int) -> Unit = {_, _ ->},
         onFetchEmptyBefore : () -> Unit = {},
@@ -50,9 +52,13 @@ abstract class BaseMvvmViewModel<VS>(
         viewModelScope.launch {
             usecase.onStart {
                 onFetchStartBefore()
+                LoadingStateManager.show()
                 updateViewState { updateState(BaseUiState(isLoading = true, isError = false)) }
                 onFetchStartAfter()
-            }.collect { result ->
+            }.onCompletion {
+                LoadingStateManager.hide()
+            }
+                .collect { result ->
                 when (result) {
                     is ApiResult.Success -> {
                         onFetchSuccessBefore(result.value)
@@ -63,7 +69,7 @@ abstract class BaseMvvmViewModel<VS>(
                             isError = false
                         )
                         updateViewState { updateState(uiState) }
-                        onFetchSuccessAfter(result.value)
+                        onFetchSuccessAfter(mapper(result.value))
                     }
                     is ApiResult.Error ->{
                         val errorMessage = result.exception?.message ?: "Unknown Error"

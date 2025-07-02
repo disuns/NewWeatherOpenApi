@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.ui.Modifier
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.presentation.ui.compose.InitScreen
-import com.android.sj.presentation.ui.compose.loading.SplashDialogScreen
 import com.android.sj.presentation.common.ui.theme.NewWeatherOpenApiTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,7 +25,6 @@ class MainActivity : ComponentActivity() {
             NewWeatherOpenApiTheme{
                 Box(Modifier.safeDrawingPadding()){
                     InitScreen(locationDataManager)
-                    SplashDialogScreen()
 
 //                    Button(
 //                        onClick = {

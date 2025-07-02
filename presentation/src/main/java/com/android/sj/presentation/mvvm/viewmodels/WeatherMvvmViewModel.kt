@@ -15,7 +15,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherMvvmMvvmViewModel @Inject constructor(
+class WeatherMvvmViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getTimeWeatherUseCase: GetTimeWeatherUseCase,
     private val getWeekRainSkyUseCase: GetWeekRainSkyUseCase,

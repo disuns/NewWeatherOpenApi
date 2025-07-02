@@ -9,6 +9,4 @@ data class WeatherViewState(
     val weatherUiState : WeatherUIState = BaseUiState(),
     val timeWeatherUiState : TimeWeatherUIState = BaseUiState(),
     val weekRainSkyUiState : WeekRainySkyUIState = BaseUiState()
-): BaseViewState {
-    override fun getAllStates() = listOf(weatherUiState, timeWeatherUiState, weekRainSkyUiState)
-}
+): BaseViewState

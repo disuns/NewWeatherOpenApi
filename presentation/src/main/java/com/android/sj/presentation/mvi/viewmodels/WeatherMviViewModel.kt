@@ -4,9 +4,9 @@ import android.content.Context
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetTimeWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeekRainSkyUseCase
-import com.android.sj.presentation.mvvm.viewmodels.BaseMvvmViewModel
 import com.android.sj.presentation.common.mappers.WeatherPresentationMapper
 import com.android.sj.presentation.common.state.viewstate.WeatherViewState
+import com.android.sj.presentation.mvi.intent.WeatherIntent
 import com.android.sj.presentation.utils.convertGRIDGPS
 import com.android.sj.presentation.utils.landCodeGu
 import com.android.sj.presentation.utils.managers.TimeManager
@@ -16,33 +16,35 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherMviMvvmViewModel @Inject constructor(
+class WeatherMviViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getTimeWeatherUseCase: GetTimeWeatherUseCase,
     private val getWeekRainSkyUseCase: GetWeekRainSkyUseCase,
     private val mapper : WeatherPresentationMapper,
     private val timeManager: TimeManager,
     @ApplicationContext val context: Context
-) : BaseMvvmViewModel<WeatherViewState>(WeatherViewState()) {
-    fun fetchAllWeatherData(
-        nx: String,
-        ny: String,
-        address: String
-    ) {
-        fetchAllData(
-            { fetchWeather(nx, ny) },
-            { fetchTimeWeather(nx, ny) },
-            { fetchWeekRainSky(address) }
-        )
+) : BaseMviViewModel<WeatherIntent, WeatherViewState, Any?>(WeatherViewState()) {
+
+    override suspend fun handleIntent(intent: WeatherIntent) {
+        when(intent){
+            is WeatherIntent.LoadAllWeather -> {
+                sendIntent(WeatherIntent.LoadWeather(intent.nx, intent.ny))
+                sendIntent(WeatherIntent.LoadTimeWeather(intent.nx, intent.ny))
+                sendIntent(WeatherIntent.LoadWeekRainSky(intent.address))
+            }
+            is WeatherIntent.LoadWeather-> fetchWeather(intent.nx, intent.ny)
+            is WeatherIntent.LoadTimeWeather-> fetchTimeWeather(intent.nx, intent.ny)
+            is WeatherIntent.LoadWeekRainSky -> fetchWeekRainSky(intent.address)
+        }
     }
 
-    fun fetchWeather(
+    private fun fetchWeather(
         nx: String,
         ny: String
     ) {
         val (lat, lon) = convertCoordinates(nx, ny)
 
-        fetchData(
+        fetchAndReduce(
             usecase = getWeatherUseCase(timeManager.urlNowDate(), timeManager.urlNowTime(), lat, lon),
             mapper = mapper::domainToUIWeather,
         ){ ui->
@@ -50,13 +52,13 @@ class WeatherMviMvvmViewModel @Inject constructor(
         }
     }
 
-    fun fetchTimeWeather(
+    private fun fetchTimeWeather(
         nx: String,
         ny: String
     ) {
         val (lat, lon) = convertCoordinates(nx, ny)
 
-        fetchData(
+        fetchAndReduce(
             usecase = getTimeWeatherUseCase(timeManager.urlTimeWeatherDate(), timeManager.urlTimeWeatherTime(), lat, lon),
             mapper = mapper::domainToUITimeWeather
         ){ui->
@@ -65,10 +67,10 @@ class WeatherMviMvvmViewModel @Inject constructor(
         }
     }
 
-    fun fetchWeekRainSky(regId: String) {
+    private fun fetchWeekRainSky(regId: String) {
         val landCode = regId.landCodeGu(context = context)
 
-        fetchData(
+        fetchAndReduce(
             usecase = getWeekRainSkyUseCase(landCode, timeManager.urlWeekWeatherTime()),
             mapper = mapper::domainToUIWeekRainSky
         ){ui->

@@ -25,9 +25,11 @@ import com.android.sj.presentation.ui.compose.intro.IntroScreen
 import com.android.sj.presentation.ui.compose.navermap.NaverMapScreen
 import com.android.sj.presentation.ui.compose.weather.WeatherScreen
 import com.android.sj.presentation.utils.toastMessage
-import com.android.sj.presentation.mvvm.viewmodels.AirQualityMvvmMvvmViewModel
-import com.android.sj.presentation.mvvm.viewmodels.NaverMapMvvmMvvmViewModel
-import com.android.sj.presentation.mvvm.viewmodels.WeatherMvvmMvvmViewModel
+import com.android.sj.presentation.mvvm.viewmodels.AirQualityMvvmViewModel
+import com.android.sj.presentation.mvvm.viewmodels.NaverMapMvvmViewModel
+import com.android.sj.presentation.mvvm.viewmodels.WeatherMvvmViewModel
+import com.android.sj.presentation.ui.compose.loading.DialogScreen
+import com.android.sj.presentation.utils.managers.LoadingStateManager
 import kotlinx.coroutines.flow.merge
 
 @Composable
@@ -39,6 +41,11 @@ fun InitScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val isLoading = LoadingStateManager.isLoading.collectAsState().value
+
+    if (isLoading && currentRoute != ScreenRoute.Intro.route) {
+        DialogScreen()
+    }
     Scaffold(bottomBar = {
         if (currentRoute in listOf(ScreenRoute.Weather.route, ScreenRoute.AirQuality.route)) {
             BottomNavigationBar(navController)
@@ -57,9 +64,9 @@ fun ScreenNav(
     navController: NavHostController,
     locationDataManager: LocationDataManager,
     paddingValues: PaddingValues,
-    naverMapMvvmViewModel: NaverMapMvvmMvvmViewModel = hiltViewModel(),
-    weatherMvvmViewModel: WeatherMvvmMvvmViewModel = hiltViewModel(),
-    airQualityMvvmViewModel: AirQualityMvvmMvvmViewModel = hiltViewModel()
+    naverMapMvvmViewModel: NaverMapMvvmViewModel = hiltViewModel(),
+    weatherMvvmViewModel: WeatherMvvmViewModel = hiltViewModel(),
+    airQualityMvvmViewModel: AirQualityMvvmViewModel = hiltViewModel()
 ) {
     val mergedEvents = remember {
         merge(
@@ -123,7 +130,6 @@ fun ScreenNav(
             IntroScreen(
                 onNavigate = {
                     navigateTo(ScreenRoute.Intro, navController, true)
-                    naverMapMvvmViewModel.getLocation()
                 })
         }
         composable(route = ScreenRoute.Weather.route) {
