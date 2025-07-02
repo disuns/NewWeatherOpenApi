@@ -96,26 +96,24 @@ jobs:
           release_name: ${{ steps.extract_version.outputs.version }}
           body:         ${{ github.event.head_commit.message }}
 
-      - name: 기존 릴리즈 ID 가져오기 (Get Existing Release ID)
-        if: steps.check_release.outputs.release-exists == 'true'
-        id: get_release
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: string
-          script: |
-            const tag = '${{ steps.extract_version.outputs.version }}';
-            const rel = await github.rest.repos.getReleaseByTag({
-              owner: context.repo.owner,
-              repo:  context.repo.repo,
-              tag:   tag
-            });
-            return rel.data.id;
-
-      - name: AAB 모두 릴리즈에 업로드 (Upload All AABs)
-        uses: dwenegar/upload-release-assets@v1
+      - name: MVVM AAB 릴리즈에 첨부 (Upload MVVM AAB)
+        if: always()
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          release_id:  ${{ steps.create_release.outputs.id || steps.get_release.outputs.result }}
-          assets_path: 'artifacts/*.aab'
+          upload_url:   ${{ steps.create_release.outputs.upload_url }}
+          asset_path:   artifacts/weatherMvvm/*.aab
+          asset_name:   weather-mvvm-release.aab
+          asset_content_type: application/vnd.android.package-archive
+
+      - name: MVI AAB 릴리즈에 첨부 (Upload MVI AAB)
+        if: always()
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url:   ${{ steps.create_release.outputs.upload_url }}
+          asset_path:   artifacts/weatherMvi/*.aab
+          asset_name:   weather-mvi-release.aab
+          asset_content_type: application/vnd.android.package-archive
