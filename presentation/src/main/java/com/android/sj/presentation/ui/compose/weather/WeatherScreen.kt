@@ -13,20 +13,18 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
 import com.android.sj.presentation.ui.compose.common.DotLineColumn
-import com.android.sj.presentation.ui.theme.Default_BackGround
-import com.android.sj.presentation.viewmodels.WeatherViewModel
+import com.android.sj.presentation.common.ui.theme.Default_BackGround
+import com.android.sj.presentation.mvvm.viewmodels.WeatherMvvmViewModel
 
 @Composable
 fun WeatherScreen(
     modifier: Modifier = Modifier,
-    viewModel: WeatherViewModel,
+    viewModel: WeatherMvvmViewModel,
     nowErrorFunc: () -> Unit,
     timeErrorFunc: () -> Unit,
     weekErrorFunc: () -> Unit
 ) {
-    val weatherState by viewModel.state.collectAsState(initial = viewModel.initialState)
-
-    weatherState.isAllLoading()
+    val weatherState by viewModel.viewState.collectAsState()
 
     Column(
         modifier = modifier

@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,11 +30,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.android.sj.presentation.R
+import com.android.sj.presentation.common.state.viewstate.WeatherViewState
 import com.android.sj.presentation.models.uimodels.weather.TimeWeatherUIModel
-import com.android.sj.presentation.models.state.WeatherViewState
-import com.android.sj.presentation.ui.compose.common.ApiResultHandler
+import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.CardDataPreviewParamProvider
-import com.android.sj.presentation.ui.theme.Color_eceff1
+import com.android.sj.presentation.common.ui.theme.Color_eceff1
 import com.android.sj.presentation.utils.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -47,10 +46,8 @@ fun TimeWeatherColumn(
     weatherState: WeatherViewState,
     errorFunc: () -> Unit
 ) {
-    val context = LocalContext.current
-
-    ApiResultHandler(modifier, weatherState.timeWeatherState, errorFunc = {errorFunc()}) { successState ->
-        val list = successState.value.items
+    UiStateHandler(modifier, weatherState.timeWeatherUiState, errorFunc = {errorFunc()}) { successState ->
+        val list = successState.items
         val pagerState = rememberPagerState(
             pageCount = { list.size }
         )

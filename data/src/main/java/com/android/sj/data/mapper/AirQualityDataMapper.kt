@@ -1,8 +1,6 @@
 package com.android.sj.data.mapper
 
 import com.android.sj.common.NO_ERROR
-import com.android.sj.common.utils.IoScope
-import com.android.sj.common.utils.logMessage
 import com.android.sj.data.network.response.datapotal.AirQualityResponse
 import com.android.sj.data.network.response.datapotal.RltmStationResponse
 import com.android.sj.data.network.response.datapotal.StationFindResponse
@@ -11,14 +9,11 @@ import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.AirQualityData
 import com.android.sj.domain.models.RltmStationData
 import com.android.sj.domain.models.StationFindData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class AirQualityDataMapper @Inject constructor(
-    @IoScope scope: CoroutineScope
-) : BaseMapper(scope) {
-    fun responseToDomainAirQuality(response: Channel<ApiResult<AirQualityResponse>>): Channel<ApiResult<AirQualityData>> {
+class AirQualityDataMapper @Inject constructor() : BaseMapper() {
+    fun responseToDomainAirQuality(response: Flow<ApiResult<AirQualityResponse>>): Flow<ApiResult<AirQualityData>> {
         return apiResultMapper(response) {
             if (it.response.header.resultCode != NO_ERROR) {
                 ApiResult.Error(it.response.header.resultCode.toInt(), Throwable("PotalError"))
@@ -41,7 +36,7 @@ class AirQualityDataMapper @Inject constructor(
         }
     }
 
-    fun responseToDomainRltmStation(response: Channel<ApiResult<RltmStationResponse>>): Channel<ApiResult<RltmStationData>> {
+    fun responseToDomainRltmStation(response: Flow<ApiResult<RltmStationResponse>>): Flow<ApiResult<RltmStationData>> {
         return apiResultMapper(response) {
             val body = it.response.body
             if (it.response.header.resultCode != NO_ERROR) {
@@ -79,7 +74,7 @@ class AirQualityDataMapper @Inject constructor(
         }
     }
 
-    fun responseToDomainStationFind(response: Channel<ApiResult<StationFindResponse>>): Channel<ApiResult<StationFindData>> {
+    fun responseToDomainStationFind(response: Flow<ApiResult<StationFindResponse>>): Flow<ApiResult<StationFindData>> {
         return apiResultMapper(response) {
             if (it.response.header.resultCode != NO_ERROR) {
                 ApiResult.Error(it.response.header.resultCode.toInt(), Throwable("PotalError"))

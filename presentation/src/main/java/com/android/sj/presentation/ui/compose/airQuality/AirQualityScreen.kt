@@ -10,21 +10,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.android.sj.presentation.R
-import com.android.sj.presentation.intent.AirQualityIntent
+import com.android.sj.presentation.common.ui.theme.Default_BackGround
+import com.android.sj.presentation.mvvm.viewmodels.AirQualityMvvmViewModel
 import com.android.sj.presentation.ui.compose.common.DotLineColumn
-import com.android.sj.presentation.ui.theme.Default_BackGround
-import com.android.sj.presentation.viewmodels.AirQualityViewModel
 
 @Composable
 fun AirQualityScreen(
     modifier: Modifier,
-    viewModel: AirQualityViewModel,
+    viewModel: AirQualityMvvmViewModel,
     stationFindErrorFunc : () -> Unit,
     airQualityErrorFunc : () -> Unit
 ) {
-    val airQualityViewState by viewModel.state.collectAsState(initial = viewModel.initialState)
-
-    airQualityViewState.isAllLoading()
+    val airQualityViewState by viewModel.viewState.collectAsState()
 
     LazyColumn (
         modifier = modifier
@@ -40,7 +37,7 @@ fun AirQualityScreen(
                     .fillMaxWidth(),
                 airQualityState = airQualityViewState,
                 onLoadStation = { stationName ->
-                    viewModel.handleIntent(AirQualityIntent.LoadRltmStation(stationName))
+                    viewModel.fetchRltmStation(stationName)
                 }
             ){stationFindErrorFunc()}
         }

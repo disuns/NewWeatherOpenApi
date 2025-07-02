@@ -34,11 +34,10 @@ import androidx.compose.ui.unit.dp
 import com.android.sj.common.utils.isNetworkCheck
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.presentation.R
-import com.android.sj.presentation.intent.NaverMapIntent
-import com.android.sj.presentation.ui.theme.icon.CancelImageVector
-import com.android.sj.presentation.ui.theme.icon.SearchImageVector
+import com.android.sj.presentation.common.ui.theme.icon.CancelImageVector
+import com.android.sj.presentation.common.ui.theme.icon.SearchImageVector
+import com.android.sj.presentation.mvvm.viewmodels.NaverMapMvvmViewModel
 import com.android.sj.presentation.utils.sp
-import com.android.sj.presentation.viewmodels.NaverMapViewModel
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraPosition
@@ -56,7 +55,7 @@ import java.io.IOException
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun NaverMapScreen(
-    viewModel: NaverMapViewModel,
+    viewModel: NaverMapMvvmViewModel,
     locationDataManager: LocationDataManager
 ) {
     val context = LocalContext.current
@@ -79,11 +78,9 @@ fun NaverMapScreen(
 
     LaunchedEffect(cameraPositionState.isMoving) {
         if (!isInitialLoad && !cameraPositionState.isMoving && context.isNetworkCheck()) {
-            viewModel.handleIntent(
-                NaverMapIntent.LoadNaverMapGeo(
-                    cameraPositionState.position.target.longitude,
-                    cameraPositionState.position.target.latitude
-                )
+            viewModel.fetchNaverMap(
+                cameraPositionState.position.target.longitude,
+                cameraPositionState.position.target.latitude
             )
         }
         isInitialLoad = false

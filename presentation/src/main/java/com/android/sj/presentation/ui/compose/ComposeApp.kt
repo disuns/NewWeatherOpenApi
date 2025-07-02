@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,18 +17,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.android.sj.domain.managers.LocationDataManager
-import com.android.sj.presentation.intent.AirQualityIntent
-import com.android.sj.presentation.intent.NaverMapIntent
-import com.android.sj.presentation.intent.WeatherIntent
+import com.android.sj.presentation.common.event.UiEvent
 import com.android.sj.presentation.sealed.ScreenRoute
 import com.android.sj.presentation.ui.compose.airQuality.AirQualityScreen
 import com.android.sj.presentation.ui.compose.bottomNavigationBar.BottomNavigationBar
 import com.android.sj.presentation.ui.compose.intro.IntroScreen
 import com.android.sj.presentation.ui.compose.navermap.NaverMapScreen
 import com.android.sj.presentation.ui.compose.weather.WeatherScreen
-import com.android.sj.presentation.viewmodels.AirQualityViewModel
-import com.android.sj.presentation.viewmodels.NaverMapViewModel
-import com.android.sj.presentation.viewmodels.WeatherViewModel
+import com.android.sj.presentation.utils.toastMessage
+import com.android.sj.presentation.mvvm.viewmodels.AirQualityMvvmViewModel
+import com.android.sj.presentation.mvvm.viewmodels.NaverMapMvvmViewModel
+import com.android.sj.presentation.mvvm.viewmodels.WeatherMvvmViewModel
+import com.android.sj.presentation.ui.compose.loading.DialogScreen
+import com.android.sj.presentation.utils.managers.LoadingStateManager
+import kotlinx.coroutines.flow.merge
 
 @Composable
 fun InitScreen(
@@ -38,6 +41,11 @@ fun InitScreen(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
+    val isLoading = LoadingStateManager.isLoading.collectAsState().value
+
+    if (isLoading && currentRoute != ScreenRoute.Intro.route) {
+        DialogScreen()
+    }
     Scaffold(bottomBar = {
         if (currentRoute in listOf(ScreenRoute.Weather.route, ScreenRoute.AirQuality.route)) {
             BottomNavigationBar(navController)
@@ -56,32 +64,58 @@ fun ScreenNav(
     navController: NavHostController,
     locationDataManager: LocationDataManager,
     paddingValues: PaddingValues,
-    naverMapViewModel: NaverMapViewModel = hiltViewModel(),
-    weatherViewModel: WeatherViewModel = hiltViewModel(),
-    airQualityViewModel: AirQualityViewModel = hiltViewModel()
+    naverMapMvvmViewModel: NaverMapMvvmViewModel = hiltViewModel(),
+    weatherMvvmViewModel: WeatherMvvmViewModel = hiltViewModel(),
+    airQualityMvvmViewModel: AirQualityMvvmViewModel = hiltViewModel()
 ) {
+    val mergedEvents = remember {
+        merge(
+            naverMapMvvmViewModel.events,
+            weatherMvvmViewModel.events,
+            airQualityMvvmViewModel.events
+        )
+    }
+
     val locationData = locationDataManager.locationData.collectAsState()
     val locationValue = locationData.value
     val address = locationValue.address
 
     val context = LocalContext.current
 
+    LaunchedEffect(Unit) {
+        mergedEvents.collect{ event->
+            when(event){
+                is UiEvent.ShowToast -> {
+                    toastMessage(event.message, context)
+                }
+                is UiEvent.UpdateLocation -> {
+                    locationDataManager.updateLocationData(
+                        lat = event.lat,
+                        lon = event.lon,
+                        address = event.address,
+                        x = event.x,
+                        y = event.y
+                    )
+                }
+                is UiEvent.Navigate -> {
+                    navigateTo(event.route, navController)
+                }
+            }
+
+        }
+    }
+
     LaunchedEffect(address) {
         if (address.isNotEmpty()) {
             with(locationValue) {
-                weatherViewModel.handleIntent(
-                    WeatherIntent.LoadAllWeather(
-                        nx = lat.toString(),
-                        ny = lng.toString(),
-                        address = address
-                    )
+                weatherMvvmViewModel.fetchAllWeatherData(
+                    nx = lat.toString(),
+                    ny = lng.toString(),
+                    address = address
                 )
-                airQualityViewModel.handleIntent(
-                    AirQualityIntent.LoadAllAirQuality(
-                        regionX = x,
-                        regionY = y,
-                        context
-                    )
+                airQualityMvvmViewModel.fetchAllAirQualityData(
+                    regionX = x,
+                    regionY = y
                 )
             }
         }
@@ -95,8 +129,8 @@ fun ScreenNav(
         composable(route = ScreenRoute.Intro.route) {
             IntroScreen(
                 onNavigate = {
+                    naverMapMvvmViewModel.getLocation()
                     navigateTo(ScreenRoute.Intro, navController, true)
-                    naverMapViewModel.handleIntent(NaverMapIntent.GetLocation)
                 })
         }
         composable(route = ScreenRoute.Weather.route) {
@@ -104,25 +138,21 @@ fun ScreenNav(
                 onClick = { navigateTo(ScreenRoute.Weather, navController) },
                 address = address
             ) { modifier ->
-                WeatherScreen(modifier = modifier, viewModel = weatherViewModel,
+                WeatherScreen(modifier = modifier, viewModel = weatherMvvmViewModel,
                     nowErrorFunc = {
-                        weatherViewModel.handleIntent(
-                            WeatherIntent.LoadWeather(
-                                locationValue.lat.toString(),
-                                locationValue.lng.toString()
-                            )
+                        weatherMvvmViewModel.fetchWeather(
+                            locationValue.lat.toString(),
+                            locationValue.lng.toString()
                         )
                     },
                     timeErrorFunc = {
-                        weatherViewModel.handleIntent(
-                            WeatherIntent.LoadTimeWeather(
-                                locationValue.lat.toString(),
-                                locationValue.lng.toString()
-                            )
+                        weatherMvvmViewModel.fetchTimeWeather(
+                            locationValue.lat.toString(),
+                            locationValue.lng.toString()
                         )
                     },
                     weekErrorFunc = {
-                        weatherViewModel.handleIntent(WeatherIntent.LoadWeekRainSky(address))
+                        weatherMvvmViewModel.fetchWeekRainSky(address)
                     }
                 )
             }
@@ -134,21 +164,15 @@ fun ScreenNav(
             ) { modifier ->
                 AirQualityScreen(
                     modifier = modifier,
-                    viewModel = airQualityViewModel,
+                    viewModel = airQualityMvvmViewModel,
                     stationFindErrorFunc = {
-                        airQualityViewModel.handleIntent(
-                            AirQualityIntent.LoadStationFind(
-                                locationValue.x,
-                                locationValue.y
-                            )
+                        airQualityMvvmViewModel.fetchStationFindAndThenRltmStation(
+                            locationValue.x,
+                            locationValue.y
                         )
                     },
                     airQualityErrorFunc = {
-                        airQualityViewModel.handleIntent(
-                            AirQualityIntent.LoadAirQuality(
-                                context
-                            )
-                        )
+                        airQualityMvvmViewModel.fetchAirQuality()
                     }
                 )
             }
@@ -156,7 +180,7 @@ fun ScreenNav(
         composable(route = ScreenRoute.NaverMap.route) {
             NaverMapScreen(
                 locationDataManager = locationDataManager,
-                viewModel = naverMapViewModel
+                viewModel = naverMapMvvmViewModel
             )
         }
     }

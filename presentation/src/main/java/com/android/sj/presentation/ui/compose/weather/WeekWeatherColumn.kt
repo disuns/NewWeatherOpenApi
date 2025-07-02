@@ -27,11 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
+import com.android.sj.presentation.common.state.viewstate.WeatherViewState
 import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIModel
-import com.android.sj.presentation.models.state.WeatherViewState
-import com.android.sj.presentation.ui.compose.common.ApiResultHandler
+import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.WeekCardDataPreviewParamProvider
-import com.android.sj.presentation.ui.theme.Color_eceff1
+import com.android.sj.presentation.common.ui.theme.Color_eceff1
 import com.android.sj.presentation.utils.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -42,7 +42,7 @@ fun WeekWeatherColumn(
     weatherState: WeatherViewState,
     errorFunc: () -> Unit
 ) {
-    ApiResultHandler(modifier, weatherState.weekRainSkyState, errorFunc = {errorFunc()}) { successState ->
+    UiStateHandler(modifier, weatherState.weekRainSkyUiState, errorFunc = {errorFunc()}) { successState ->
         Column(
             modifier = modifier
         ) {
@@ -61,9 +61,9 @@ fun WeekWeatherColumn(
                     .padding(vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
-                items(successState.value.items.size) { item ->
-                    if(successState.value.items[item].skyAm != null && successState.value.items[item].skyPm != null)
-                        WeekWeatherItem(successState.value.items[item])
+                items(successState.items.size) { item ->
+                    if(successState.items[item].skyAm != null && successState.items[item].skyPm != null)
+                        WeekWeatherItem(successState.items[item])
                 }
             }
         }

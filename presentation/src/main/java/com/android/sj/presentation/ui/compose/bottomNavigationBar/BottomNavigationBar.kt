@@ -18,7 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.sj.presentation.R
 import com.android.sj.presentation.sealed.ScreenRoute
-import com.android.sj.presentation.ui.theme.Color_747483
+import com.android.sj.presentation.common.ui.theme.Color_747483
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {
