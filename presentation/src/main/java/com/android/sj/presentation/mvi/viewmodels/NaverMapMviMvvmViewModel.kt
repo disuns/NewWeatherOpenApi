@@ -1,13 +1,14 @@
-package com.android.sj.presentation.mvvm.viewmodels
+package com.android.sj.presentation.mvi.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
-import com.android.sj.presentation.event.UiEvent
-import com.android.sj.presentation.mappers.NaverMapPresentationMapper
-import com.android.sj.presentation.models.state.viewstate.NaverMapViewState
+import com.android.sj.presentation.mvvm.viewmodels.BaseMvvmViewModel
+import com.android.sj.presentation.common.event.UiEvent
+import com.android.sj.presentation.common.mappers.NaverMapPresentationMapper
+import com.android.sj.presentation.common.state.viewstate.NaverMapViewState
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -15,12 +16,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NaverMapViewModel @Inject constructor(
+class NaverMapMviMvvmViewModel @Inject constructor(
     private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase,
     private val locationDataManager: LocationDataManager,
     private val mapper : NaverMapPresentationMapper,
     @ApplicationContext val context: Context
-) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
+) : BaseMvvmViewModel<NaverMapViewState>(NaverMapViewState()) {
 
     init {
         onHandledFlow()
@@ -64,7 +65,8 @@ class NaverMapViewModel @Inject constructor(
                     }
                     uiState.model != null -> {
                         with(locationDataManager.locationData.value) {
-                            sendEvent(UiEvent.UpdateLocation(
+                            sendEvent(
+                                UiEvent.UpdateLocation(
                                 lat = lat,
                                 lon = lng,
                                 address = uiState.model.mapAddress,

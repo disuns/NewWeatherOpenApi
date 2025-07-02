@@ -1,4 +1,4 @@
-package com.android.sj.presentation.models.state.uistate
+package com.android.sj.presentation.common.state.uistate
 
 import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.models.uimodels.airquality.AirQualityUiModel

@@ -1,4 +1,4 @@
-package com.android.sj.presentation.models.state.uistate
+package com.android.sj.presentation.common.state.uistate
 
 data class BaseUiState<T>(
     val model : T? = null,

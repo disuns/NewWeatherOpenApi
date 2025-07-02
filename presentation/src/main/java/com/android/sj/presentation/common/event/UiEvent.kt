@@ -1,4 +1,4 @@
-package com.android.sj.presentation.event
+package com.android.sj.presentation.common.event
 
 import com.android.sj.presentation.sealed.ScreenRoute
 

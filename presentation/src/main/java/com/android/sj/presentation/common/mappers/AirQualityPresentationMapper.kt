@@ -1,4 +1,4 @@
-package com.android.sj.presentation.mappers
+package com.android.sj.presentation.common.mappers
 
 import android.content.Context
 import com.android.sj.domain.mappers.BaseMapper

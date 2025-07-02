@@ -48,11 +48,11 @@ android {
             applicationIdSuffix = ".debug"
             manifestPlaceholders["appNameSuffix"] = "[개발]"
         }
-        create("benchmark") {
-            initWith(buildTypes.getByName("release"))
-            matchingFallbacks += listOf("release")
-            isDebuggable = false
-        }
+//        create("benchmark") {
+//            initWith(buildTypes.getByName("release"))
+//            matchingFallbacks += listOf("release")
+//            isDebuggable = false
+//        }
     }
 
     productFlavors {

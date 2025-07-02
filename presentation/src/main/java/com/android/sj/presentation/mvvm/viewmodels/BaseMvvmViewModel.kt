@@ -2,10 +2,9 @@ package com.android.sj.presentation.mvvm.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.ApiResult
-import com.android.sj.presentation.event.UiEvent
-import com.android.sj.presentation.models.state.uistate.BaseUiState
+import com.android.sj.presentation.common.event.UiEvent
+import com.android.sj.presentation.common.state.uistate.BaseUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +15,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseViewModel<VS>(
+abstract class BaseMvvmViewModel<VS>(
     initial: VS
 ) : ViewModel()  {
     private val _viewState = MutableStateFlow(initial)

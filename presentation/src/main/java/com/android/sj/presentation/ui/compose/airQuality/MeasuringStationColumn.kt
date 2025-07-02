@@ -37,8 +37,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.state.uistate.RltmStationUiState
-import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
+import com.android.sj.presentation.common.state.uistate.RltmStationUiState
+import com.android.sj.presentation.common.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel.MeasuringData
 import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel

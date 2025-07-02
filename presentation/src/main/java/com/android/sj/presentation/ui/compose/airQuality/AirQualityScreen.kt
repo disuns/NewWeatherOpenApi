@@ -10,14 +10,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.android.sj.presentation.R
-import com.android.sj.presentation.ui.compose.common.DotLineColumn
 import com.android.sj.presentation.common.ui.theme.Default_BackGround
-import com.android.sj.presentation.mvvm.viewmodels.AirQualityViewModel
+import com.android.sj.presentation.mvvm.viewmodels.AirQualityMvvmMvvmViewModel
+import com.android.sj.presentation.ui.compose.common.DotLineColumn
 
 @Composable
 fun AirQualityScreen(
     modifier: Modifier,
-    viewModel: AirQualityViewModel,
+    viewModel: AirQualityMvvmMvvmViewModel,
     stationFindErrorFunc : () -> Unit,
     airQualityErrorFunc : () -> Unit
 ) {

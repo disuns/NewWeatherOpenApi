@@ -1,11 +1,12 @@
-package com.android.sj.presentation.mvvm.viewmodels
+package com.android.sj.presentation.mvi.viewmodels
 
 import android.content.Context
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetTimeWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeekRainSkyUseCase
-import com.android.sj.presentation.mappers.WeatherPresentationMapper
-import com.android.sj.presentation.models.state.viewstate.WeatherViewState
+import com.android.sj.presentation.mvvm.viewmodels.BaseMvvmViewModel
+import com.android.sj.presentation.common.mappers.WeatherPresentationMapper
+import com.android.sj.presentation.common.state.viewstate.WeatherViewState
 import com.android.sj.presentation.utils.convertGRIDGPS
 import com.android.sj.presentation.utils.landCodeGu
 import com.android.sj.presentation.utils.managers.TimeManager
@@ -15,14 +16,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherViewModel @Inject constructor(
+class WeatherMviMvvmViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getTimeWeatherUseCase: GetTimeWeatherUseCase,
     private val getWeekRainSkyUseCase: GetWeekRainSkyUseCase,
     private val mapper : WeatherPresentationMapper,
     private val timeManager: TimeManager,
     @ApplicationContext val context: Context
-) : BaseViewModel<WeatherViewState>(WeatherViewState()) {
+) : BaseMvvmViewModel<WeatherViewState>(WeatherViewState()) {
     fun fetchAllWeatherData(
         nx: String,
         ny: String,
