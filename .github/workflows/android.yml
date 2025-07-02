@@ -8,9 +8,8 @@ on:
     branches: ["master"]
 
 jobs:
-  build-and-release:
+  build:
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
@@ -31,30 +30,49 @@ jobs:
 
       - name: 디코드 Keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE_64 }}" | base64 --decode > app/release.keystore
+          echo "${{ secrets.KEYSTORE_BASE_64 }}" \
+            | base64 --decode > app/release.keystore
         env:
           KEYSTORE_BASE_64: ${{ secrets.KEYSTORE_BASE_64 }}
 
-      - name: Gradlew에 대한 실행 권한 부여
+      - name: Gradlew 실행 권한 부여
         run: chmod +x gradlew
 
-      - name: app 번들 빌드 (${{ matrix.flavor }})
+      - name: AAB 빌드 (flavor=${{ matrix.flavor }})
         run: ./gradlew :app:bundle${{ matrix.flavor }}Release --parallel
         env:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS:      ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD:   ${{ secrets.KEY_PASSWORD }}
 
-      - name: 빌드 결과 찍어보기
-        run: |
-          echo "=== BUNDLE 폴더 리스트 ==="
-          ls -R app/build/outputs/bundle
+      - name: 빌드 결과 저장 (artifact)
+        uses: actions/upload-artifact@v3
+        with:
+          name: aab-${{ matrix.flavor }}
+          path: app/build/outputs/bundle/${{ matrix.flavor | downcase }}Release/*.aab
 
-      - name: commit 메시지에서 버전 추출
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 다운로드 MVVM AAB
+        uses: actions/download-artifact@v3
+        with:
+          name: aab-WeatherMvvm
+          path: artifacts
+
+      - name: 다운로드 MVI AAB
+        uses: actions/download-artifact@v3
+        with:
+          name: aab-WeatherMvi
+          path: artifacts
+
+      - name: Extract version
         id: extract_version
         run: |
-          subject=$(echo "${{ github.event.head_commit.message }}" | head -n 1)
-          version=$(echo "$subject" | grep -E -o '[0-9]+\.[0-9]+\.[0-9]+')
+          subject=$(head -n1 <<< "${{ github.event.head_commit.message }}")
+          version=$(grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' <<< "$subject")
           echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Check if release exists
@@ -70,32 +88,30 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name:   ${{ steps.extract_version.outputs.version }}
+          tag_name:     ${{ steps.extract_version.outputs.version }}
           release_name: ${{ steps.extract_version.outputs.version }}
-          body:       ${{ github.event.head_commit.message }}
+          body:         ${{ github.event.head_commit.message }}
 
       - name: Get existing release ID
         if: steps.check_release.outputs.release-exists == 'true'
         id: get_release
         uses: actions/github-script@v7
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           result-encoding: string
           script: |
             const tag = '${{ steps.extract_version.outputs.version }}';
-            const release = await github.rest.repos.getReleaseByTag({
+            const rel = await github.rest.repos.getReleaseByTag({
               owner: context.repo.owner,
               repo:  context.repo.repo,
               tag:   tag
             });
-            return release.data.id;
-  
+            return rel.data.id;
+
       - name: Upload all AABs to Release
         uses: dwenegar/upload-release-assets@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           release_id:  ${{ steps.create_release.outputs.id || steps.get_release.outputs.result }}
-          assets_path: '["app/build/outputs/bundle/*/release/*.aab"]'
+          assets_path: 'artifacts/*.aab'
