@@ -43,7 +43,10 @@ jobs:
         STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-
+    - name: 빌드 결과 찍어보기
+      run: |
+        echo "=== BUNDLE 폴더 리스트 ==="
+        ls -R app/build/outputs/bundle
     - name: commit 메시지에서 버전 추출(제목에서 x.y.z 부분만)
       id: extract_version
       run: |
