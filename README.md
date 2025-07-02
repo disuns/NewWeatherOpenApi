@@ -17,6 +17,7 @@
 - Compose: UI/UX 구현
 - MVVM: ViewModel과 Repository를 기반으로 한 데이터 관리
 - MVI: Intent를 이용한 상태 관리
+  - MVVM과 분리 빌드 작업중
 - Glide: 이미지 로딩 및 캐싱
 - Hilt: 의존성 주입
 - StateFlow -> Channel: 통신 및 UI 상태 관리
@@ -26,6 +27,7 @@
 - Git-Flow : Git-Flow 구조 참조
 - GitHub Action : app bundle 자동화 및 Tag/Release 버전 관리 자동화
   - 이로 인하여 release 버전 앱은 로컬에선 빌드되지 않고 자동화로만 빌드 가능
+  - mvvm, mvi 분리 구조 작업중으로 인하여 현재 안됨(수정 필요)
 
 ## **화면 구성**
 ### **인트로 화면**
