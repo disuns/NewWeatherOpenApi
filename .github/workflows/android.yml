@@ -13,76 +13,79 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # 이제 matrix.flavor 값이 그대로 output 디렉터리 이름이 됩니다
-        flavor: [weatherMvvm, weatherMvi]
+        include:
+          - flavorDir: weatherMvvm
+            flavorGradle: WeatherMvvm
+          - flavorDir: weatherMvi
+            flavorGradle: WeatherMvi
 
     steps:
-      - name: 체크아웃 (Checkout)
+      - name: 체크아웃 (Checkout 코드 가져오기)
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: 셋업 JDK 17
+      - name: JDK 17 셋업 (Setup Java 17)
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
-      - name: 디코드 Keystore
+      - name: 키스토어 디코드 (Decode Keystore)
         run: |
           echo "${{ secrets.KEYSTORE_BASE_64 }}" \
             | base64 --decode > app/release.keystore
         env:
           KEYSTORE_BASE_64: ${{ secrets.KEYSTORE_BASE_64 }}
 
-      - name: Gradlew 실행 권한 부여
+      - name: gradlew 실행권한 부여 (Grant Execute)
         run: chmod +x gradlew
 
-      - name: AAB 빌드 (flavor=${{ matrix.flavor }})
-        run: ./gradlew :app:bundle${{ matrix.flavor | titlecase }}Release --parallel
+      - name: AAB 빌드 – flavor=${{ matrix.flavorGradle }} (Build AAB)
+        run: ./gradlew :app:bundle${{ matrix.flavorGradle }}Release --parallel
         env:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS:      ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD:   ${{ secrets.KEY_PASSWORD }}
 
-      - name: 빌드 결과 저장(artifact)
+      - name: 아티팩트 업로드 (Upload Artifact)
         uses: actions/upload-artifact@v3
         with:
-          name: aab-${{ matrix.flavor }}
-          path: app/build/outputs/bundle/${{ matrix.flavor }}Release/*.aab
+          name: aab-${{ matrix.flavorDir }}
+          path: app/build/outputs/bundle/${{ matrix.flavorDir }}Release/*.aab
 
   release:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: 다운로드 weatherMvvm AAB
+      - name: MVVM AAB 다운로드 (Download MVVM Artifact)
         uses: actions/download-artifact@v3
         with:
           name: aab-weatherMvvm
           path: artifacts
 
-      - name: 다운로드 weatherMvi AAB
+      - name: MVI AAB 다운로드 (Download MVI Artifact)
         uses: actions/download-artifact@v3
         with:
           name: aab-weatherMvi
           path: artifacts
 
-      - name: Extract version
+      - name: 버전 추출 (Extract Version)
         id: extract_version
         run: |
           subject=$(head -n1 <<< "${{ github.event.head_commit.message }}")
           version=$(grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' <<< "$subject")
           echo "version=$version" >> $GITHUB_OUTPUT
 
-      - name: Check if release exists
+      - name: 릴리즈 존재 여부 확인 (Check Release Exists)
         id: check_release
         uses: insightsengineering/release-existence-action@v1
         with:
           release-tag: ${{ steps.extract_version.outputs.version }}
 
-      - name: Create GitHub Release
+      - name: 새 GitHub 릴리즈 생성 (Create Release)
         if: steps.check_release.outputs.release-exists == 'false'
         id: create_release
         uses: actions/create-release@v1
@@ -93,7 +96,7 @@ jobs:
           release_name: ${{ steps.extract_version.outputs.version }}
           body:         ${{ github.event.head_commit.message }}
 
-      - name: Get existing release ID
+      - name: 기존 릴리즈 ID 가져오기 (Get Existing Release ID)
         if: steps.check_release.outputs.release-exists == 'true'
         id: get_release
         uses: actions/github-script@v7
@@ -109,7 +112,7 @@ jobs:
             });
             return rel.data.id;
 
-      - name: Upload all AABs to Release
+      - name: AAB 모두 릴리즈에 업로드 (Upload All AABs)
         uses: dwenegar/upload-release-assets@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
