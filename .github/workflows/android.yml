@@ -11,6 +11,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flavor: [WeatherMvvm, WeatherMvi]
 
     steps:
     - name: 체크아웃 (Checkout)
@@ -35,7 +38,7 @@ jobs:
       run: chmod +x gradlew
       
     - name: app 빌드
-      run: ./gradlew :app:bundleRelease --parallel
+      run: ./gradlew :app:bundle${{ matrix.flavor }}Release --parallel
       env:
         STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
@@ -59,13 +62,24 @@ jobs:
         release_name: ${{ steps.extract_version.outputs.version }}
         body: ${{ github.event.head_commit.message }}
 
-    - name: Bundle 파일 릴리즈에 첨부
-      if: github.event_name == 'push'
+    - name: MVVM AAB 업로드
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./app/build/outputs/bundle/weatherRelease/app-weather-release.aab
-        asset_name: app-weather-release.aab
+        asset_path: app/build/outputs/bundle/weatherMvvmRelease/app-weather-mvvm-release.aab
+        asset_name: app-weather-mvvm-release.aab
         asset_content_type: application/vnd.android.package-archive
+
+    - name: MVI AAB 업로드
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: app/build/outputs/bundle/weatherMviRelease/app-weather-mvi-release.aab
+        asset_name: app-weather-mvi-release.aab
+        asset_content_type: application/vnd.android.package-archive
+
+
