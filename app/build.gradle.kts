@@ -15,7 +15,7 @@ android {
         applicationId = "com.codedevs.newweatheropenapi"
         minSdk = 24
         targetSdk = 34
-        versionName = "1.0.9"
+        versionName = "1.0.10"
         val versionParts = versionName.toString().split(".")
         versionCode = versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
 
@@ -33,13 +33,16 @@ android {
             keyPassword = System.getenv("KEY_PASSWORD")
         }
     }
+    buildFeatures{
+        buildConfig = true
+    }
 
-    flavorDimensions += "version"
+    flavorDimensions += listOf("version", "arch")
     buildTypes {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
             manifestPlaceholders["appNameSuffix"] = ""
         }
         debug {
@@ -48,17 +51,25 @@ android {
             applicationIdSuffix = ".debug"
             manifestPlaceholders["appNameSuffix"] = "[개발]"
         }
-        create("benchmark") {
-            initWith(buildTypes.getByName("release"))
-            matchingFallbacks += listOf("release")
-            isDebuggable = false
-        }
+//        create("benchmark") {
+//            initWith(buildTypes.getByName("release"))
+//            matchingFallbacks += listOf("release")
+//            isDebuggable = false
+//        }
     }
 
     productFlavors {
         create("weather") {
             dimension = "version"
             manifestPlaceholders["appName"] = "날씨 및 미세먼지 확인"
+        }
+        create("mvvm") {
+            dimension = "arch"
+            buildConfigField("boolean", "USE_MVI", "false")
+        }
+        create("mvi") {
+            dimension           = "arch"
+            buildConfigField("boolean", "USE_MVI", "true")
         }
     }
 

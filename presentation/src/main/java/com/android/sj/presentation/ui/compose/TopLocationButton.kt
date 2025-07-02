@@ -23,8 +23,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.ui.theme.Default_BackGround
-import com.android.sj.presentation.ui.theme.icon.SearchImageVector
+import com.android.sj.presentation.common.ui.theme.Default_BackGround
+import com.android.sj.presentation.common.ui.theme.icon.SearchImageVector
 import com.android.sj.presentation.utils.sp
 
 @Composable

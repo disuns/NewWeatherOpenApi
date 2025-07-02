@@ -27,11 +27,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
-import com.android.sj.presentation.models.state.viewstate.WeatherViewState
+import com.android.sj.presentation.common.state.viewstate.WeatherViewState
 import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIModel
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.WeekCardDataPreviewParamProvider
-import com.android.sj.presentation.ui.theme.Color_eceff1
+import com.android.sj.presentation.common.ui.theme.Color_eceff1
 import com.android.sj.presentation.utils.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage

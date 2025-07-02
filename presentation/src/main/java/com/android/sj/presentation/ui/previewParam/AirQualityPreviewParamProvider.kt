@@ -2,10 +2,10 @@ package com.android.sj.presentation.ui.previewParam
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.android.sj.domain.ApiResult
-import com.android.sj.presentation.models.state.uistate.AirQualityUiState
-import com.android.sj.presentation.models.state.uistate.RltmStationUiState
-import com.android.sj.presentation.models.state.uistate.StationFindUiState
-import com.android.sj.presentation.models.state.viewstate.AirQualityViewState
+import com.android.sj.presentation.common.state.uistate.AirQualityUiState
+import com.android.sj.presentation.common.state.uistate.RltmStationUiState
+import com.android.sj.presentation.common.state.uistate.StationFindUiState
+import com.android.sj.presentation.common.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.models.uimodels.airquality.AirQualityUiModel
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel.MeasuringData
