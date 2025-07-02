@@ -18,15 +18,9 @@ class NaverMapMvvmViewModel @Inject constructor(
     private val mapper : NaverMapPresentationMapper,
     @ApplicationContext val context: Context
 ) : BaseMvvmViewModel<NaverMapViewState>(NaverMapViewState()) {
-
-    init {
-        getLocation()
-    }
-
     fun getLocation() {
         LoadingStateManager.show()
-        locationDataManager.getGps { lat, lon ->
-            LoadingStateManager.hide()
+        locationDataManager.getGps(onStopGps = {LoadingStateManager.hide()}) { lat, lon ->
             fetchNaverMap(lon, lat)
         }
     }

@@ -5,8 +5,10 @@ import com.android.sj.domain.usecase.usecaseinterface.weather.GetTimeWeatherUseC
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeekRainSkyUseCase
 import com.android.sj.presentation.common.mappers.WeatherPresentationMapper
+import com.android.sj.presentation.common.state.uistate.BaseUiState
 import com.android.sj.presentation.common.state.viewstate.WeatherViewState
 import com.android.sj.presentation.mvi.intent.WeatherIntent
+import com.android.sj.presentation.mvi.partialstate.WeatherPartialState
 import com.android.sj.presentation.utils.convertGRIDGPS
 import com.android.sj.presentation.utils.landCodeGu
 import com.android.sj.presentation.utils.managers.TimeManager
@@ -23,7 +25,7 @@ class WeatherMviViewModel @Inject constructor(
     private val mapper : WeatherPresentationMapper,
     private val timeManager: TimeManager,
     @ApplicationContext val context: Context
-) : BaseMviViewModel<WeatherIntent, WeatherViewState, Any?>(WeatherViewState()) {
+) : BaseMviViewModel<WeatherIntent, WeatherViewState, WeatherPartialState>(WeatherViewState()) {
 
     override suspend fun handleIntent(intent: WeatherIntent) {
         when(intent){
@@ -38,6 +40,68 @@ class WeatherMviViewModel @Inject constructor(
         }
     }
 
+    override fun reduceState(
+        current: WeatherViewState,
+        partial: WeatherPartialState
+    ): WeatherViewState {
+        return when(partial){
+            is WeatherPartialState.LoadingWeather ->
+                current.copy(weatherUiState = BaseUiState(isLoading = true))
+            is WeatherPartialState.WeatherSuccess ->
+                current.copy(weatherUiState = BaseUiState(model = partial.data))
+            is WeatherPartialState.WeatherError ->
+                current.copy(
+                    weatherUiState = BaseUiState(
+                        isError = true,
+                        errorMessage = partial.message,
+                        errorCode = partial.code
+                    )
+                )
+            is WeatherPartialState.WeatherEmpty -> current.copy(
+                weatherUiState = BaseUiState(
+                    isEmptyData = true,
+                    errorMessage = partial.message
+                )
+            )
+            is WeatherPartialState.LoadingTimeWeather ->
+                current.copy(timeWeatherUiState = BaseUiState(isLoading = true))
+            is WeatherPartialState.TimeWeatherSuccess ->
+                current.copy(timeWeatherUiState = BaseUiState(model = partial.data))
+            is WeatherPartialState.TimeWeatherError ->
+                current.copy(
+                    timeWeatherUiState = BaseUiState(
+                        isError = true,
+                        errorMessage = partial.message,
+                        errorCode = partial.code
+                    )
+                )
+            is WeatherPartialState.TimeWeatherEmpty -> current.copy(
+                timeWeatherUiState = BaseUiState(
+                    isEmptyData = true,
+                    errorMessage = partial.message
+                )
+            )
+            is WeatherPartialState.LoadingWeekRainSky ->
+                current.copy(weekRainSkyUiState = BaseUiState(isLoading = true))
+            is WeatherPartialState.WeekRainSkySuccess ->
+                current.copy(weekRainSkyUiState = BaseUiState(model = partial.data))
+            is WeatherPartialState.WeekRainSkyError ->
+                current.copy(
+                    weekRainSkyUiState = BaseUiState(
+                        isError = true,
+                        errorMessage = partial.message,
+                        errorCode = partial.code
+                    )
+                )
+            is WeatherPartialState.WeekRainSkyEmpty -> current.copy(
+                weekRainSkyUiState = BaseUiState(
+                    isEmptyData = true,
+                    errorMessage = partial.message
+                )
+            )
+        }
+    }
+
     private fun fetchWeather(
         nx: String,
         ny: String
@@ -45,11 +109,18 @@ class WeatherMviViewModel @Inject constructor(
         val (lat, lon) = convertCoordinates(nx, ny)
 
         fetchAndReduce(
-            usecase = getWeatherUseCase(timeManager.urlNowDate(), timeManager.urlNowTime(), lat, lon),
+            usecase = getWeatherUseCase(
+                timeManager.urlNowDate(),
+                timeManager.urlNowTime(),
+                lat,
+                lon
+            ),
             mapper = mapper::domainToUIWeather,
-        ){ ui->
-            copy(weatherUiState = ui)
-        }
+            emitLoading = WeatherPartialState.LoadingWeather,
+            emitEmpty = WeatherPartialState.WeatherEmpty("Empty Data"),
+            emitError = { msg, code -> WeatherPartialState.WeatherError(msg, code) },
+            emitSuccess = { model -> WeatherPartialState.WeatherSuccess(model) }
+        )
     }
 
     private fun fetchTimeWeather(
@@ -60,11 +131,13 @@ class WeatherMviViewModel @Inject constructor(
 
         fetchAndReduce(
             usecase = getTimeWeatherUseCase(timeManager.urlTimeWeatherDate(), timeManager.urlTimeWeatherTime(), lat, lon),
-            mapper = mapper::domainToUITimeWeather
-        ){ui->
-            copy(timeWeatherUiState = ui)
+            mapper = mapper::domainToUITimeWeather,
+            emitLoading = WeatherPartialState.LoadingTimeWeather,
+            emitEmpty = WeatherPartialState.TimeWeatherEmpty("Empty Data"),
+            emitError = { msg, code -> WeatherPartialState.TimeWeatherError(msg, code) },
+            emitSuccess = { model -> WeatherPartialState.TimeWeatherSuccess(model) }
+        )
 
-        }
     }
 
     private fun fetchWeekRainSky(regId: String) {
@@ -72,11 +145,12 @@ class WeatherMviViewModel @Inject constructor(
 
         fetchAndReduce(
             usecase = getWeekRainSkyUseCase(landCode, timeManager.urlWeekWeatherTime()),
-            mapper = mapper::domainToUIWeekRainSky
-        ){ui->
-            copy(weekRainSkyUiState = ui)
-
-        }
+            mapper = mapper::domainToUIWeekRainSky,
+            emitLoading = WeatherPartialState.LoadingWeekRainSky,
+            emitEmpty = WeatherPartialState.WeekRainSkyEmpty("Empty Data"),
+            emitError = { msg, code -> WeatherPartialState.WeekRainSkyError(msg, code) },
+            emitSuccess = { model -> WeatherPartialState.WeekRainSkySuccess(model) }
+        )
     }
 
     private fun convertCoordinates(nx: String, ny: String): Pair<String, String> {

@@ -129,6 +129,7 @@ fun ScreenNav(
         composable(route = ScreenRoute.Intro.route) {
             IntroScreen(
                 onNavigate = {
+                    naverMapMvvmViewModel.getLocation()
                     navigateTo(ScreenRoute.Intro, navController, true)
                 })
         }

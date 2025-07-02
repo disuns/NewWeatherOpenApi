@@ -5,8 +5,10 @@ import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
 import com.android.sj.presentation.common.event.UiEvent
 import com.android.sj.presentation.common.mappers.NaverMapPresentationMapper
+import com.android.sj.presentation.common.state.uistate.BaseUiState
 import com.android.sj.presentation.common.state.viewstate.NaverMapViewState
 import com.android.sj.presentation.mvi.intent.NaverMapIntent
+import com.android.sj.presentation.mvi.partialstate.NaverMapPartialState
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -18,12 +20,7 @@ class NaverMapMviViewModel @Inject constructor(
     private val locationDataManager: LocationDataManager,
     private val mapper : NaverMapPresentationMapper,
     @ApplicationContext val context: Context
-) : BaseMviViewModel<NaverMapIntent, NaverMapViewState, Any?>(NaverMapViewState()) {
-
-    init {
-        sendIntent(NaverMapIntent.GetLocation)
-    }
-
+) : BaseMviViewModel<NaverMapIntent, NaverMapViewState, NaverMapPartialState>(NaverMapViewState()) {
     override suspend fun handleIntent(intent: NaverMapIntent) {
         when(intent){
             is NaverMapIntent.LoadNaverMapGeo -> fetchNaverMap(intent.lon, intent.lat)
@@ -31,10 +28,36 @@ class NaverMapMviViewModel @Inject constructor(
         }
     }
 
+    override fun reduceState(
+        current: NaverMapViewState,
+        partial: NaverMapPartialState
+    ): NaverMapViewState {
+        return when(partial){
+            is NaverMapPartialState.LoadingNaverMap ->
+                current.copy(naverMapUiState =  BaseUiState(isLoading = true))
+            is NaverMapPartialState.NaverMapSuccess ->
+                current.copy(naverMapUiState = BaseUiState(model = partial.data))
+            is NaverMapPartialState.NaverMapEmpty ->
+                current.copy(
+                    naverMapUiState = BaseUiState(
+                        isEmptyData = true,
+                        errorMessage = partial.message
+                    )
+                )
+            is NaverMapPartialState.NaverMapError ->
+                current.copy(
+                    naverMapUiState = BaseUiState(
+                        isError = true,
+                        errorMessage = partial.message,
+                        errorCode = partial.code
+                    )
+                )
+        }
+    }
+
     private fun getLocation() {
         LoadingStateManager.show()
-        locationDataManager.getGps { lat, lon ->
-            LoadingStateManager.hide()
+        locationDataManager.getGps(onStopGps = {LoadingStateManager.hide()}) { lat, lon ->
             sendIntent(NaverMapIntent.LoadNaverMapGeo(lon, lat))
         }
     }
@@ -55,9 +78,11 @@ class NaverMapMviViewModel @Inject constructor(
                             y =  result.centerY)
                     )
                 }
-            }
-        ){ ui ->
-            copy(naverMapUiState = ui)
-        }
+            },
+            emitEmpty = NaverMapPartialState.NaverMapEmpty("Empty Data"),
+            emitLoading = NaverMapPartialState.LoadingNaverMap,
+            emitError = { msg, code -> NaverMapPartialState.NaverMapError(msg, code) },
+            emitSuccess = { model -> NaverMapPartialState.NaverMapSuccess(model) }
+        )
     }
 }

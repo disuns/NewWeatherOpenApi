@@ -24,7 +24,7 @@ class LocationDataManagerImpl @Inject constructor(
     @RequiresPermission(
         allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION]
     )
-    override fun getGps(onLocationFetched: (Double, Double) -> Unit) {
+    override fun getGps(onStopGps : ()->Unit,onLocationFetched: (Double, Double) -> Unit) {
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
             .setMinUpdateIntervalMillis(5000)
             .build()
@@ -35,6 +35,12 @@ class LocationDataManagerImpl @Inject constructor(
                 location?.let {
                     onLocationFetched(it.latitude, it.longitude)
                     fusedLocationClient.removeLocationUpdates(this)
+                    onStopGps()
+                }
+            }
+            override fun onLocationAvailability(locationAvailability: com.google.android.gms.location.LocationAvailability) {
+                if (!locationAvailability.isLocationAvailable) {
+                    onStopGps()
                 }
             }
         }
