@@ -1,4 +1,4 @@
-name: Android CI
+name: Android CI – Build & Release MVVM/MVI
 
 permissions:
   contents: write
@@ -13,7 +13,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        flavor: [WeatherMvvm, WeatherMvi]
+        # 이제 matrix.flavor 값이 그대로 output 디렉터리 이름이 됩니다
+        flavor: [weatherMvvm, weatherMvi]
 
     steps:
       - name: 체크아웃 (Checkout)
@@ -39,33 +40,33 @@ jobs:
         run: chmod +x gradlew
 
       - name: AAB 빌드 (flavor=${{ matrix.flavor }})
-        run: ./gradlew :app:bundle${{ matrix.flavor }}Release --parallel
+        run: ./gradlew :app:bundle${{ matrix.flavor | titlecase }}Release --parallel
         env:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_ALIAS:      ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD:   ${{ secrets.KEY_PASSWORD }}
 
-      - name: 빌드 결과 저장 (artifact)
+      - name: 빌드 결과 저장(artifact)
         uses: actions/upload-artifact@v3
         with:
           name: aab-${{ matrix.flavor }}
-          path: app/build/outputs/bundle/${{ matrix.flavor | downcase }}Release/*.aab
+          path: app/build/outputs/bundle/${{ matrix.flavor }}Release/*.aab
 
   release:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: 다운로드 MVVM AAB
+      - name: 다운로드 weatherMvvm AAB
         uses: actions/download-artifact@v3
         with:
-          name: aab-WeatherMvvm
+          name: aab-weatherMvvm
           path: artifacts
 
-      - name: 다운로드 MVI AAB
+      - name: 다운로드 weatherMvi AAB
         uses: actions/download-artifact@v3
         with:
-          name: aab-WeatherMvi
+          name: aab-weatherMvi
           path: artifacts
 
       - name: Extract version
