@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
 import com.android.sj.presentation.common.state.viewstate.WeatherViewState
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
-import com.android.sj.presentation.ui.previewParam.WeatherViewStatePreviewParamProvider
+import com.android.sj.presentation.common.ui.previewParam.WeatherViewStatePreviewParamProvider
 import com.android.sj.presentation.common.ui.theme.defaultTitleTextStyle
 import com.android.sj.presentation.utils.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi

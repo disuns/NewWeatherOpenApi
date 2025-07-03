@@ -18,17 +18,18 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.presentation.common.event.UiEvent
-import com.android.sj.presentation.sealed.ScreenRoute
+import com.android.sj.presentation.common.sealed.ScreenRoute
+import com.android.sj.presentation.common.ui.compose.btn.ScreenWithTopLocationButton
 import com.android.sj.presentation.ui.compose.airQuality.AirQualityScreen
-import com.android.sj.presentation.ui.compose.bottomNavigationBar.BottomNavigationBar
-import com.android.sj.presentation.ui.compose.intro.IntroScreen
+import com.android.sj.presentation.common.ui.compose.bottomNavigationBar.BottomNavigationBar
+import com.android.sj.presentation.common.ui.compose.intro.IntroScreen
 import com.android.sj.presentation.ui.compose.navermap.NaverMapScreen
 import com.android.sj.presentation.ui.compose.weather.WeatherScreen
 import com.android.sj.presentation.utils.toastMessage
 import com.android.sj.presentation.mvvm.viewmodels.AirQualityMvvmViewModel
 import com.android.sj.presentation.mvvm.viewmodels.NaverMapMvvmViewModel
 import com.android.sj.presentation.mvvm.viewmodels.WeatherMvvmViewModel
-import com.android.sj.presentation.ui.compose.loading.DialogScreen
+import com.android.sj.presentation.common.ui.compose.loading.DialogScreen
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import kotlinx.coroutines.flow.merge
 

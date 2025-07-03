@@ -5,10 +5,10 @@ import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.AirQualityData
 import com.android.sj.domain.models.RltmStationData
 import com.android.sj.domain.models.StationFindData
-import com.android.sj.presentation.models.uimodels.airquality.AirQualityUiModel
-import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
-import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel.MeasuringData
-import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
+import com.android.sj.presentation.common.models.uimodels.airquality.AirQualityUiModel
+import com.android.sj.presentation.common.models.uimodels.airquality.RltmStationUIModel
+import com.android.sj.presentation.common.models.uimodels.airquality.RltmStationUIModel.MeasuringData
+import com.android.sj.presentation.common.models.uimodels.airquality.StationFindUIModel
 import com.android.sj.presentation.utils.airDateAndCode
 import com.android.sj.presentation.utils.rltmStationDate
 import dagger.hilt.android.qualifiers.ApplicationContext

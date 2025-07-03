@@ -5,10 +5,10 @@ import com.android.sj.domain.mappers.BaseMapper
 import com.android.sj.domain.models.TimeWeatherData
 import com.android.sj.domain.models.WeatherData
 import com.android.sj.domain.models.WeekRainSkyData
-import com.android.sj.presentation.enum.imgConvert
-import com.android.sj.presentation.models.uimodels.weather.TimeWeatherUIModel
-import com.android.sj.presentation.models.uimodels.weather.WeatherUIModel
-import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIModel
+import com.android.sj.presentation.common.enum.imgConvert
+import com.android.sj.presentation.common.models.uimodels.weather.TimeWeatherUIModel
+import com.android.sj.presentation.common.models.uimodels.weather.WeatherUIModel
+import com.android.sj.presentation.common.models.uimodels.weather.WeekRainSkyUIModel
 import com.android.sj.presentation.utils.DataConstants.RAIN_MM
 import com.android.sj.presentation.utils.DataConstants.RAIN_MM_NOW
 import com.android.sj.presentation.utils.DataConstants.RAIN_PER

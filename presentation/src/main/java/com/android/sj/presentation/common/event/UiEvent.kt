@@ -1,6 +1,6 @@
 package com.android.sj.presentation.common.event
 
-import com.android.sj.presentation.sealed.ScreenRoute
+import com.android.sj.presentation.common.sealed.ScreenRoute
 
 sealed class UiEvent {
     data class ShowToast(val message: String) : UiEvent()

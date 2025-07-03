@@ -39,11 +39,11 @@ import androidx.compose.ui.unit.sp
 import com.android.sj.presentation.R
 import com.android.sj.presentation.common.state.uistate.RltmStationUiState
 import com.android.sj.presentation.common.state.viewstate.AirQualityViewState
-import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
-import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel.MeasuringData
-import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
+import com.android.sj.presentation.common.models.uimodels.airquality.RltmStationUIModel
+import com.android.sj.presentation.common.models.uimodels.airquality.RltmStationUIModel.MeasuringData
+import com.android.sj.presentation.common.models.uimodels.airquality.StationFindUIModel
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
-import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
+import com.android.sj.presentation.common.ui.previewParam.AirQualityPreviewParamProvider
 import com.android.sj.presentation.common.ui.theme.Color_F0FFF0
 import com.android.sj.presentation.common.ui.theme.Color_ffd700
 import com.android.sj.presentation.common.ui.theme.defaultTitleTextStyle

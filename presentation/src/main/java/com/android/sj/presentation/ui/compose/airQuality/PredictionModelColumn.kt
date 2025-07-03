@@ -21,7 +21,7 @@ import androidx.compose.ui.util.lerp
 import com.android.sj.presentation.R
 import com.android.sj.presentation.common.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
-import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
+import com.android.sj.presentation.common.ui.previewParam.AirQualityPreviewParamProvider
 import com.android.sj.presentation.common.ui.theme.defaultTitleTextStyle
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
