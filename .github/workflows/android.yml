@@ -1,133 +1,96 @@
-name: Android CI – Build & Release MVVM/MVI
+name: Android CI
 
 permissions:
   contents: write
-
+  
 on:
   push:
-    branches: ["master"]
+    branches: [ "master" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - flavorDir: weatherMvvm
-            flavorGradle: WeatherMvvm
-          - flavorDir: weatherMvi
-            flavorGradle: WeatherMvi
 
     steps:
-      - name: 체크아웃 (Checkout)
+      - name: Checkout 코드
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: JDK 17 셋업 (Setup Java 17)
+      - name: 셋업 JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
-      - name: 키스토어 디코드 (Decode Keystore)
+      - name: 디코드 Keystore
         run: |
-          echo "${{ secrets.KEYSTORE_BASE_64 }}" \
-            | base64 --decode > app/release.keystore
+          echo "$KEYSTORE_BASE_64" | base64 --decode > app/release.keystore
         env:
           KEYSTORE_BASE_64: ${{ secrets.KEYSTORE_BASE_64 }}
 
-      - name: gradlew 실행권한 부여 (Grant Execute)
+      - name: Gradlew 실행 권한 부여
         run: chmod +x gradlew
 
-      - name: AAB 빌드 – flavor=${{ matrix.flavorGradle }} (Build AAB)
-        run: ./gradlew :app:bundle${{ matrix.flavorGradle }}Release --parallel
+      # Flavor별로 AAB 빌드
+      - name: Weather + MVVM AAB 빌드
+        run: ./gradlew :app:bundleWeatherMvvmRelease --parallel
         env:
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-          KEY_ALIAS:      ${{ secrets.KEY_ALIAS }}
-          KEY_PASSWORD:   ${{ secrets.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-      - name: AAB artifact 업로드 (Upload Artifact)
-        uses: actions/upload-artifact@v4
-        with:
-          name: aab-${{ matrix.flavorDir }}
-          path: app/build/outputs/bundle/${{ matrix.flavorDir }}Release/*.aab
+      - name: Weather + MVI AAB 빌드
+        run: ./gradlew :app:bundleWeatherMviRelease --parallel
+        env:
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: MVVM AAB 다운로드 (Download MVVM Artifact)
-        uses: actions/download-artifact@v4
-        with:
-          name: aab-weatherMvvm
-          path: artifacts/weatherMvvm
-
-      - name: MVI AAB 다운로드 (Download MVI Artifact)
-        uses: actions/download-artifact@v4
-        with:
-          name: aab-weatherMvi
-          path: artifacts/weatherMvi
-
-      - name: 버전 추출 (Extract Version)
+      - name: 커밋 메시지에서 버전 추출
         id: extract_version
         run: |
-          subject=$(head -n1 <<< "${{ github.event.head_commit.message }}")
-          version=$(grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' <<< "$subject")
+          subject=$(echo '${{ github.event.head_commit.message }}' | head -n 1)
+          version=$(echo "$subject" | grep -E -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}')
           echo "version=$version" >> $GITHUB_OUTPUT
 
-      - name: 릴리즈 존재 여부 확인 (Check Release Exists)
-        id: check_release
-        uses: insightsengineering/release-existence-action@v1
-        with:
-          release-tag: ${{ steps.extract_version.outputs.version }}
-
-      - name: 새 릴리즈 생성 및 URL 확보 (Create Release)
-        if: steps.check_release.outputs.release-exists == 'false'
-        id: create_release
+      - name: Release 노트 생성
         uses: actions/create-release@v1
+        if: github.event_name == 'push'
+        id: create_release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name:     ${{ steps.extract_version.outputs.version }}
+          tag_name: ${{ steps.extract_version.outputs.version }}
           release_name: ${{ steps.extract_version.outputs.version }}
-          body:         ${{ github.event.head_commit.message }}
+          body: ${{ github.event.head_commit.message }}
 
-      - name: 기존 릴리즈 upload_url 조회 (Get Existing Release URL)
-        if: steps.check_release.outputs.release-exists == 'true'
-        id: get_url
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          result-encoding: string
-          script: |
-            const tag = '${{ steps.extract_version.outputs.version }}';
-            const rel = await github.rest.repos.getReleaseByTag({
-              owner: context.repo.owner,
-              repo:  context.repo.repo,
-              tag:   tag
-            });
-            return rel.data.upload_url;
-
-      - name: MVVM AAB 릴리즈에 첨부 (Upload MVVM AAB)
+      # 각 flavor AAB 파일을 같은 릴리즈에 업로드
+      - name: MVVM AAB 파일 릴리즈에 첨부
+        if: github.event_name == 'push'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url || steps.get_url.outputs.result }}
-          asset_path: artifacts/weatherMvvm/*.aab
-          asset_name: weather-mvvm-release.aab
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app/build/outputs/bundle/weatherMvvmRelease/app-weather-mvvm-release.aab
+          asset_name: app-weather-mvvm-release.aab
           asset_content_type: application/vnd.android.package-archive
 
-      - name: MVI AAB 릴리즈에 첨부 (Upload MVI AAB)
+      - name: MVI AAB 파일 릴리즈에 첨부
+        if: github.event_name == 'push'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url || steps.get_url.outputs.result }}
-          asset_path: artifacts/weatherMvi/*.aab
-          asset_name: weather-mvi-release.aab
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app/build/outputs/bundle/weatherMviRelease/app-weather-mvi-release.aab
+          asset_name: app-weather-mvi-release.aab
           asset_content_type: application/vnd.android.package-archive
+      # ─────────────────────────────────────────────────────
+
+      - name: 빌드 결과 확인
+        run: |
+          echo "=== Bundle 디렉토리 ==="
+          ls -R app/build/outputs/bundle
