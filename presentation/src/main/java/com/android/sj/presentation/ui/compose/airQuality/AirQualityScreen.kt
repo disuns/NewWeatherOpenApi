@@ -5,23 +5,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.sj.presentation.R
-import com.android.sj.presentation.common.ui.theme.Default_BackGround
-import com.android.sj.presentation.viewmodels.AirQualityViewModel
 import com.android.sj.presentation.ui.compose.common.DotLineColumn
+import com.android.sj.presentation.ui.theme.Default_BackGround
+import com.android.sj.presentation.utils.LocalAirQualityVM
 
 @Composable
 fun AirQualityScreen(
     modifier: Modifier,
-    viewModel: AirQualityViewModel,
     stationFindErrorFunc : () -> Unit,
     airQualityErrorFunc : () -> Unit
 ) {
-    val airQualityViewState by viewModel.viewState.collectAsState()
+    val viewModel = LocalAirQualityVM.current
+    val airQualityViewState by viewModel.viewState.collectAsStateWithLifecycle()
 
     LazyColumn (
         modifier = modifier

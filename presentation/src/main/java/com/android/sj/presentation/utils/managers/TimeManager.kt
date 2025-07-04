@@ -3,7 +3,7 @@ package com.android.sj.presentation.utils.managers
 import android.annotation.SuppressLint
 import android.content.Context
 import com.android.sj.presentation.R
-import com.android.sj.presentation.common.models.etc.WeekDate
+import com.android.sj.presentation.models.etc.WeekDate
 import com.android.sj.presentation.utils.weekDateConvert
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.text.SimpleDateFormat

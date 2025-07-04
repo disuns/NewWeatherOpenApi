@@ -32,11 +32,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.sj.common.utils.isNetworkCheck
-import com.android.sj.domain.managers.LocationDataManager
+import com.android.sj.presentation.BuildConfig
 import com.android.sj.presentation.R
-import com.android.sj.presentation.common.ui.theme.icon.CancelImageVector
-import com.android.sj.presentation.common.ui.theme.icon.SearchImageVector
-import com.android.sj.presentation.viewmodels.NaverMapViewModel
+import com.android.sj.presentation.intent.NaverMapIntent
+import com.android.sj.presentation.ui.theme.icon.CancelImageVector
+import com.android.sj.presentation.ui.theme.icon.SearchImageVector
+import com.android.sj.presentation.utils.LocalLocationDataManager
+import com.android.sj.presentation.utils.LocalNaverMapVM
 import com.android.sj.presentation.utils.sp
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.LatLngBounds
@@ -54,11 +56,10 @@ import java.io.IOException
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
-fun NaverMapScreen(
-    viewModel: NaverMapViewModel,
-    locationDataManager: LocationDataManager
-) {
+fun NaverMapScreen() {
     val context = LocalContext.current
+    val locationDataManager = LocalLocationDataManager.current
+    val viewModel = LocalNaverMapVM.current
 
     val mapProperties = remember {
         MapProperties(
@@ -78,10 +79,13 @@ fun NaverMapScreen(
 
     LaunchedEffect(cameraPositionState.isMoving) {
         if (!isInitialLoad && !cameraPositionState.isMoving && context.isNetworkCheck()) {
-            viewModel.fetchNaverMap(
-                cameraPositionState.position.target.longitude,
-                cameraPositionState.position.target.latitude
-            )
+            val lon = cameraPositionState.position.target.longitude
+            val lat = cameraPositionState.position.target.latitude
+            if(BuildConfig.USE_MVI){
+                viewModel.sendIntent(NaverMapIntent.LoadNaverMapGeo(lon, lat))
+            }else{
+                viewModel.fetchNaverMap(lon, lat)
+            }
         }
         isInitialLoad = false
     }

@@ -3,9 +3,9 @@ package com.android.sj.presentation.viewmodels
 import android.content.Context
 import com.android.sj.domain.managers.LocationDataManager
 import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
-import com.android.sj.presentation.common.event.UiEvent
-import com.android.sj.presentation.common.mappers.NaverMapPresentationMapper
-import com.android.sj.presentation.common.state.viewstate.NaverMapViewState
+import com.android.sj.presentation.event.UiEvent
+import com.android.sj.presentation.mappers.NaverMapPresentationMapper
+import com.android.sj.presentation.state.viewstate.NaverMapViewState
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext

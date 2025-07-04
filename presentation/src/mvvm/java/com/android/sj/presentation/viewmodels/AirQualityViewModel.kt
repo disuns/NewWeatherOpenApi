@@ -3,9 +3,9 @@ package com.android.sj.presentation.viewmodels
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetAirQualityUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetRltmStationUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetStationFindUseCase
-import com.android.sj.presentation.common.mappers.AirQualityPresentationMapper
-import com.android.sj.presentation.common.state.uistate.RltmStationUiState
-import com.android.sj.presentation.common.state.viewstate.AirQualityViewState
+import com.android.sj.presentation.mappers.AirQualityPresentationMapper
+import com.android.sj.presentation.state.uistate.RltmStationUiState
+import com.android.sj.presentation.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.utils.managers.TimeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

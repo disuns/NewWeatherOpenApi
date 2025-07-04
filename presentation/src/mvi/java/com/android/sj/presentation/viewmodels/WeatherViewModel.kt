@@ -4,11 +4,11 @@ import android.content.Context
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetTimeWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeatherUseCase
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeekRainSkyUseCase
-import com.android.sj.presentation.common.mappers.WeatherPresentationMapper
-import com.android.sj.presentation.common.state.uistate.BaseUiState
-import com.android.sj.presentation.common.state.viewstate.WeatherViewState
 import com.android.sj.presentation.intent.WeatherIntent
+import com.android.sj.presentation.mappers.WeatherPresentationMapper
 import com.android.sj.presentation.partialstate.WeatherPartialState
+import com.android.sj.presentation.state.uistate.BaseUiState
+import com.android.sj.presentation.state.viewstate.WeatherViewState
 import com.android.sj.presentation.utils.convertGRIDGPS
 import com.android.sj.presentation.utils.landCodeGu
 import com.android.sj.presentation.utils.managers.TimeManager

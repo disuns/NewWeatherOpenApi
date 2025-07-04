@@ -21,11 +21,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.sj.presentation.R
-import com.android.sj.presentation.common.state.viewstate.WeatherViewState
+import com.android.sj.presentation.state.viewstate.WeatherViewState
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
-import com.android.sj.presentation.common.ui.previewParam.WeatherViewStatePreviewParamProvider
-import com.android.sj.presentation.common.ui.theme.defaultTitleTextStyle
+import com.android.sj.presentation.ui.previewParam.WeatherViewStatePreviewParamProvider
+import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
+import com.android.sj.presentation.utils.LocalWeatherVM
 import com.android.sj.presentation.utils.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -33,9 +35,9 @@ import com.bumptech.glide.integration.compose.GlideImage
 @Composable
 fun NowWeatherColumn(
     modifier: Modifier,
-    weatherState: WeatherViewState,
     errorFunc: () -> Unit
 ) {
+    val weatherState = LocalWeatherVM.current.viewState.collectAsStateWithLifecycle()
     Column(modifier = modifier) {
         Text(
             modifier = Modifier

@@ -35,11 +35,11 @@ import com.android.sj.common.UNSIGNED_CALL_ERROR
 import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.models.NaverMapData
 import com.android.sj.presentation.R
+import com.android.sj.presentation.enum.WeatherImgEnum
+import com.android.sj.presentation.models.etc.WeekDate
+import com.android.sj.presentation.sealed.ScreenRoute
 import com.android.sj.presentation.utils.DataConstants.ADDR
 import com.android.sj.presentation.utils.DataConstants.ROAD_ADDR
-import com.android.sj.presentation.common.models.etc.WeekDate
-import com.android.sj.presentation.common.enum.WeatherImgEnum
-import com.android.sj.presentation.common.sealed.ScreenRoute
 import com.naver.maps.geometry.LatLng
 import kotlin.math.abs
 import kotlin.math.atan

@@ -3,8 +3,8 @@ package com.android.sj.presentation.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.sj.domain.ApiResult
-import com.android.sj.presentation.common.event.UiEvent
-import com.android.sj.presentation.common.state.uistate.BaseUiState
+import com.android.sj.presentation.event.UiEvent
+import com.android.sj.presentation.state.uistate.BaseUiState
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
