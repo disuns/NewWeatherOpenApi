@@ -1,11 +1,9 @@
-package com.android.sj.presentation.mvi.viewmodels
+package com.android.sj.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.sj.domain.ApiResult
 import com.android.sj.presentation.common.event.UiEvent
-import com.android.sj.presentation.common.state.uistate.BaseUiState
-import com.android.sj.presentation.mvi.partialstate.AirQualityPartialState
 import com.android.sj.presentation.utils.managers.LoadingStateManager
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +16,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseMviViewModel<INTENT, VS, PS>(
+abstract class BaseViewModel<INTENT, VS, PS>(
     initial: VS
 ) : ViewModel() {
     private val intentChannel = Channel<INTENT>(Channel.UNLIMITED)

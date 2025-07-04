@@ -1,26 +1,25 @@
-package com.android.sj.presentation.mvi.viewmodels
+package com.android.sj.presentation.viewmodels
 
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetAirQualityUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetRltmStationUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetStationFindUseCase
 import com.android.sj.presentation.common.mappers.AirQualityPresentationMapper
 import com.android.sj.presentation.common.state.uistate.BaseUiState
-import com.android.sj.presentation.common.state.uistate.RltmStationUiState
 import com.android.sj.presentation.common.state.viewstate.AirQualityViewState
-import com.android.sj.presentation.mvi.intent.AirQualityIntent
-import com.android.sj.presentation.mvi.partialstate.AirQualityPartialState
+import com.android.sj.presentation.intent.AirQualityIntent
+import com.android.sj.presentation.partialstate.AirQualityPartialState
 import com.android.sj.presentation.utils.managers.TimeManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AirQualityMviViewModel @Inject constructor(
+class AirQualityViewModel @Inject constructor(
     private val getAirQualityUseCase : GetAirQualityUseCase,
     private val getRltmStationUseCase : GetRltmStationUseCase,
     private val getStationFindUseCase : GetStationFindUseCase,
     private val timeManager: TimeManager,
     private val mapper : AirQualityPresentationMapper
-) : BaseMviViewModel<AirQualityIntent, AirQualityViewState, AirQualityPartialState>(AirQualityViewState()) {
+) : BaseViewModel<AirQualityIntent, AirQualityViewState, AirQualityPartialState>(AirQualityViewState()) {
 
     override suspend fun handleIntent(intent: AirQualityIntent) {
         when (intent) {

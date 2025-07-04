@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
 import com.android.sj.presentation.ui.compose.common.DotLineColumn
 import com.android.sj.presentation.common.ui.theme.Default_BackGround
-import com.android.sj.presentation.mvvm.viewmodels.WeatherMvvmViewModel
+import com.android.sj.presentation.viewmodels.WeatherViewModel
 
 @Composable
 fun WeatherScreen(
     modifier: Modifier = Modifier,
-    viewModel: WeatherMvvmViewModel,
+    viewModel: WeatherViewModel,
     nowErrorFunc: () -> Unit,
     timeErrorFunc: () -> Unit,
     weekErrorFunc: () -> Unit

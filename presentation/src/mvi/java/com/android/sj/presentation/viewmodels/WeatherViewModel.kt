@@ -1,4 +1,4 @@
-package com.android.sj.presentation.mvi.viewmodels
+package com.android.sj.presentation.viewmodels
 
 import android.content.Context
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetTimeWeatherUseCase
@@ -7,8 +7,8 @@ import com.android.sj.domain.usecase.usecaseinterface.weather.GetWeekRainSkyUseC
 import com.android.sj.presentation.common.mappers.WeatherPresentationMapper
 import com.android.sj.presentation.common.state.uistate.BaseUiState
 import com.android.sj.presentation.common.state.viewstate.WeatherViewState
-import com.android.sj.presentation.mvi.intent.WeatherIntent
-import com.android.sj.presentation.mvi.partialstate.WeatherPartialState
+import com.android.sj.presentation.intent.WeatherIntent
+import com.android.sj.presentation.partialstate.WeatherPartialState
 import com.android.sj.presentation.utils.convertGRIDGPS
 import com.android.sj.presentation.utils.landCodeGu
 import com.android.sj.presentation.utils.managers.TimeManager
@@ -18,14 +18,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherMviViewModel @Inject constructor(
+class WeatherViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getTimeWeatherUseCase: GetTimeWeatherUseCase,
     private val getWeekRainSkyUseCase: GetWeekRainSkyUseCase,
     private val mapper : WeatherPresentationMapper,
     private val timeManager: TimeManager,
     @ApplicationContext val context: Context
-) : BaseMviViewModel<WeatherIntent, WeatherViewState, WeatherPartialState>(WeatherViewState()) {
+) : BaseViewModel<WeatherIntent, WeatherViewState, WeatherPartialState>(WeatherViewState()) {
 
     override suspend fun handleIntent(intent: WeatherIntent) {
         when(intent){

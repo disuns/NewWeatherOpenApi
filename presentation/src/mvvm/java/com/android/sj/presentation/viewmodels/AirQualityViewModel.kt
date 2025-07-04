@@ -1,4 +1,4 @@
-package com.android.sj.presentation.mvvm.viewmodels
+package com.android.sj.presentation.viewmodels
 
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetAirQualityUseCase
 import com.android.sj.domain.usecase.usecaseinterface.airquality.GetRltmStationUseCase
@@ -11,13 +11,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AirQualityMvvmViewModel @Inject constructor(
+class AirQualityViewModel @Inject constructor(
     private val getAirQualityUseCase : GetAirQualityUseCase,
     private val getRltmStationUseCase : GetRltmStationUseCase,
     private val getStationFindUseCase : GetStationFindUseCase,
     private val timeManager: TimeManager,
     private val mapper : AirQualityPresentationMapper
-) : BaseMvvmViewModel<AirQualityViewState>(AirQualityViewState()) {
+) : BaseViewModel<AirQualityViewState>(AirQualityViewState()) {
 
     fun fetchAllAirQualityData(
         regionX: String,

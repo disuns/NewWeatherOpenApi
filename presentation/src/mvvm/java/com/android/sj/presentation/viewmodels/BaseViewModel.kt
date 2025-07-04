@@ -1,4 +1,4 @@
-package com.android.sj.presentation.mvvm.viewmodels
+package com.android.sj.presentation.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-abstract class BaseMvvmViewModel<VS>(
+abstract class BaseViewModel<VS>(
     initial: VS
 ) : ViewModel()  {
     private val _viewState = MutableStateFlow(initial)

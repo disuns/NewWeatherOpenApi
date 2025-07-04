@@ -1,4 +1,4 @@
-package com.android.sj.presentation.mvvm.viewmodels
+package com.android.sj.presentation.viewmodels
 
 import android.content.Context
 import com.android.sj.domain.managers.LocationDataManager
@@ -12,12 +12,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class NaverMapMvvmViewModel @Inject constructor(
+class NaverMapViewModel @Inject constructor(
     private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase,
     private val locationDataManager: LocationDataManager,
     private val mapper : NaverMapPresentationMapper,
     @ApplicationContext val context: Context
-) : BaseMvvmViewModel<NaverMapViewState>(NaverMapViewState()) {
+) : BaseViewModel<NaverMapViewState>(NaverMapViewState()) {
     fun getLocation() {
         LoadingStateManager.show()
         locationDataManager.getGps(onStopGps = {LoadingStateManager.hide()}) { lat, lon ->

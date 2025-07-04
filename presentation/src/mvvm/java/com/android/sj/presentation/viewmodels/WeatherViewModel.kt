@@ -1,4 +1,4 @@
-package com.android.sj.presentation.mvvm.viewmodels
+package com.android.sj.presentation.viewmodels
 
 import android.content.Context
 import com.android.sj.domain.usecase.usecaseinterface.weather.GetTimeWeatherUseCase
@@ -15,14 +15,14 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherMvvmViewModel @Inject constructor(
+class WeatherViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getTimeWeatherUseCase: GetTimeWeatherUseCase,
     private val getWeekRainSkyUseCase: GetWeekRainSkyUseCase,
     private val mapper : WeatherPresentationMapper,
     private val timeManager: TimeManager,
     @ApplicationContext val context: Context
-) : BaseMvvmViewModel<WeatherViewState>(WeatherViewState()) {
+) : BaseViewModel<WeatherViewState>(WeatherViewState()) {
     fun fetchAllWeatherData(
         nx: String,
         ny: String,

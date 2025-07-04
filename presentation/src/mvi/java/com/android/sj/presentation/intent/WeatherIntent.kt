@@ -1,4 +1,4 @@
-package com.android.sj.presentation.mvi.intent
+package com.android.sj.presentation.intent
 
 sealed class WeatherIntent {
     data class LoadAllWeather(val nx: String, val ny: String, val address: String) : WeatherIntent()

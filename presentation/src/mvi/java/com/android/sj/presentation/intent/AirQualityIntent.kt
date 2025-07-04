@@ -1,4 +1,4 @@
-package com.android.sj.presentation.mvi.intent
+package com.android.sj.presentation.intent
 
 sealed class AirQualityIntent {
     data class LoadAllAirQuality(val regionX: String, val regionY: String) : AirQualityIntent()

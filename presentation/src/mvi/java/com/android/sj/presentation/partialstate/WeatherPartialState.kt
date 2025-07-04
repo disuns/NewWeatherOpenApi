@@ -1,4 +1,4 @@
-package com.android.sj.presentation.mvi.partialstate
+package com.android.sj.presentation.partialstate
 
 import com.android.sj.presentation.common.models.uimodels.weather.TimeWeatherUIModel
 import com.android.sj.presentation.common.models.uimodels.weather.WeatherUIModel
