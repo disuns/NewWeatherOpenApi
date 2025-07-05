@@ -1,4 +1,4 @@
-package com.android.sj.presentation.ui.compose.bottomNavigationBar
+package com.android.sj.presentation.ui.compose.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

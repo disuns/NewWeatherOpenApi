@@ -1,6 +1,6 @@
 package com.android.sj.presentation.partialstate
 
-import com.android.sj.presentation.common.models.uimodels.navermap.ReverseGeoUIModel
+import com.android.sj.presentation.models.uimodels.navermap.ReverseGeoUIModel
 
 sealed class NaverMapPartialState {
     object LoadingNaverMap : NaverMapPartialState()

@@ -11,8 +11,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.android.sj.presentation.event.UiEvent
-import com.android.sj.presentation.interfaces.ui.ScreenNavAirQualityHandler
-import com.android.sj.presentation.interfaces.ui.ScreenNavWeatherHandler
 import com.android.sj.presentation.sealed.ScreenRoute
 import com.android.sj.presentation.ui.compose.airQuality.AirQualityScreen
 import com.android.sj.presentation.ui.compose.btn.ScreenWithTopLocationButton
@@ -30,8 +28,8 @@ fun ScreenNavCommon (
     paddingValues: PaddingValues,
     mergedEventEffect: Flow<UiEvent>,
     getLocation: () -> Unit,
-    weatherHandler: ScreenNavWeatherHandler,
-    airQualityHandler: ScreenNavAirQualityHandler,
+    weatherFetchAll: (String, String, String)->Unit,
+    airQualityFetchAll: (String, String)->Unit,
 ){
     val navController = LocalNavController.current
     val locationDataManager = LocalLocationDataManager.current
@@ -40,10 +38,9 @@ fun ScreenNavCommon (
     val locationValue = locationData.value
     val address = locationValue.address
 
-
     HandleFetchAllData(address){
-        weatherHandler.fetchAll(locationValue.lat.toString(), locationValue.lng.toString(), address)
-        airQualityHandler.fetchAll(locationValue.x, locationValue.y)
+        weatherFetchAll(locationValue.lat.toString(), locationValue.lng.toString(), address)
+        airQualityFetchAll(locationValue.x, locationValue.y)
     }
     HandleUIEventOrEffect(mergedEventEffect)
 
@@ -64,17 +61,7 @@ fun ScreenNavCommon (
                 onClick = { navigateTo(ScreenRoute.Weather, navController) },
                 address = address
             ) { modifier ->
-                WeatherScreen(modifier = modifier,
-                    nowErrorFunc = {
-                        weatherHandler.onNowError(locationValue.lat.toString(), locationValue.lng.toString())
-                    },
-                    timeErrorFunc = {
-                        weatherHandler.onTimeError(locationValue.lat.toString(), locationValue.lng.toString())
-                    },
-                    weekErrorFunc = {
-                        weatherHandler.onWeekError(address)
-                    }
-                )
+                WeatherScreen(modifier = modifier)
             }
         }
         composable(route = ScreenRoute.AirQuality.route) {
@@ -82,15 +69,7 @@ fun ScreenNavCommon (
                 onClick = { navigateTo(ScreenRoute.AirQuality, navController) },
                 address = address
             ) { modifier ->
-                AirQualityScreen(
-                    modifier = modifier,
-                    stationFindErrorFunc = {
-                        airQualityHandler.onStationError(locationValue.x, locationValue.y)
-                    },
-                    airQualityErrorFunc = {
-                        airQualityHandler.onAirQualityError()
-                    }
-                )
+                AirQualityScreen(modifier = modifier)
             }
         }
         composable(route = ScreenRoute.NaverMap.route) {

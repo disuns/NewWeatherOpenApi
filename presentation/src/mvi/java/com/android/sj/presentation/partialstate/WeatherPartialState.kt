@@ -1,8 +1,8 @@
 package com.android.sj.presentation.partialstate
 
-import com.android.sj.presentation.common.models.uimodels.weather.TimeWeatherUIModel
-import com.android.sj.presentation.common.models.uimodels.weather.WeatherUIModel
-import com.android.sj.presentation.common.models.uimodels.weather.WeekRainSkyUIModel
+import com.android.sj.presentation.models.uimodels.weather.TimeWeatherUIModel
+import com.android.sj.presentation.models.uimodels.weather.WeatherUIModel
+import com.android.sj.presentation.models.uimodels.weather.WeekRainSkyUIModel
 
 sealed class WeatherPartialState {
     object LoadingWeather : WeatherPartialState()

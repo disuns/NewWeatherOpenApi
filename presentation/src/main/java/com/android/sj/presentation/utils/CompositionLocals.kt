@@ -1,5 +1,6 @@
 package com.android.sj.presentation.utils
 
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.NavHostController
 import com.android.sj.domain.managers.LocationDataManager
@@ -7,23 +8,23 @@ import com.android.sj.presentation.viewmodels.AirQualityViewModel
 import com.android.sj.presentation.viewmodels.NaverMapViewModel
 import com.android.sj.presentation.viewmodels.WeatherViewModel
 
-val LocalNavController = staticCompositionLocalOf<NavHostController> {
+val LocalNavController = compositionLocalOf<NavHostController> {
     error("No NavController provided")
 }
 
-val LocalLocationDataManager = staticCompositionLocalOf<LocationDataManager> {
+val LocalLocationDataManager = compositionLocalOf<LocationDataManager> {
     error("LocalLocationDataManager is not provided")
 }
 
 //viewmodels
-val LocalWeatherVM = staticCompositionLocalOf<WeatherViewModel> {
+val LocalWeatherVM = compositionLocalOf<WeatherViewModel> {
     error("LocalWeatherVM is not provided")
 }
 
-val LocalAirQualityVM = staticCompositionLocalOf<AirQualityViewModel> {
+val LocalAirQualityVM = compositionLocalOf<AirQualityViewModel> {
     error("LocalAirQualityVM is not provided")
 }
 
-val LocalNaverMapVM = staticCompositionLocalOf<NaverMapViewModel> {
+val LocalNaverMapVM = compositionLocalOf<NaverMapViewModel> {
     error("LocalNaverMapVM is not provided")
 }

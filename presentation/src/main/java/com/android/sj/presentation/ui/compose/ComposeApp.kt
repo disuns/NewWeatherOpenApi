@@ -6,7 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.android.sj.presentation.sealed.ScreenRoute
-import com.android.sj.presentation.ui.compose.bottomNavigationBar.BottomNavigationBar
+import com.android.sj.presentation.ui.compose.common.BottomNavigationBar
 import com.android.sj.presentation.ui.compose.loading.DialogScreen
 import com.android.sj.presentation.utils.LocalNavController
 import com.android.sj.presentation.utils.managers.LoadingStateManager

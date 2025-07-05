@@ -32,9 +32,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.android.sj.common.utils.isNetworkCheck
-import com.android.sj.presentation.BuildConfig
 import com.android.sj.presentation.R
-import com.android.sj.presentation.intent.NaverMapIntent
 import com.android.sj.presentation.ui.theme.icon.CancelImageVector
 import com.android.sj.presentation.ui.theme.icon.SearchImageVector
 import com.android.sj.presentation.utils.LocalLocationDataManager
@@ -56,7 +54,8 @@ import java.io.IOException
 
 @OptIn(ExperimentalNaverMapApi::class)
 @Composable
-fun NaverMapScreen() {
+fun NaverMapScreenCommon(loadGeo :(Double, Double)->Unit) {
+
     val context = LocalContext.current
     val locationDataManager = LocalLocationDataManager.current
     val viewModel = LocalNaverMapVM.current
@@ -81,11 +80,7 @@ fun NaverMapScreen() {
         if (!isInitialLoad && !cameraPositionState.isMoving && context.isNetworkCheck()) {
             val lon = cameraPositionState.position.target.longitude
             val lat = cameraPositionState.position.target.latitude
-            if(BuildConfig.USE_MVI){
-                viewModel.sendIntent(NaverMapIntent.LoadNaverMapGeo(lon, lat))
-            }else{
-                viewModel.fetchNaverMap(lon, lat)
-            }
+            loadGeo(lon, lat)
         }
         isInitialLoad = false
     }
@@ -105,7 +100,6 @@ fun NaverMapScreen() {
         })
     }
 }
-
 private fun addressAndMoveCamera(
     query: String,
     cameraPositionState: CameraPositionState,
@@ -211,6 +205,12 @@ fun MapSearchView(
     }
 }
 
+@OptIn(ExperimentalNaverMapApi::class)
+private fun moveCameraWithPosition(position: LatLng, cameraPositionState: CameraPositionState) {
+    val cameraUpdate = CameraUpdate.scrollTo(position)
+    cameraPositionState.move(cameraUpdate)
+}
+
 @Preview
 @Composable
 private fun PreviewMapSearchNowView() {
@@ -218,12 +218,6 @@ private fun PreviewMapSearchNowView() {
         initQuery = "테스트중",
         onSearch = {  }
     )
-}
-
-@OptIn(ExperimentalNaverMapApi::class)
-private fun moveCameraWithPosition(position: LatLng, cameraPositionState: CameraPositionState) {
-    val cameraUpdate = CameraUpdate.scrollTo(position)
-    cameraPositionState.move(cameraUpdate)
 }
 
 @Preview

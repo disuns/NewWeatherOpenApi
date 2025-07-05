@@ -1,4 +1,4 @@
-package com.android.sj.presentation.ui.compose.airQuality
+package com.android.sj.presentation.ui.compose.airQuality.predictionmodel
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,6 +8,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -18,25 +19,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.sj.presentation.R
 import com.android.sj.presentation.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
 import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
+import com.android.sj.presentation.utils.LocalAirQualityVM
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun PredictionModelColumn(
+fun PredictionModelColumnCommon(
     modifier: Modifier,
-    airQualityState: AirQualityViewState,
     errorFunc: () -> Unit
 ) {
+    val airQualityState by LocalAirQualityVM.current.viewState.collectAsStateWithLifecycle()
+
     Column(modifier = modifier.padding(top = 8.dp)) {
         UiStateHandler(modifier, airQualityState.airQualityUiState, errorFunc = { errorFunc() }) { successState ->
-
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = stringResource(R.string.predictionModel),
@@ -97,9 +100,8 @@ fun PredictionModelColumn(
 @Preview
 @Composable
 fun PreviewPredictionModelColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: AirQualityViewState) {
-    PredictionModelColumn(
+    PredictionModelColumnCommon(
         modifier = Modifier.height(900.dp),
-        airQualityState = previewData,
         errorFunc = {}
     )
 }

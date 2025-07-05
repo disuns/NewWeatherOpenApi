@@ -1,4 +1,4 @@
-package com.android.sj.presentation.ui.compose.airQuality
+package com.android.sj.presentation.ui.compose.airQuality.airquality
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,21 +23,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.sj.presentation.R
 import com.android.sj.presentation.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
 import com.android.sj.presentation.ui.theme.defaultTitleTextStyle
+import com.android.sj.presentation.utils.LocalAirQualityVM
 import com.android.sj.presentation.utils.actionKnact
 import com.android.sj.presentation.utils.sp
 
 @Composable
-fun AirQualityColumn(
+fun AirQualityColumnCommon(
     modifier: Modifier,
-    airQualityState: AirQualityViewState,
     errorFunc: () -> Unit
 ) {
     val context = LocalContext.current
+    val airQualityState by LocalAirQualityVM.current.viewState.collectAsStateWithLifecycle()
 
     UiStateHandler(modifier, airQualityState.airQualityUiState, errorFunc = errorFunc) { successState ->
         Column(modifier = modifier.wrapContentHeight()) {
@@ -110,9 +113,8 @@ fun AirQualityColumn(
 @Preview
 @Composable
 fun PreviewAirQualityColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: AirQualityViewState) {
-    AirQualityColumn(
+    AirQualityColumnCommon (
         modifier = Modifier.background(Color.White),
-        airQualityState = previewData,
         errorFunc = {}
     )
 }

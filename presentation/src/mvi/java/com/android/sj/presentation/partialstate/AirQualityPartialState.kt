@@ -1,8 +1,8 @@
 package com.android.sj.presentation.partialstate
 
-import com.android.sj.presentation.common.models.uimodels.airquality.AirQualityUiModel
-import com.android.sj.presentation.common.models.uimodels.airquality.RltmStationUIModel
-import com.android.sj.presentation.common.models.uimodels.airquality.StationFindUIModel
+import com.android.sj.presentation.models.uimodels.airquality.AirQualityUiModel
+import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
+import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
 
 sealed class AirQualityPartialState {
     object LoadingAirQuality : AirQualityPartialState()
