@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.android.sj.presentation.models.uimodels.airquality.StationFindUIModel
+import com.android.sj.presentation.models.uimodels.airquality.RltmStationUIModel
 import com.android.sj.presentation.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
@@ -31,98 +31,104 @@ import com.android.sj.presentation.utils.rltmTitle
 
 @Composable
 fun MeasuringStationColumnCommon(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     onLoadStation: (String) -> Unit,
     errorFunc: (String, String) -> Unit
 ) {
     var dropdownSelectedOption by remember { mutableStateOf("통합 대기") }
-
     val airQualityState by LocalAirQualityVM.current.viewState.collectAsStateWithLifecycle()
-    val locationDataManager = LocalLocationDataManager.current
+    val locationData by LocalLocationDataManager.current.locationData.collectAsStateWithLifecycle()
 
-    val locationData = locationDataManager.locationData.collectAsStateWithLifecycle()
-    val locationValue = locationData.value
-
-    UiStateHandler(modifier,
+    UiStateHandler(
+        modifier,
         state = airQualityState.stationFindUiState,
-        errorFunc = { errorFunc(locationValue.x, locationValue.y) }) { successState ->
-        StationFindSuccess(
-            modifier,
-            successState,
-            dropdownSelectedOption,
-            stationFindErrorFunc = {
-                if (successState.stationName != "정보없음") {
-                    onLoadStation(successState.stationName)
-                }
-            },
-            onOptionSelected = {
-                dropdownSelectedOption = it
-            }
-        )
-    }
-}
+        errorFunc = { errorFunc(locationData.x, locationData.y) }
+    ) { stationFindState ->
+        Column(
+            modifier = modifier,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            StationColumnHeader(
+                stationName = stationFindState.stationName
+            )
 
+            Spacer(modifier = Modifier.height(4.dp))
 
-@Composable
-fun StationFindSuccess(
-    modifier: Modifier,
-    stationFindState: StationFindUIModel,
-    dropdownSelectedOption: String,
-    stationFindErrorFunc:  () -> Unit,
-    onOptionSelected: (String) -> Unit
-) {
-    val context = LocalContext.current
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            modifier = Modifier.padding(top = 8.dp),
-            text = stationFindState.stationName.rltmTitle(context),
-            style = defaultTitleTextStyle()
-        )
-
-        HandleRltmStationState(modifier, dropdownSelectedOption, onOptionSelected) { stationFindErrorFunc() }
-    }
-}
-
-@Composable
-fun HandleRltmStationState(
-    modifier: Modifier,
-    dropdownSelectedOption: String,
-    onOptionSelected: (String) -> Unit,
-    errorFunc: () -> Unit
-) {
-    val airQualityState by LocalAirQualityVM.current.viewState.collectAsStateWithLifecycle()
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        UiStateHandler(modifier, airQualityState.rltmStationUiState, errorFunc = { errorFunc() }) { successState ->
-            Column(modifier = Modifier.weight(1f)) {
-                CustomSpinner(onOptionSelected)
-                Text(
-                    modifier = Modifier.align(Alignment.End),
-                    fontSize = 10.sp,
-                    text = successState.dataTime
+            UiStateHandler(
+                modifier,
+                state = airQualityState.rltmStationUiState,
+                errorFunc = { if (stationFindState.stationName != "정보없음") {
+                    onLoadStation(stationFindState.stationName)
+                } }
+            ) { rltmState ->
+                StationColumnBody(
+                    dropdownSelectedOption = dropdownSelectedOption,
+                    data = rltmState,
+                    onOptionSelected = { dropdownSelectedOption = it }
                 )
             }
-            Spacer(Modifier.width(3.dp))
-            MeasuringStationCard(
-                modifier = Modifier.weight(1f),
-                dropdownSelectedOption = dropdownSelectedOption,
-                data = successState
-            )
         }
     }
 }
 
-@Preview
+@Composable
+private fun StationColumnHeader(
+    stationName: String
+) {
+    val context = LocalContext.current
+    Text(
+        modifier = Modifier.padding(top = 8.dp),
+        text = stationName.rltmTitle(context),
+        style = defaultTitleTextStyle()
+    )
+}
+
+@Composable
+private fun StationColumnBody(
+    dropdownSelectedOption: String,
+    data: RltmStationUIModel,
+    onOptionSelected: (String) -> Unit
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(modifier = Modifier.weight(1f)) {
+            CustomSpinner(onOptionSelected)
+            Text(
+                modifier = Modifier.align(Alignment.End),
+                fontSize = 10.sp,
+                text = data.dataTime
+            )
+        }
+        Spacer(Modifier.width(3.dp))
+        MeasuringStationCard(
+            modifier = Modifier.weight(1f),
+            dropdownSelectedOption = dropdownSelectedOption,
+            data = data
+        )
+    }
+}
+
+@Preview(showBackground = true)
 @Composable
 fun PreviewMeasuringStationColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: AirQualityViewState) {
-    MeasuringStationColumnCommon(
+    val stationFindState = previewData.stationFindUiState.model!!
+    val rltmState = previewData.rltmStationUiState.model!!
+
+    var dropdownSelectedOption by remember { mutableStateOf("통합 대기") }
+
+    Column(
         modifier = Modifier.height(200.dp),
-        onLoadStation = {},
-        errorFunc = { _, _ ->}
-    )
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        StationColumnHeader(
+            stationName = stationFindState.stationName
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        StationColumnBody(
+            dropdownSelectedOption = dropdownSelectedOption,
+            data = rltmState,
+            onOptionSelected = { dropdownSelectedOption = it }
+        )
+    }
 }

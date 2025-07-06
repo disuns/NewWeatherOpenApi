@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.sj.presentation.R
+import com.android.sj.presentation.models.uimodels.airquality.AirQualityUiModel
 import com.android.sj.presentation.state.viewstate.AirQualityViewState
 import com.android.sj.presentation.ui.compose.common.UiStateHandler
 import com.android.sj.presentation.ui.previewParam.AirQualityPreviewParamProvider
@@ -38,71 +39,88 @@ fun AirQualityColumnCommon(
     modifier: Modifier,
     errorFunc: () -> Unit
 ) {
-    val context = LocalContext.current
     val airQualityState by LocalAirQualityVM.current.viewState.collectAsStateWithLifecycle()
 
     UiStateHandler(modifier, airQualityState.airQualityUiState, errorFunc = errorFunc) { successState ->
-        Column(modifier = modifier.wrapContentHeight()) {
-            Text(
-                text = stringResource(R.string.airQualityTitle),
-                style = defaultTitleTextStyle(),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
+        AirQualityColumnContent(
+            successState = successState,
+            modifier = modifier
+        )
+    }
+}
 
-            Text(
-                text = successState.dataTimeAndCode,
-                fontSize = dimensionResource(R.dimen.AirQualityDateCode).sp(),
-                modifier = Modifier.align(Alignment.End)
-            )
+@Composable
+private fun AirQualityColumnContent(
+    successState: AirQualityUiModel,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
 
-            Text(
-                text = successState.overall,
-                fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
-                modifier = Modifier.align(Alignment.Start)
-            )
+    Column(modifier = modifier.wrapContentHeight()) {
+        Text(
+            text = stringResource(R.string.airQualityTitle),
+            style = defaultTitleTextStyle(),
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
 
-            Text(
-                text = successState.cause,
-                fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
-                modifier = Modifier.align(Alignment.Start)
-            )
+        Text(
+            text = successState.dataTimeAndCode,
+            fontSize = dimensionResource(R.dimen.AirQualityDateCode).sp(),
+            modifier = Modifier.align(Alignment.End)
+        )
 
-            val actionKnacktNullCheck = when (successState.actionKnack.isNullOrBlank()) {
-                true -> stringResource(R.string.nullString)
-                else -> successState.actionKnack
-            }
-            Text(
-                text = actionKnacktNullCheck.actionKnact(context),
-                fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
-                modifier = Modifier.align(Alignment.Start)
-            )
+        Text(
+            text = successState.overall,
+            fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
+            modifier = Modifier.align(Alignment.Start)
+        )
 
-            Text(
-                text = stringResource(R.string.nationalFineDust),
-                fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            )
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 0.dp, max = 500.dp)
-                    .padding(vertical = 8.dp)
-            ) {
-                val informGrades = successState.informGrades
-                items(informGrades.size) { item ->
-                    val statusColor = when {
-                        informGrades[item].contains("좋음") -> Color.Green
-                        informGrades[item].contains("나쁨") -> Color.Red
-                        else -> Color.Gray
-                    }
+        Text(
+            text = successState.cause,
+            fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
+            modifier = Modifier.align(Alignment.Start)
+        )
 
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = informGrades[item].replace("좋음", "").replace("나쁨", "").replace("보통", "")
-                        )
-                        Canvas(modifier = Modifier.size(10.dp)
-                        ) { drawCircle(color = statusColor)}
+        val actionText = successState.actionKnack
+            .takeIf { !it.isNullOrBlank() }
+            ?: stringResource(R.string.nullString)
+
+        Text(
+            text = actionText.actionKnact(context),
+            fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
+            modifier = Modifier.align(Alignment.Start)
+        )
+
+        Text(
+            text = stringResource(R.string.nationalFineDust),
+            fontSize = dimensionResource(R.dimen.AirQualityCauseAndOverAll).sp(),
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(3),
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 0.dp, max = 500.dp)
+                .padding(vertical = 8.dp)
+        ) {
+            items(successState.informGrades.size) { index ->
+                val grade = successState.informGrades[index]
+                val statusColor = when {
+                    "좋음" in grade -> Color.Green
+                    "나쁨" in grade -> Color.Red
+                    else           -> Color.Gray
+                }
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = grade
+                            .replace("좋음", "")
+                            .replace("나쁨", "")
+                            .replace("보통", "")
+                    )
+                    Canvas(modifier = Modifier.size(10.dp)) {
+                        drawCircle(color = statusColor)
                     }
                 }
             }
@@ -113,8 +131,8 @@ fun AirQualityColumnCommon(
 @Preview
 @Composable
 fun PreviewAirQualityColumn(@PreviewParameter(AirQualityPreviewParamProvider::class) previewData: AirQualityViewState) {
-    AirQualityColumnCommon (
-        modifier = Modifier.background(Color.White),
-        errorFunc = {}
-    )
+    val modifier = Modifier.background(Color.White)
+    val successState = previewData.airQualityUiState.model!!
+
+    AirQualityColumnContent(successState, modifier)
 }

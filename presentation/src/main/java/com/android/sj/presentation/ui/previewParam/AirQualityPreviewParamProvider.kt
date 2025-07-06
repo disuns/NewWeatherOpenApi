@@ -19,7 +19,7 @@ class AirQualityPreviewParamProvider : PreviewParameterProvider<AirQualityViewSt
                     overall = "○ [미세먼지] 전 권역이 '좋음'으로 예상됩니다.",
                     cause = "○ [미세먼지] 원활한 대기 확산과 강수의 영향으로 대기질이 청정할 것으로 예상됩니다.",
                     actionKnack = null,
-                    informGrades = "서울 : 좋음, 제주 : 좋음, 전남 : 좋음, 전북 : 좋음, 광주 : 좋음, 경남 : 좋음, 경북 : 좋음, 울산 : 좋음, 대구 : 좋음, 부산 : 좋음, 충남 : 좋음, 충북 : 좋음, 세종 : 좋음, 대전 : 좋음, 영동 : 좋음, 영서 : 좋음, 경기남부 : 좋음, 경기북부 : 좋음, 인천 : 좋음".split(
+                    informGrades = "서울 : 좋음, 제주 : 나쁨, 전남 : 보통, 전북 : 좋음, 광주 : 좋음, 경남 : 좋음, 경북 : 좋음, 울산 : 좋음, 대구 : 좋음, 부산 : 좋음, 충남 : 좋음, 충북 : 좋음, 세종 : 좋음, 대전 : 좋음, 영동 : 좋음, 영서 : 좋음, 경기남부 : 좋음, 경기북부 : 좋음, 인천 : 좋음".split(
                         ","
                     ).toMutableList(),
                     imageUrl1 = "https://www.airkorea.or.kr/file/proxyImage?fileName=2024/09/21/11/09km/AQF.20240920.NIER_09_01.PM10.1hsp.2024092103.png",

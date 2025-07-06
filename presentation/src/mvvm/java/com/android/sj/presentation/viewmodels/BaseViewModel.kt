@@ -62,14 +62,15 @@ abstract class BaseViewModel<VS>(
                 when (result) {
                     is ApiResult.Success -> {
                         onFetchSuccessBefore(result.value)
+                        val uiModel = mapper(result.value)
                         val uiState = BaseUiState(
-                            model = mapper(result.value),
+                            model = uiModel,
                             isEmptyData = false,
                             isLoading = false,
                             isError = false
                         )
                         updateViewState { updateState(uiState) }
-                        onFetchSuccessAfter(mapper(result.value))
+                        onFetchSuccessAfter(uiModel)
                     }
                     is ApiResult.Error ->{
                         val errorMessage = result.exception?.message ?: "Unknown Error"
@@ -77,7 +78,6 @@ abstract class BaseViewModel<VS>(
 
                         onFetchErrorBefore(errorMessage, resultCode)
                         val uiState = BaseUiState<UI>(
-                            isEmptyData = true,
                             isLoading = false,
                             isError = true,
                             errorCode = result.code,

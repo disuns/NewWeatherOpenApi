@@ -29,12 +29,14 @@ abstract class BaseViewModel<INTENT, VS, PS>(
     val effects: Flow<UiEvent> = _effects.receiveAsFlow()
 
     init {
-        viewModelScope.launch { processIntents() }
-        viewModelScope.launch { processPartialStates() }
+        viewModelScope.launch {
+            processIntents()
+            processPartialStates()
+        }
     }
 
     fun sendIntent(intent: INTENT) = intentChannel.trySend(intent)
-    protected fun sendPartial(partial: PS) = partialStateChannel.trySend(partial)
+    private fun sendPartial(partial: PS) = partialStateChannel.trySend(partial)
     protected fun sendEffect(event: UiEvent) = viewModelScope.launch {
         _effects.send(event)
     }
@@ -86,7 +88,7 @@ abstract class BaseViewModel<INTENT, VS, PS>(
                         onFetchSuccessBefore(result.value)
                         val uiModel = mapper(result.value)
                         sendPartial(emitSuccess(uiModel))
-                        onFetchSuccessAfter(mapper(result.value))
+                        onFetchSuccessAfter(uiModel)
                     }
                     is ApiResult.Error -> {
                         val msg = result.exception?.message ?: "Unknown Error"

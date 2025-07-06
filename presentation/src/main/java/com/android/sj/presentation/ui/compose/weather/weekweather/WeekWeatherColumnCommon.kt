@@ -31,8 +31,7 @@ fun WeekWeatherColumnCommon(
 
     val locationDataManager = LocalLocationDataManager.current
 
-    val locationData = locationDataManager.locationData.collectAsStateWithLifecycle()
-    val locationValue = locationData.value
+    val locationValue by locationDataManager.locationData.collectAsStateWithLifecycle()
     val address = locationValue.address
 
     UiStateHandler(modifier, weatherState.weekRainSkyUiState, errorFunc = {errorFunc(address)}) { successState ->

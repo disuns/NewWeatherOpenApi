@@ -34,8 +34,7 @@ fun ScreenNavCommon (
     val navController = LocalNavController.current
     val locationDataManager = LocalLocationDataManager.current
 
-    val locationData = locationDataManager.locationData.collectAsStateWithLifecycle()
-    val locationValue = locationData.value
+    val locationValue by locationDataManager.locationData.collectAsStateWithLifecycle()
     val address = locationValue.address
 
     HandleFetchAllData(address){
