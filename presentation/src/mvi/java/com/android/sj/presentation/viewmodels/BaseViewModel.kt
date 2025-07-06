@@ -31,6 +31,8 @@ abstract class BaseViewModel<INTENT, VS, PS>(
     init {
         viewModelScope.launch {
             processIntents()
+        }
+        viewModelScope.launch {
             processPartialStates()
         }
     }

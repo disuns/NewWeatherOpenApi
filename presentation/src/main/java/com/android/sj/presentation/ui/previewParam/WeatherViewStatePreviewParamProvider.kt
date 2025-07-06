@@ -11,13 +11,13 @@ class WeatherViewStatePreviewParamProvider : PreviewParameterProvider<WeatherVie
         WeatherViewState(
             weatherUiState = WeatherUIState(
                 model = WeatherUIModel(
-                    nowTemp = "123",
+                    nowTemp = "23",
                     nowRain = "123",
                     nowWet = "123",
                     nowWind = "123",
                     weatherImg = WeatherImgEnum.None,
                     weatherImgDrawable = null,
-                    weatherText = "123",
+                    weatherText = "구름많음",
                     windDir = "123"
                 )
             )
