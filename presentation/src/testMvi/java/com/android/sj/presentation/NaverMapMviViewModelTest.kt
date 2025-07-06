@@ -1,21 +1,15 @@
 package com.android.sj.presentation
 
-import android.content.Context
-import com.android.sj.domain.managers.LocationDataManager
-import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
-import com.android.sj.presentation.common.mappers.NaverMapPresentationMapper
-import com.android.sj.presentation.mvi.viewmodels.NaverMapMviViewModel
-import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.After
 import org.junit.Before
 
 class NaverMapMviViewModelTest {
-    private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase = mockk()
-    private val locationDataManager: LocationDataManager = mockk()
-    private val mapper: NaverMapPresentationMapper = mockk()
-    private lateinit var viewModel: NaverMapMviViewModel
-    private lateinit var context: Context
+//    private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase = mockk()
+//    private val locationDataManager: LocationDataManager = mockk()
+//    private val mapper: NaverMapPresentationMapper = mockk()
+//    private lateinit var viewModel: NaverMapMviViewModel
+//    private lateinit var context: Context
 
     // 테스트 환경의 코루틴 디스패처 설정
     @OptIn(ExperimentalCoroutinesApi::class)
