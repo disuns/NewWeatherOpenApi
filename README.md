@@ -15,9 +15,8 @@
 - OkHttp3 + Retrofit2: OpenAPI 요청 및 응답 처리
 - accompanist-permissions: 위치 권한 요청 및 관리 (GPS Permission 체크)
 - Compose: UI/UX 구현
-- MVVM: ViewModel과 Repository를 기반으로 한 데이터 관리
-- MVI: Intent를 이용한 상태 관리
-  - MVVM과 분리 빌드 작업중
+- Flavor & SourceSet: MVVM/MVI 분리
+  - Build Varients에 따른 코드 자동 전환
 - Glide: 이미지 로딩 및 캐싱
 - Hilt: 의존성 주입
 - StateFlow -> Channel: 통신 및 UI 상태 관리
@@ -25,8 +24,11 @@
 - Kotlin DSL + Version Catalog: 빌드 및 버전 관리
 - Clean Architecture + 멀티모듈 : 의존성 관리 및 Clean Architecture 구조 명확화 위해 멀티모듈 사용
 - Git-Flow : Git-Flow 구조 참조
-- GitHub Action : app bundle 자동화 및 Tag/Release 버전 관리 자동화
-  - 이로 인하여 release 버전 앱은 로컬에선 빌드되지 않고 자동화로만 빌드 가능
+- GitHub Action
+  - 앱 번들 자동화 빌드
+  - Tag/Release 버전 관리 자동화
+  - 자동 빌드된 release 버전은 로컬에서 빌드되지 않는다.
+- CompositionLocal: Composable 트리 계층에서 전역처럼 동작하는 값을 설정하고 하위 Composable에 일관되게 전달하기 위한 Jetpack Compose API
 
 ## **화면 구성**
 ### **인트로 화면**
