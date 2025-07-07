@@ -68,16 +68,14 @@ class NaverMapViewModel @Inject constructor(
             usecase = getReverseGeoCoUseCase("$lon,$lat"),
             mapper = mapper::domainToUIReverseGeoCo,
             onFetchSuccessAfter = { result ->
-                with(locationDataManager.locationData.value) {
-                    sendEffect(
-                        UiEvent.UpdateLocation(
-                            lat = lat,
-                            lon = lng,
-                            address = result.mapAddress,
-                            x = result.centerX,
-                            y =  result.centerY)
-                    )
-                }
+                sendEffect(
+                    UiEvent.UpdateLocation(
+                        lat = lat,
+                        lon = lon,
+                        address = result.mapAddress,
+                        x = result.centerX,
+                        y =  result.centerY)
+                )
             },
             emitEmpty = NaverMapPartialState.NaverMapEmpty("Empty Data"),
             emitLoading = NaverMapPartialState.LoadingNaverMap,
