@@ -14,9 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.android.sj.presentation.R
-import com.android.sj.presentation.common.state.uistate.BaseUiState
-import com.android.sj.presentation.common.ui.theme.icon.EmptyImageVector
-import com.android.sj.presentation.common.ui.theme.icon.ErrorImageVector
+import com.android.sj.presentation.state.uistate.BaseUiState
+import com.android.sj.presentation.ui.theme.icon.EmptyImageVector
+import com.android.sj.presentation.ui.theme.icon.ErrorImageVector
 import com.android.sj.presentation.utils.dataPotalResultCode
 
 @Composable

@@ -7,7 +7,7 @@
     
     <application>
         <activity
-            android:name=".common.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.NewWeatherOpenApi">
             <intent-filter>

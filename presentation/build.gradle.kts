@@ -26,8 +26,39 @@ android {
             )
         }
     }
+
+    flavorDimensions += listOf("version", "arch")
+
+    productFlavors {
+        create("weather") {
+            dimension = "version"
+            manifestPlaceholders["appName"] = "날씨 및 미세먼지 확인"
+        }
+        create("mvvm") {
+            dimension = "arch"
+            buildConfigField("boolean", "USE_MVI", "false")
+        }
+        create("mvi") {
+            dimension = "arch"
+            buildConfigField("boolean", "USE_MVI", "true")
+        }
+    }
+
+    sourceSets {
+        getByName("mvvm") {
+            java.srcDir("src/mvvm/java")
+        }
+        getByName("mvi") {
+            java.srcDir("src/mvi/java")
+        }
+        getByName("main") {
+            java.srcDir("src/main/java")
+        }
+    }
+
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"

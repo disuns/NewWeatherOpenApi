@@ -1,0 +1,40 @@
+package com.android.sj.presentation.ui.compose
+
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import com.android.sj.presentation.intent.AirQualityIntent
+import com.android.sj.presentation.intent.NaverMapIntent
+import com.android.sj.presentation.intent.WeatherIntent
+import com.android.sj.presentation.ui.compose.nav.ScreenNavCommon
+import com.android.sj.presentation.utils.LocalAirQualityVM
+import com.android.sj.presentation.utils.LocalNaverMapVM
+import com.android.sj.presentation.utils.LocalWeatherVM
+import kotlinx.coroutines.flow.merge
+
+@Composable
+fun ScreenNav(paddingValues: PaddingValues) {
+    val naverMapVM = LocalNaverMapVM.current
+    val weatherVM = LocalWeatherVM.current
+    val airQualityVM = LocalAirQualityVM.current
+
+    ScreenNavCommon(
+        paddingValues = paddingValues,
+        mergedEventEffect = remember(naverMapVM, weatherVM, airQualityVM) {
+            merge(naverMapVM.effects, weatherVM.effects, airQualityVM.effects)
+        },
+        getLocation = {
+            naverMapVM.sendIntent(NaverMapIntent.GetLocation)
+        },
+        weatherFetchAll = { nx , ny, address ->
+            weatherVM.sendIntent(
+                WeatherIntent.LoadAllWeather(nx = nx, ny = ny, address = address)
+            )
+        },
+        airQualityFetchAll = { x, y ->
+            airQualityVM.sendIntent(
+                AirQualityIntent.LoadAllAirQuality(regionX = x, regionY = y)
+            )
+        }
+    )
+}
