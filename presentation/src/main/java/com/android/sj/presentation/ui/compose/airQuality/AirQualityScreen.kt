@@ -5,24 +5,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import com.android.sj.presentation.R
-import com.android.sj.presentation.common.ui.theme.Default_BackGround
-import com.android.sj.presentation.mvvm.viewmodels.AirQualityMvvmViewModel
+import com.android.sj.presentation.ui.compose.airquality.AirQualityColumn
+import com.android.sj.presentation.ui.compose.airquality.MeasuringStationColumn
+import com.android.sj.presentation.ui.compose.airquality.PredictionModelColumn
 import com.android.sj.presentation.ui.compose.common.DotLineColumn
+import com.android.sj.presentation.ui.theme.Default_BackGround
 
 @Composable
-fun AirQualityScreen(
-    modifier: Modifier,
-    viewModel: AirQualityMvvmViewModel,
-    stationFindErrorFunc : () -> Unit,
-    airQualityErrorFunc : () -> Unit
-) {
-    val airQualityViewState by viewModel.viewState.collectAsState()
-
+fun AirQualityScreen(modifier: Modifier) {
     LazyColumn (
         modifier = modifier
             .background(Default_BackGround)
@@ -32,28 +25,15 @@ fun AirQualityScreen(
             ),
     ) {
         item {
-            MeasuringStationColumn(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                airQualityState = airQualityViewState,
-                onLoadStation = { stationName ->
-                    viewModel.fetchRltmStation(stationName)
-                }
-            ){stationFindErrorFunc()}
+            MeasuringStationColumn(modifier = Modifier.fillMaxWidth())
         }
         item { DotLineColumn() }
         item {
-            AirQualityColumn(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                airQualityViewState){airQualityErrorFunc()}
+            AirQualityColumn(modifier = Modifier.fillMaxWidth())
         }
         item { DotLineColumn() }
         item {
-            PredictionModelColumn(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                airQualityViewState){airQualityErrorFunc()}
+            PredictionModelColumn(modifier = Modifier.fillMaxWidth())
         }
     }
 }

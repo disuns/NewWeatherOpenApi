@@ -6,26 +6,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import com.android.sj.presentation.R
 import com.android.sj.presentation.ui.compose.common.DotLineColumn
-import com.android.sj.presentation.common.ui.theme.Default_BackGround
-import com.android.sj.presentation.mvvm.viewmodels.WeatherMvvmViewModel
+import com.android.sj.presentation.ui.theme.Default_BackGround
 
 @Composable
-fun WeatherScreen(
-    modifier: Modifier = Modifier,
-    viewModel: WeatherMvvmViewModel,
-    nowErrorFunc: () -> Unit,
-    timeErrorFunc: () -> Unit,
-    weekErrorFunc: () -> Unit
-) {
-    val weatherState by viewModel.viewState.collectAsState()
-
+fun WeatherScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .background(Default_BackGround)
@@ -38,22 +27,19 @@ fun WeatherScreen(
         NowWeatherColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(5f),
-            weatherState
-        ) { nowErrorFunc() }
+                .weight(5f)
+        )
         DotLineColumn()
         TimeWeatherColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(5f),
-            weatherState
-        ) { timeErrorFunc() }
+                .weight(5f)
+        )
         DotLineColumn()
         WeekWeatherColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(4f),
-            weatherState
-        ) { weekErrorFunc() }
+                .weight(4f)
+        )
     }
 }

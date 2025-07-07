@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.android.sj.common.APPLICATION_ERROR
 import com.android.sj.common.DB_ERROR
 import com.android.sj.common.DEADLINE_HAS_EXPIRED_ERROR
@@ -34,10 +35,11 @@ import com.android.sj.common.UNSIGNED_CALL_ERROR
 import com.android.sj.common.utils.logMessage
 import com.android.sj.domain.models.NaverMapData
 import com.android.sj.presentation.R
+import com.android.sj.presentation.enum.WeatherImgEnum
+import com.android.sj.presentation.models.etc.WeekDate
+import com.android.sj.presentation.sealed.ScreenRoute
 import com.android.sj.presentation.utils.DataConstants.ADDR
 import com.android.sj.presentation.utils.DataConstants.ROAD_ADDR
-import com.android.sj.presentation.models.etc.WeekDate
-import com.android.sj.presentation.enum.WeatherImgEnum
 import com.naver.maps.geometry.LatLng
 import kotlin.math.abs
 import kotlin.math.atan
@@ -275,6 +277,21 @@ fun toastMessage(text:String, context: Context) = Toast.makeText(context,text, T
 fun String.airDateAndCode(date : String, context: Context) = context.getString(R.string.dateAndCode, date, this)
 
 fun String.actionKnact(context: Context) = context.getString(R.string.actionKnack, this)
+
+fun navigateTo(
+    destination: ScreenRoute,
+    navController: NavHostController,
+    isPopUpTo: Boolean = false
+) {
+    destination.destination?.let { route ->
+        navController.navigate(route.route) {
+            if (isPopUpTo) {
+                popUpTo(destination.route) { inclusive = true }
+            }
+            launchSingleTop = true
+        }
+    }
+}
 
 @Composable
 fun Modifier.splashShimmerEffect() : Modifier{
