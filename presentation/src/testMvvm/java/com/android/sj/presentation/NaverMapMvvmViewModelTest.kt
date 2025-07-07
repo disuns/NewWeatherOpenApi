@@ -18,7 +18,6 @@ import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -31,7 +30,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
-class NaverMapMviViewModelTest {
+class NaverMapMvvmViewModelTest {
 
     @MockK
     lateinit var getReverseGeoCoUseCase: GetReverseGeoCoUseCase
