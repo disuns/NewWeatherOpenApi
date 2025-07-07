@@ -1,106 +1,118 @@
 package com.android.sj.presentation
 
+import android.content.Context
+import app.cash.turbine.test
+import com.android.sj.domain.ApiResult
+import com.android.sj.domain.managers.LocationDataManager
+import com.android.sj.domain.models.NaverMapData
+import com.android.sj.domain.usecase.usecaseinterface.navermap.GetReverseGeoCoUseCase
+import com.android.sj.presentation.event.UiEvent
+import com.android.sj.presentation.mappers.NaverMapPresentationMapper
+import com.android.sj.presentation.models.uimodels.navermap.ReverseGeoUIModel
+import com.android.sj.presentation.viewmodels.NaverMapViewModel
+import io.mockk.MockKAnnotations
+import io.mockk.clearAllMocks
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import junit.framework.TestCase.assertEquals
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
+import org.junit.Test
 
 class NaverMapMviViewModelTest {
-//    private val getReverseGeoCoUseCase: GetReverseGeoCoUseCase = mockk()
-//    private val locationDataManager: LocationDataManager = mockk()
-//    private val mapper: NaverMapPresentationMapper = mockk()
-//    private lateinit var viewModel: NaverMapMviViewModel
-//    private lateinit var context: Context
 
-    // 테스트 환경의 코루틴 디스패처 설정
-    @OptIn(ExperimentalCoroutinesApi::class)
+    @MockK
+    lateinit var getReverseGeoCoUseCase: GetReverseGeoCoUseCase
+
+    @MockK
+    lateinit var locationDataManager: LocationDataManager
+
+    @MockK
+    lateinit var mapper: NaverMapPresentationMapper
+
+    @MockK(relaxed = true)
+    lateinit var context: Context
+
+    private lateinit var viewModel: NaverMapViewModel
+
+    private val testDispatcher = StandardTestDispatcher()
+
     @Before
     fun setup() {
-//        Dispatchers.setMain(StandardTestDispatcher())
-//        context = Mockito.mock(Context::class.java)
-//        viewModel = NaverMapViewModel(getReverseGeoCoUseCase, locationDataManager, mapper, context)
-//
-//        // updateLocationData 모킹 설정 추가
-//        coEvery { locationDataManager.updateLocationData(any(), any(), any(), any(), any()) } just Runs
-//
-//        val mockLocationData = LocationInfo(lat = 37.5206017, lng = 126.8825833)
-//        coEvery { locationDataManager.locationData } returns MutableStateFlow(mockLocationData)
+        MockKAnnotations.init(this)
+        Dispatchers.setMain(testDispatcher)
+        viewModel = NaverMapViewModel(
+            getReverseGeoCoUseCase,
+            locationDataManager,
+            mapper,
+            context
+        )
     }
 
-    // 테스트 후 디스패처 리셋
-    @OptIn(ExperimentalCoroutinesApi::class)
     @After
     fun tearDown() {
-//        Dispatchers.resetMain()
-//        // 모든 모의 객체의 상태 초기화
-//        clearAllMocks()
+        Dispatchers.resetMain()
+        clearAllMocks()
     }
 
-//    @Test
-//    fun `fetchNaverMap 성공 시 데이터가 성공적으로 반환된다`() = runTest {
-//        // Mock 응답 객체 생성
-//        val mockReverseGeoUIData = mockk<ReverseGeoUIModel> {
-//            every { mapAddress } returns "Mocked Address"
-//            every { centerX } returns "Mocked centerX"
-//            every { centerY } returns "Mocked centerY"
-//        }
-//        val mockNaverMapData = mockk<NaverMapData>()
-//        val mockApiResult = ApiResult.Success(mockReverseGeoUIData)
-//        val mockDomainResult = ApiResult.Success(mockNaverMapData)
-//
-//        coEvery { getReverseGeoCoUseCase(any()) } returns flowOf(mockDomainResult)
-//        coEvery { mapper.domainToUIReverseGeoCo(any()) } returns flowOf(mockApiResult)
-//
-//        // StateFlow 테스트
-//        viewModel.state.test {
-//            // 메서드 호출
-//            withTimeout(5000) {
-//                viewModel.handleIntent(
-//                    NaverMapIntent.LoadNaverMapGeo(126.8825833, 37.5206017)
-//                )
-//            }
-//
-//            // 처음 상태는 Loading인지 확인
-//            assertTrue(awaitItem().naverMapState is ApiResult.Loading)
-//
-//            // 성공 상태 확인
-//            val successResult = awaitItem().naverMapState as ApiResult.Success
-//            assertEquals(mockApiResult.value, successResult.value)
-//
-//            cancelAndIgnoreRemainingEvents()
-//        }
-//    }
-//
-//    @Test
-//    fun `fetchNaverMap 실패 시 에러가 반환된다`() = runTest {
-//        // Mock 응답 객체 생성
-//        val errorMessage = "Error"
-//        val errorResult = ApiResult.Error(
-//            code = null,
-//            exception = Exception(errorMessage)
-//        )
-//
-//        // Mock 설정
-//        coEvery { getReverseGeoCoUseCase(any()) } returns flowOf(errorResult)
-//        coEvery { mapper.domainToUIReverseGeoCo(any()) } returns flowOf(errorResult)
-//
-//        // StateFlow 테스트
-//        viewModel.state.test {
-//            // 메서드 호출
-//            withTimeout(5000) {
-//                viewModel.handleIntent(
-//                    NaverMapIntent.LoadNaverMapGeo(126.8825833, 37.5206017)
-//                )
-//            }
-//            // 처음 상태는 Loading인지 확인
-//            assertTrue(awaitItem().naverMapState is ApiResult.Loading)
-//
-//            // 에러 상태 확인
-//            val state = awaitItem()
-//            assertTrue(state.naverMapState is ApiResult.Error)
-//            val errorResult = state.naverMapState as ApiResult.Error
-//            assertEquals(errorMessage, errorResult.exception?.message)
-//
-//            cancelAndIgnoreRemainingEvents()
-//        }
-//    }
+    @Test
+    fun `fetchNaverMap 성공 시 데이터가 성공적으로 반환된다`() = runTest {
+        //Given
+        val lon = 127.0
+        val lat = 37.5
+        val domainModel = NaverMapData(
+            regionArea1Name = "1",
+            regionArea2Name = "2",
+            regionArea3Name = "3",
+            landName = "12",
+            landNumber = "13",
+            resultName = "14",
+            centerX = 10.0,
+            centerY = 10.0,
+        )
+
+        val uiModel = ReverseGeoUIModel(
+            mapAddress = "이미지 로딩중",
+            centerX = domainModel.centerX.toString(),
+            centerY = domainModel.centerY.toString()
+        )
+
+        coEvery { getReverseGeoCoUseCase("$lon,$lat") } returns flowOf(ApiResult.Success(domainModel))
+        every { mapper.domainToUIReverseGeoCo(domainModel) } returns uiModel
+
+        val job = launch(UnconfinedTestDispatcher()) {
+            viewModel.events.test {
+                val first = awaitItem() as UiEvent.UpdateLocation
+                assertEquals(lat, first.lat)
+                assertEquals(lon, first.lon)
+
+                val second = awaitItem() as UiEvent.UpdateLocation
+                assertEquals(uiModel.mapAddress, second.address)
+                assertEquals(uiModel.centerX, second.x)
+                assertEquals(uiModel.centerY, second.y)
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+        //When
+        viewModel.fetchNaverMap(lon, lat)
+        advanceUntilIdle()
+
+        //Then
+        coVerify { getReverseGeoCoUseCase("$lon,$lat") }
+        coVerify { mapper.domainToUIReverseGeoCo(domainModel) }
+        job.cancel()
+    }
 }
