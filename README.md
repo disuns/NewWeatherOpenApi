@@ -32,17 +32,17 @@
 
 ## **화면 구성**
 ### **인트로 화면**
-<img src = "https://github.com/user-attachments/assets/c89f3f4f-72ed-4a4d-8dda-6f829737e7ad" width = "50%" height = "50%">
+<img src = "https://github.com/user-attachments/assets/c89f3f4f-72ed-4a4d-8dda-6f829737e7ad" width = "50%" >
 
 ### **로딩 화면**
-<img src = "https://github.com/user-attachments/assets/c1edd5dd-f1ad-43fe-bc4c-de42cac587e6" width = "50%" height = "50%">
+<img src = "https://github.com/user-attachments/assets/c1edd5dd-f1ad-43fe-bc4c-de42cac587e6" width = "50%" >
 
 #### 배치
 - Dialog, CircularProgressIndicator: 로딩 중 화면을 구현하여 데이터 통신 중 터치 방지
 
 ### **시작화면**(실시간 예보 화면)
 
-<img src = "https://github.com/user-attachments/assets/6e456c7f-be71-4159-822e-669942959e2b" width = "50%" height = "50%">
+<img src = "https://github.com/user-attachments/assets/6e456c7f-be71-4159-822e-669942959e2b" width = "50%" >
                                                                                                                                                
 #### 배치
 - LazyColumn, Card, HorizontalPager: 실시간 예보, 3일간 시간 예보, 주간 예보를 제공하는 기본 UI 요소
@@ -51,7 +51,7 @@
 
 ### **대기예보 화면**
 
-<img src = "https://github.com/user-attachments/assets/b1252b18-f314-4905-b787-d4ba9d94a23e" width = "50%" height = "50%">
+<img src = "https://github.com/user-attachments/assets/b1252b18-f314-4905-b787-d4ba9d94a23e" width = "50%"">
 
 #### 배치
 - Card, ExposedDropdownMenuBox, ExposedDropdownMenu, DropdownMenuItem: 스피너 UI를 사용하여 주소 기반 대기 예보 제공
@@ -60,7 +60,7 @@
 
 ### **주소 검색 화면**
 
-<img src = "https://github.com/user-attachments/assets/aa6070a5-217f-4784-b74c-17d3f65e9a6b" width = "50%" height = "50%">
+<img src = "https://github.com/user-attachments/assets/aa6070a5-217f-4784-b74c-17d3f65e9a6b" width = "50%">
 
 #### 배치
 - NAVER Map Compose 라이브러리: 지도를 통한 주소 검색 기능 및 위치 마커 표시 기능 제공
