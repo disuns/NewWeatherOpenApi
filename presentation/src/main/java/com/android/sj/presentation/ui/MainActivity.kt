@@ -7,7 +7,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import com.android.sj.domain.managers.LocationDataManager
@@ -47,7 +50,9 @@ class MainActivity : ComponentActivity() {
                     LocalAirQualityVM provides airQualityVM,
                     LocalNaverMapVM provides naverMapVM
                 ) {
-                    Box(Modifier.safeDrawingPadding()){
+                    Box(Modifier.safeDrawingPadding().semantics {
+                        testTagsAsResourceId = true
+                    }){
                         InitScreen()
 
 //                    Button(

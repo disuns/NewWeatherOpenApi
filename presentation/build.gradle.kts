@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.android.sj.presentation"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24

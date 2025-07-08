@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -83,7 +84,7 @@ fun TimeWeatherColumnCommon(
                         scaleX = scales
                         translationX =
                             size.width * (1 - scaleX) / 2 * (if (pagerState.currentPage > page) 1 else -1)
-                    },
+                    }.testTag("timeWeatherItem"),
                     timeWeatherData = list[page]
                 )
             }

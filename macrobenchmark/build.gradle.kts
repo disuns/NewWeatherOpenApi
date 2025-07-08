@@ -4,23 +4,16 @@ plugins {
 }
 
 android {
-    namespace = "com.android.weather.macrobenchmark"
-    compileSdk = 34
+    namespace = "com.codedevs.macrobenchmark"
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
     buildTypes {
         // This benchmark buildType is used for benchmarking, and should function like your
         // release build (for example, with minification on). It"s signed with a debug key
@@ -32,11 +25,19 @@ android {
         }
     }
 
-    flavorDimensions += listOf("version")
+    flavorDimensions += listOf("version", "arch")
     productFlavors {
         create("weather") { dimension = "version" }
+        create("mvvm") { dimension = "arch" }
+        create("mvi") { dimension = "arch" }
     }
-
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
     targetProjectPath = ":app"
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
