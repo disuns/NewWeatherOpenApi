@@ -55,14 +55,27 @@ class ExampleStartupBenchmark {
         startActivityAndWait()
 
 
-        // selector 준비
-        val selector = By.res("com.codedevs.newweatheropenapi", "timeWeatherItem")
-        // 요소 등장 대기
-        device.wait(Until.hasObject(selector), 10_000)
-        // find + null 체크
-        val item = device.findObject(selector)
-            ?: error("timeWeatherItem을 찾지 못했습니다: $selector")
-        // 스와이프
-        item.swipe(Direction.UP, 1.0f)
+        val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+        val displayWidth = device.displayWidth
+        val displayHeight = device.displayHeight
+
+        repeat(3) {
+            device.swipe(
+                displayWidth * 3 / 4,
+                displayHeight / 2,
+                displayWidth / 4,
+                displayHeight / 2,
+                20
+            )
+            device.waitForIdle()
+            device.swipe(
+                displayWidth / 2,
+                displayHeight * 3 / 4,
+                displayWidth / 2,
+                displayHeight / 4,
+                10
+            )
+            device.waitForIdle()
+        }
     }
 }

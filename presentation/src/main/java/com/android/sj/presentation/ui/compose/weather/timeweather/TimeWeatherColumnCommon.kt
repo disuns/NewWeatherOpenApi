@@ -84,7 +84,7 @@ fun TimeWeatherColumnCommon(
                         scaleX = scales
                         translationX =
                             size.width * (1 - scaleX) / 2 * (if (pagerState.currentPage > page) 1 else -1)
-                    }.testTag("timeWeatherItem"),
+                    },
                     timeWeatherData = list[page]
                 )
             }
