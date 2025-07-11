@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.android.sj.presentation"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -73,6 +73,8 @@ android {
 }
 
 dependencies {
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
     implementation(project(":domain"))
     implementation(project(":common"))
 
@@ -85,12 +87,11 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     androidTestImplementation(libs.bundles.androidx.ui.test)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.bundles.debug.test)
+    implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.bundles.androidx.ui)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
 
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.compiler)

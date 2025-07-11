@@ -9,7 +9,9 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -62,12 +64,14 @@ fun TimeWeatherColumnCommon(
                 contentPadding = PaddingValues(horizontal = dimensionResource(R.dimen.WeatherCardViewPadding)),
                 pageSpacing = dimensionResource(R.dimen.WeatherCardViewPadding) / 2
             ) { page ->
+                val offsetFraction by remember {
+                    derivedStateOf {
+                        (pagerState.currentPage - page + pagerState.currentPageOffsetFraction)
+                            .absoluteValue.coerceIn(0f, 1f)
+                    }
+                }
                 WeatherTimeItem(
                     modifier = Modifier.graphicsLayer {
-                        val pageOffset =
-                            (pagerState.currentPage - page + pagerState.currentPageOffsetFraction)
-                        val offsetFraction = pageOffset.absoluteValue.coerceIn(0f, 1f)
-
                         alpha = lerp(
                             start = 0.5f,
                             stop = 1.0f,

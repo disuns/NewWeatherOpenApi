@@ -1,5 +1,8 @@
 package com.android.sj.presentation.state.uistate
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class BaseUiState<T>(
     val model : T? = null,
     val isLoading : Boolean = false, //로딩 스켈레톤용

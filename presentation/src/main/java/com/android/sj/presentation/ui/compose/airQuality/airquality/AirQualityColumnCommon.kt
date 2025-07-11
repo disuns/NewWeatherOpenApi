@@ -1,19 +1,19 @@
 package com.android.sj.presentation.ui.compose.airQuality.airquality
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -97,34 +97,73 @@ private fun AirQualityColumnContent(
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 0.dp, max = 500.dp)
-                .padding(vertical = 8.dp)
-        ) {
-            items(successState.informGrades.size) { index ->
-                val grade = successState.informGrades[index]
-                val statusColor = when {
-                    "좋음" in grade -> Color.Green
-                    "나쁨" in grade -> Color.Red
-                    else           -> Color.Gray
-                }
+        LazyColumn {
+            items(successState.informGrades.chunked(3)) { rowGrades ->
+                Row {
+                    rowGrades.forEach { grade ->
+                        val statusColor by remember(grade) {
+                            derivedStateOf {
+                                when {
+                                    "좋음" in grade -> Color.Green
+                                    "나쁨" in grade -> Color.Red
+                                    else            -> Color.Gray
+                                }
+                            }
+                        }
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = grade
-                            .replace("좋음", "")
-                            .replace("나쁨", "")
-                            .replace("보통", "")
-                    )
-                    Canvas(modifier = Modifier.size(10.dp)) {
-                        drawCircle(color = statusColor)
+                        Row(verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = grade
+                                    .replace("좋음", "")
+                                    .replace("나쁨", "")
+                                    .replace("보통", "")
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .size(10.dp)
+                                    .background(color = statusColor, shape = CircleShape)
+                            )
+                        }
                     }
                 }
             }
         }
+        //테스트중(아래는 테스트 전 코드)
+//        LazyVerticalGrid(
+//            columns = GridCells.Fixed(3),
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .heightIn(min = 0.dp, max = 500.dp)
+//                .padding(vertical = 8.dp)
+//        ) {
+//            items(successState.informGrades.size) { index ->
+//                val grade = successState.informGrades[index]
+//                val statusColor by remember(grade) {
+//                    derivedStateOf {
+//                        when {
+//                            "좋음" in grade -> Color.Green
+//                            "나쁨" in grade -> Color.Red
+//                            else            -> Color.Gray
+//                        }
+//                    }
+//                }
+//
+//                Row(verticalAlignment = Alignment.CenterVertically) {
+//                    Text(
+//                        text = grade
+//                            .replace("좋음", "")
+//                            .replace("나쁨", "")
+//                            .replace("보통", "")
+//                    )
+//                    Box(
+//                        modifier = Modifier
+//                            .size(10.dp)
+//                            .background(color = statusColor, shape = CircleShape)
+//                    )
+//                }
+//            }
+//        }
     }
 }
 

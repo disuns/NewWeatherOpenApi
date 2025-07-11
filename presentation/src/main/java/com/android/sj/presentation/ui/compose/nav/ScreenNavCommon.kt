@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -35,7 +37,11 @@ fun ScreenNavCommon (
     val locationDataManager = LocalLocationDataManager.current
 
     val locationValue by locationDataManager.locationData.collectAsStateWithLifecycle()
-    val address = locationValue.address
+    val address by remember{
+        derivedStateOf {
+            locationValue.address
+        }
+    }
 
     HandleFetchAllData(address){
         weatherFetchAll(locationValue.lat.toString(), locationValue.lng.toString(), address)
