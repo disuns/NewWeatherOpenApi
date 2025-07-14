@@ -15,6 +15,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        missingDimensionStrategy("version", "weather")
     }
 
     buildTypes {
@@ -27,13 +29,9 @@ android {
         }
     }
 
-    flavorDimensions += listOf("version", "arch")
+    flavorDimensions += listOf("arch")
 
     productFlavors {
-        create("weather") {
-            dimension = "version"
-            manifestPlaceholders["appName"] = "날씨 및 미세먼지 확인"
-        }
         create("mvvm") {
             dimension = "arch"
             buildConfigField("boolean", "USE_MVI", "false")
