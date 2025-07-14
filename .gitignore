@@ -15,3 +15,6 @@
 local.properties
 # IntelliJ/Android Studio
 .idea/AndroidProjectSystem.xml
+
+/app/WeatherKey.jks
+/keystore.properties
