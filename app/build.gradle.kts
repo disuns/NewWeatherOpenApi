@@ -12,12 +12,12 @@ plugins {
 
 android {
     namespace = "com.codedevs.newweatheropenapi"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.codedevs.newweatheropenapi"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionName = "1.0.11"
         val versionParts = versionName.toString().split(".")
         versionCode = versionParts[0].toInt() * 10000 + versionParts[1].toInt() * 100 + versionParts[2].toInt()
