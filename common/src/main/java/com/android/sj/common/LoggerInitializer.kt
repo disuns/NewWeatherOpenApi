@@ -14,6 +14,10 @@ class LoggerInitializer @Inject constructor() {
             .showThreadInfo(false)
             .methodCount(5)
             .build()
-        Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
+        Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy){
+            override fun isLoggable(priority: Int, tag: String?): Boolean {
+                return BuildConfig.DEBUG
+            }
+        })
     }
 }

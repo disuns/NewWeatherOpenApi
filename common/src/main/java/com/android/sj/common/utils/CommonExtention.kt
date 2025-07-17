@@ -7,7 +7,7 @@ import com.android.sj.common.BuildConfig
 import com.orhanobut.logger.Logger
 
 fun logMessage(message: Any?, tag: String = "MyApp") {
-    if(BuildConfig.DEBUG) Logger.t(tag).e(message.toString())
+    Logger.t(tag).e(message.toString())
 }
 
 fun Context.isNetworkCheck(): Boolean {
