@@ -10,14 +10,12 @@ import javax.inject.Singleton
 @Singleton
 class LoggerInitializer @Inject constructor() {
     init{
-        val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
-            .showThreadInfo(false)
-            .methodCount(5)
-            .build()
-        Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy){
-            override fun isLoggable(priority: Int, tag: String?): Boolean {
-                return BuildConfig.DEBUG
-            }
-        })
+        if(BuildConfig.DEBUG) {
+            val formatStrategy: FormatStrategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(false)
+                .methodCount(5)
+                .build()
+            Logger.addLogAdapter(AndroidLogAdapter(formatStrategy))
+        }
     }
 }
