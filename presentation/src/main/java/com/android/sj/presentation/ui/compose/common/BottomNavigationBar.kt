@@ -21,7 +21,7 @@ import com.android.sj.presentation.sealed.ScreenRoute
 import com.android.sj.presentation.ui.theme.Color_747483
 
 @Composable
-fun BottomNavigationBar(navController: NavController) {
+fun BottomNavigationBar(navController: NavController, currentRoute: String?) {
     val items = listOf(ScreenRoute.Weather, ScreenRoute.AirQuality)
     val itemTexts = stringArrayResource(R.array.Tab)
 
@@ -33,8 +33,6 @@ fun BottomNavigationBar(navController: NavController) {
             .height(height),
         containerColor = Color.White
     ) {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentRoute = navBackStackEntry?.destination?.route
         items.forEachIndexed { index, screen ->
             NavigationBarItem(
                 icon = {},

@@ -97,8 +97,8 @@ private fun AirQualityColumnContent(
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        LazyColumn {
-            items(successState.informGrades.chunked(3)) { rowGrades ->
+        Column {
+            successState.informGrades.chunked(3).forEach { rowGrades ->  // 👈 items → forEach
                 Row {
                     rowGrades.forEach { grade ->
                         val statusColor by remember(grade) {

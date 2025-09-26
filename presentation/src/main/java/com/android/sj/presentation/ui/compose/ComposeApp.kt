@@ -31,7 +31,7 @@ fun InitScreen() {
     }
     Scaffold(
         bottomBar =  {
-            if (showBottoms) BottomNavigationBar(navController)
+            if (showBottoms) BottomNavigationBar(navController, currentRoute)
         }
     ) { paddingValues ->
         ScreenNav(paddingValues = paddingValues)
